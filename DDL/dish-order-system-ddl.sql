@@ -7,9 +7,9 @@ USE dos;
 CREATE TABLE Branch
 (
 branch_id 	SMALLINT,
-phone		char(12)		NOT NULL,
+phone		CHAR(12)	NOT NULL,
 address		VARCHAR(100)	NOT NULL,
-name		VARCHAR(20)		NOT NULL,
+name		VARCHAR(20)	NOT NULL,
 CONSTRAINT branch_pk PRIMARY KEY (branch_id)
 );
 
@@ -49,7 +49,7 @@ CONSTRAINT worker_b_fk FOREIGN KEY (branch_id) REFERENCES Branch(branch_id)
 CREATE TABLE `Order`
 (
 order_id 	INT,
-username 	VARCHAR(20) NOT NULL,
+username 	VARCHAR(20)	NOT NULL,
 branch_id	SMALLINT,
 CONSTRAINT order_pk PRIMARY KEY (order_id),
 CONSTRAINT order_c_fk FOREIGN KEY (username) REFERENCES Customer(username),
@@ -60,9 +60,9 @@ CONSTRAINT order_b_fk FOREIGN KEY (branch_id) REFERENCES Branch(branch_id)
 CREATE TABLE Paycard
 (
 paycard_id		INT,
-crypt_card_num	VARCHAR(50)	NOT NULL,
+crypt_card_num		VARCHAR(50)	NOT NULL,
 card_type		CHAR(10)	NOT NULL,
-cardholder_name	VARCHAR(50)	NOT NULL,
+cardholder_name		VARCHAR(50)	NOT NULL,
 expire_date		DATE		NOT NULL,
 CONSTRAINT paycard_pk PRIMARY KEY (paycard_id)
 );
@@ -99,7 +99,7 @@ CONSTRAINT reward_c_fk FOREIGN KEY (username) REFERENCES Customer(username)
 
 CREATE TABLE Delivery_Setting
 (
-branch_id	SMALLINT,
+branch_id		SMALLINT,
 fee			DECIMAL(4,2) NOT NULL,
 CONSTRAINT delivery_setting_pk PRIMARY KEY(branch_id),
 CONSTRAINT delivery_setting_fk FOREIGN KEY (branch_id) REFERENCES Branch(branch_id)
@@ -153,7 +153,7 @@ CREATE TABLE Dish
 (
 branch_id			SMALLINT,
 dish_id				INT,
-inventory_quantity	SMALLINT		NOT NULL DEFAULT 0,
+inventory_quantity		SMALLINT	NOT NULL DEFAULT 0,
 price				DECIMAL(5,2) 	NOT NULL,
 CONSTRAINT dish_pk PRIMARY KEY (branch_id, dish_id),
 CONSTRAINT dish_b_fk FOREIGN KEY (branch_id) REFERENCES Branch(branch_id),
@@ -165,7 +165,7 @@ CREATE TABLE Dish_Detail
 order_id		INT,
 branch_id		SMALLINT,
 dish_id			INT,
-order_quantity	SMALLINT	NOT NULL	DEFAULT 1,
+order_quantity		SMALLINT	NOT NULL	DEFAULT 1,
 CONSTRAINT dish_detail_pk PRIMARY KEY (order_id, branch_id, dish_id),
 CONSTRAINT dish_detail_o_fk FOREIGN KEY (order_id) REFERENCES `Order`(order_id),
 CONSTRAINT dish_detail_d_fk FOREIGN KEY (branch_id, dish_id) REFERENCES Dish(branch_id, dish_id)
