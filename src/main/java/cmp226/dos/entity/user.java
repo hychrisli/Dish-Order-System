@@ -25,7 +25,7 @@ public class user {
     private String address;
     
     @Temporal(TemporalType.DATE)
-    @Column(name = "singup_date")
+    @Column(name = "signup_date")
     private Date signupDate;
     
     

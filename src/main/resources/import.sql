@@ -1,0 +1,1 @@
+INSERT INTO user (username, password, address, phone, signup_date) VALUES ('user1', '937d5ab6a5d623a22ef0f5e88de0921f', '1 Washington Square, San Jose, CA', '800-123-456', STR_TO_DATE('2017-11-01', '%Y-%m-%d'));
