@@ -1,4 +1,4 @@
-package cmp226.dos.entity;
+package cmpe.dos.entity;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class user {
+public class User {
 
     @Id
     @Column(length = 20)
@@ -25,7 +25,7 @@ public class user {
     private String address;
     
     @Temporal(TemporalType.DATE)
-    @Column(name = "signup_date")
+    @Column(name = "signup_date", nullable = false)
     private Date signupDate;
     
     

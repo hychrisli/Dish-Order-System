@@ -1,4 +1,4 @@
-package cmp226.dos;
+package cmpe.dos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

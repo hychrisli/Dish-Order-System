@@ -1,4 +1,4 @@
-package cmp226.dos.config;
+package cmpe.dos.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
