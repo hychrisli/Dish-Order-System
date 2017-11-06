@@ -28,7 +28,7 @@ public class UserController extends AbstractController{
     UserService userService;
     
     @GetMapping(USER + "/{username}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<JsonResponse> getUser(@PathVariable String username) {
 	UserDto userDto = userService.retrieveUserDto(username);
 	if (userDto != null)

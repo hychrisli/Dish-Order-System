@@ -41,7 +41,7 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 		if (userDto != null) {
 		    LOGGER.info("Found User: " + userDto.getUsername() + " & Password: " + userDto.getPassword());
 		    return new User(userDto.getUsername(), userDto.getPassword(), true, true, true, true,
-			    AuthorityUtils.createAuthorityList("USER"));
+			    AuthorityUtils.createAuthorityList("ROLE_USER"));
 		} else {
 		    LOGGER.info("Can't Find: " + username);
 		    throw new UsernameNotFoundException("could not find the user '" + username + "'");
