@@ -1,6 +1,6 @@
-package cmpe.dos.response;
+package cmpe.dos.constant;
 
-public interface JsonConstants {
+public interface JsonConstant {
     
 	String KEY_ERROR = "error";
 	String KEY_MESSAGE = "message";

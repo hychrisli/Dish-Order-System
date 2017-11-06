@@ -1,8 +1,8 @@
 package cmpe.dos.controller;
 
-import static cmpe.dos.response.JsonConstants.KEY_ERROR;
-import static cmpe.dos.response.JsonConstants.KEY_LOCATION;
-import static cmpe.dos.response.JsonConstants.KEY_MESSAGE;
+import static cmpe.dos.constant.JsonConstant.KEY_ERROR;
+import static cmpe.dos.constant.JsonConstant.KEY_LOCATION;
+import static cmpe.dos.constant.JsonConstant.KEY_MESSAGE;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
