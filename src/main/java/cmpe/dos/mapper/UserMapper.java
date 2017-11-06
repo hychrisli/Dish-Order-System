@@ -10,7 +10,7 @@ public class UserMapper {
 	
 	UserDto userDto = new UserDto();
 	userDto.setUsername(user.getUsername());
-	userDto.setAddress(user.getPassword());
+	userDto.setPassword(user.getPassword());
 	userDto.setPhone(user.getPhone());
 	userDto.setAddress(user.getAddress());
 	userDto.setSignupDate(user.getSignupDate());
