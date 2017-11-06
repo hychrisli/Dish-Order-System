@@ -13,10 +13,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import cmpe.dos.dto.UserDto;
-import cmpe.dos.exception.AppExceptionHandler;
 import cmpe.dos.service.UserService;
+
+/*BCrypt Generator: https://www.browserling.com/tools/bcrypt*/
 
 @Configuration
 public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
@@ -28,7 +31,7 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-	auth.userDetailsService(userDetailsService());
+	auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -49,5 +52,10 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 	    }
 
 	};
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+	return new BCryptPasswordEncoder();
     }
 }
