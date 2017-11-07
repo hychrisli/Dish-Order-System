@@ -1,11 +1,11 @@
 package cmpe.dos.controller;
 
 import static cmpe.dos.constant.UrlConstant.USER;
+import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +28,7 @@ public class UserController extends AbstractController{
     UserService userService;
     
     @GetMapping(USER + "/{username}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> getUser(@PathVariable String username) {
 	UserDto userDto = userService.retrieveUserDto(username);
 	if (userDto != null)

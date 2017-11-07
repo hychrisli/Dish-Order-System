@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import cmpe.dos.dto.UserDto;
+import cmpe.dos.service.RoleService;
 import cmpe.dos.service.UserService;
 
 /*BCrypt Generator: https://www.browserling.com/tools/bcrypt*/
@@ -28,6 +29,9 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 
     @Autowired
     UserService userService;
+    
+    @Autowired
+    RoleService roleService;
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,21 +45,23 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 	    @Override
 	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDto userDto = userService.retrieveUserDto(username);
-		if (userDto != null) {
-		    LOGGER.info("Found User: " + userDto.getUsername() + " & Password: " + userDto.getPassword());
-		    return new User(userDto.getUsername(), userDto.getPassword(), true, true, true, true,
-			    AuthorityUtils.createAuthorityList("ROLE_USER"));
-		} else {
+
+		if (userDto == null) {
 		    LOGGER.info("Can't Find: " + username);
 		    throw new UsernameNotFoundException("could not find the user '" + username + "'");
 		}
+
+		return new User(userDto.getUsername(), 
+			userDto.getPassword(), 
+			true, true, true, true,
+			AuthorityUtils.createAuthorityList(roleService.getRoles(username)));
 	    }
 
 	};
     }
-    
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
 	return new BCryptPasswordEncoder();
     }
 }
