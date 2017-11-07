@@ -4,6 +4,8 @@ import static cmpe.dos.constant.UrlConstant.USER;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpSession;
+
 import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class UserController extends AbstractController{
     UserService userService;
     
     @ApiOperation(value = "Get User", response = JsonResponse.class)
-    @GetMapping(USER + "/{username}")
+    @GetMapping( USER + "/{username}")
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> getUser(@PathVariable String username) {
 	UserDto userDto = userService.retrieveUserDto(username);
@@ -41,10 +43,9 @@ public class UserController extends AbstractController{
 	return notFound();
     }
     
+    @ApiOperation(value = "Get My Username")
     @GetMapping(USER + "/self")
     public ResponseEntity<JsonResponse> getMyUserName(Principal principal){
 	return success("self", principal.getName());
-    }
-    
-    
+    }   
 }
