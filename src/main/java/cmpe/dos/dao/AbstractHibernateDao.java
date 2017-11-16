@@ -1,10 +1,9 @@
-package cmpe.dos.dao.impl;
+package cmpe.dos.dao;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -13,23 +12,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateCallback;
-import org.springframework.orm.hibernate5.HibernateTemplate;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.springframework.stereotype.Repository;
 
-import cmpe.dos.dao.HibernateDao;
-import java.lang.reflect.ParameterizedType;
-import java.sql.SQLException;
-
-@Configuration
-public abstract class HibernateDaoImpl<T> extends HibernateDaoSupport implements HibernateDao<T> {
+public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implements HibernateDao<T> {
     
     protected Class<T> poClass;
     
-    public HibernateDaoImpl(Class<T> poClass) {
+    public AbstractHibernateDao(Class<T> poClass) {
 	this.poClass = poClass;
     }
 

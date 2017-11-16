@@ -11,7 +11,6 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import cmpe.dos.dao.HibernateDao;
-import cmpe.dos.dao.UserDao;
 import cmpe.dos.dto.UserDto;
 import cmpe.dos.entity.User;
 import cmpe.dos.service.UserService;

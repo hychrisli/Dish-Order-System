@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cmpe.dos.dao.HibernateDao;
-import cmpe.dos.dao.UserDao;
 import cmpe.dos.dto.UserDto;
 import cmpe.dos.entity.User;
 import cmpe.dos.mapper.UserMapper;

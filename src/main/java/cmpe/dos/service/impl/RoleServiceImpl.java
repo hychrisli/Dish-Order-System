@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cmpe.dos.dao.AdminDao;
-import cmpe.dos.dao.CustomerDao;
-import cmpe.dos.dao.WorkerDao;
+import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dto.RoleDto;
+import cmpe.dos.entity.Administrator;
+import cmpe.dos.entity.Customer;
+import cmpe.dos.entity.Worker;
 import cmpe.dos.mapper.RoleMapper;
 import cmpe.dos.service.RoleService;
 
@@ -22,22 +24,22 @@ import cmpe.dos.service.RoleService;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    AdminDao adminDao;
+    HibernateDao<Administrator> adminDao;
     
     @Autowired
-    CustomerDao customerDao;
+    HibernateDao<Customer> customerDao;
     
     @Autowired
-    WorkerDao workerDao;
+    HibernateDao<Worker> workerDao;
 
 
     @Override
     public RoleDto getRoleDto(String username) {
 	return RoleMapper.toDto(
-		adminDao.findAdmin(username), 
-		customerDao.findCustomer(username), null);
+		adminDao.getById(username), 
+		customerDao.getById(username), 
+		workerDao.getById(username));
     }
-
 
     @Override
     public String[] getRoles(String username) {

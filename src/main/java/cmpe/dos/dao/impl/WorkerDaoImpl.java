@@ -2,9 +2,14 @@ package cmpe.dos.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
-import cmpe.dos.dao.WorkerDao;
+import cmpe.dos.dao.AbstractHibernateDao;
+import cmpe.dos.entity.Worker;
 
 @Repository
-public class WorkerDaoImpl implements WorkerDao {
+public class WorkerDaoImpl extends AbstractHibernateDao<Worker>{
 
+    public WorkerDaoImpl() {
+	super(Worker.class);
+    }
+    
 }
