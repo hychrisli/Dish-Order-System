@@ -28,7 +28,7 @@ CREATE TABLE Customer
     username    VARCHAR(20),
     CONSTRAINT customer_pk PRIMARY KEY (username),
     CONSTRAINT customer_fk FOREIGN KEY (username)
-        REFERENCES `User`(username)
+        REFERENCES `User`(username) ON DELETE CASCADE
 );
 
 CREATE TABLE Administrator
@@ -36,25 +36,29 @@ CREATE TABLE Administrator
     username    VARCHAR(20),
     CONSTRAINT admin_pk PRIMARY KEY (username),
     CONSTRAINT admin_fk FOREIGN KEY (username) 
-        REFERENCES `User`(username)
+        REFERENCES `User`(username) ON DELETE CASCADE
 );
-l
+
 CREATE TABLE Worker
 (
     username    VARCHAR(20),
     branch_id   SMALLINT    NOT NULL,
     CONSTRAINT worker_pk PRIMARY KEY (username, branch_id),
     CONSTRAINT worker_c_fk FOREIGN KEY (username) 
-        REFERENCES `User`(username),
+        REFERENCES `User`(username) ON DELETE CASCADE,
     CONSTRAINT worker_b_fk FOREIGN KEY (branch_id) 
         REFERENCES Branch(branch_id)
 );
 
 CREATE TABLE `Order`
 (
-    order_id    INT,
-    username    VARCHAR(20) NOT NULL,
-    branch_id   SMALLINT,
+    order_id			INT,
+    username			VARCHAR(20) NOT NULL,
+    branch_id   		SMALLINT,
+    order_time			DATE		NOT NULL,
+    total_price 		INT			NOT NULL	DEFAULT 0,
+    is_deliver			TINYINT(1)	NOT NULL	DEFAULT 0,
+    pickup_deliver_time	DATE,
     CONSTRAINT order_pk PRIMARY KEY (order_id),
     CONSTRAINT order_c_fk FOREIGN KEY (username) 
         REFERENCES Customer(username),
@@ -160,7 +164,7 @@ CREATE TABLE Dish_Dict
     catalog_id  SMALLINT    NOT NULL,
     name        VARCHAR(20) NOT NULL,
     description VARCHAR(200),
-    picture     BLOB,
+    picture_dir VARCHAR(200),
     CONSTRAINT dish_dict_pk PRIMARY KEY (dish_id),
     CONSTRAINT dish_dict_fk FOREIGN KEY (catalog_id) 
         REFERENCES Catalog_Dict(catalog_id)

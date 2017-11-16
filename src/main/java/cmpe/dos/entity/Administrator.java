@@ -1,5 +1,6 @@
 package cmpe.dos.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ public class Administrator {
     @Column(length = 20)
     private String username;
     
-    @OneToOne
+    @OneToOne (cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "username")
     private User user;
