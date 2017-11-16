@@ -56,7 +56,7 @@ public class UserController extends AbstractController{
     @PostMapping(USER)
     public ResponseEntity<JsonResponse> addUser(@RequestBody UserDto userDto){
 	if (userService.createUser(userDto))
-		return created("created", userDto);
+		return created("created", userDto.getUsername());
 	
 	return conflict();
     }   

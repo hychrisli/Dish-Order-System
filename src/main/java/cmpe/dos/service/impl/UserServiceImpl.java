@@ -1,6 +1,7 @@
 package cmpe.dos.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import cmpe.dos.dao.HibernateDao;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
 	
 	if ( dao.getById(userDto.getUsername()) != null)
 	    return false;
-	
+	userDto.setPassword(BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt(10)));
 	dao.create(UserMapper.toPojo(userDto));
 	return true;
     }
