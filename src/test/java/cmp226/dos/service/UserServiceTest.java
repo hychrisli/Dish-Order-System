@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dao.UserDao;
 import cmpe.dos.dto.UserDto;
 import cmpe.dos.entity.User;
@@ -20,7 +21,7 @@ import cmpe.dos.service.impl.UserServiceImpl;
 public class UserServiceTest {
 
     @Mock
-    private UserDao userDao;
+    private HibernateDao<User> userDao;
     
     @InjectMocks
     private UserService userService = new UserServiceImpl();
@@ -42,8 +43,8 @@ public class UserServiceTest {
 	userDto1 = new UserDto();
 	userDto1.setUsername(username1);
 	
-	Mockito.when(userDao.findUser(username1)).thenReturn(user1);
-	Mockito.when(userDao.findUser(username2)).thenReturn(null);
+	Mockito.when(userDao.getById(username1)).thenReturn(user1);
+	Mockito.when(userDao.getById(username2)).thenReturn(null);
     }
     
     

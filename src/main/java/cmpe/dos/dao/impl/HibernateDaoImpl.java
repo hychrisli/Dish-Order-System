@@ -10,23 +10,35 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 import cmpe.dos.dao.HibernateDao;
 import java.lang.reflect.ParameterizedType;
 import java.sql.SQLException;
 
-public class HibernateDaoImpl<T> extends HibernateDaoSupport implements HibernateDao<T> {
-
+@Configuration
+public abstract class HibernateDaoImpl<T> extends HibernateDaoSupport implements HibernateDao<T> {
+    
     protected Class<T> poClass;
-
-    @SuppressWarnings("unchecked")
-    public HibernateDaoImpl() {
-	poClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    
+    public HibernateDaoImpl(Class<T> poClass) {
+	this.poClass = poClass;
     }
 
+    @Autowired
+    public void initSessFactory(SessionFactory sessionFactory)
+    {
+        setSessionFactory(sessionFactory);
+    }
+   
     @Override
     public T getById(Serializable id) {
 	return getHibernateTemplate().get(poClass, id);
@@ -48,7 +60,7 @@ public class HibernateDaoImpl<T> extends HibernateDaoSupport implements Hibernat
     @SuppressWarnings("unchecked")
     @Override
     public List<T> findAll() {
-	return (List<T>) getHibernateTemplate().find("from " + poClass.getName() + " obj")
+	return (List<T>) getHibernateTemplate().find("from " + poClass.getName() + " obj");
     }
 
     @Override
