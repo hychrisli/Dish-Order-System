@@ -11,7 +11,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cmpe.dos.dao.AdminDao;
 import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dto.RoleDto;
 import cmpe.dos.entity.Administrator;
