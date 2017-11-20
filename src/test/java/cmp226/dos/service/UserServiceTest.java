@@ -10,9 +10,10 @@ import org.mockito.Mockito;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import cmpe.dos.dao.UserDao;
+import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dto.UserDto;
 import cmpe.dos.entity.User;
+import cmpe.dos.mapper.UserMapper;
 import cmpe.dos.service.UserService;
 import cmpe.dos.service.impl.UserServiceImpl;
 
@@ -20,15 +21,14 @@ import cmpe.dos.service.impl.UserServiceImpl;
 public class UserServiceTest {
 
     @Mock
-    private UserDao userDao;
+    private HibernateDao<User> dao;
     
     @InjectMocks
     private UserService userService = new UserServiceImpl();
     
-    private String username1;
-    private String username2;
-    private User user1;
-    private UserDto userDto1;
+    private String username1, username2;
+    private User user1, user2;
+    private UserDto userDto1, userDto2;
     
     
     @Before
@@ -39,11 +39,14 @@ public class UserServiceTest {
 	user1 = new User();
 	user1.setUsername(username1);
 	
-	userDto1 = new UserDto();
-	userDto1.setUsername(username1);
+	user2 = new User();
+	user2.setUsername(username2);
 	
-	Mockito.when(userDao.findUser(username1)).thenReturn(user1);
-	Mockito.when(userDao.findUser(username2)).thenReturn(null);
+	userDto1 = UserMapper.toDto(user1);
+	userDto2 = UserMapper.toDto(user2);
+	
+	Mockito.when(dao.getById(username1)).thenReturn(user1);
+	Mockito.when(dao.getById(username2)).thenReturn(null);
     }
     
     
@@ -53,4 +56,16 @@ public class UserServiceTest {
 	Assert.assertEquals(userService.retrieveUserDto(username2), null);
     }
     
+    @Test 
+    public void testCreateUser() {
+	Assert.assertEquals(userService.createUser(userDto1), false);
+	Assert.assertEquals(userService.createUser(userDto2), true);
+    }
+    
+    @Test 
+    public void testDeleteUser() {
+	Assert.assertEquals(userService.deleteUser(username1), true);
+	Assert.assertEquals(userService.deleteUser(username2), false);
+    }
+
 }
