@@ -1,5 +1,6 @@
 package cmpe.dos.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class Worker {
     @Column(length = 20)
     private String username;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name="username")
     private User user;
