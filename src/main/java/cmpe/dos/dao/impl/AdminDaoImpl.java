@@ -1,23 +1,14 @@
 package cmpe.dos.dao.impl;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 
-import cmpe.dos.dao.AdminDao;
+import cmpe.dos.dao.AbstractHibernateDao;
 import cmpe.dos.entity.Administrator;
-import cmpe.dos.entity.User;
 
 @Repository
-public class AdminDaoImpl implements AdminDao {
+public class AdminDaoImpl extends AbstractHibernateDao<Administrator> {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-    
-    @Override
-    public Administrator findAdmin(String username) {
-	return entityManager.find(Administrator.class, username);
+    public AdminDaoImpl() {
+	super(Administrator.class);
     }
-
 }
