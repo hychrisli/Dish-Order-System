@@ -1,4 +1,6 @@
-drop table if exists BRANCH;
+DROP DATABASE IF EXISTS dos;
+CREATE DATABASE dos;
+USE dos;
 
 /*==============================================================*/
 /* Table: BRANCH                                                */
@@ -15,7 +17,7 @@ create table BRANCH
    primary key (BRANCH_ID)
 );
 
-drop table if exists USER;
+
 
 /*==============================================================*/
 /* Table: USER                                                  */
@@ -33,7 +35,7 @@ create table USER
    primary key (USERNAME)
 );
 
-drop table if exists Customer;
+
 CREATE TABLE Customer
 (
     username    VARCHAR(20),
@@ -42,7 +44,7 @@ CREATE TABLE Customer
         REFERENCES `User`(username) ON DELETE CASCADE
 );
 
-drop table if exists Administrator;
+
 CREATE TABLE Administrator
 (
     username    VARCHAR(20),
@@ -51,7 +53,7 @@ CREATE TABLE Administrator
         REFERENCES `User`(username) ON DELETE CASCADE
 );
 
-drop table if exists Worker;
+
 CREATE TABLE Worker
 (
     username    VARCHAR(20),
@@ -63,7 +65,7 @@ CREATE TABLE Worker
         REFERENCES Branch(branch_id)
 );
 
-drop table if exists DEFAULT_PAYCARD;
+
 
 /*==============================================================*/
 /* Table: DEFAULT_PAYCARD                                       */
@@ -81,7 +83,7 @@ create table DEFAULT_PAYCARD
 alter table DEFAULT_PAYCARD add constraint FK_REFERENCE_6 foreign key (USERNAME)
       references USER (USERNAME) on delete restrict on update restrict;
       
-drop table if exists COUPON_DICT;
+
 
 /*==============================================================*/
 /* Table: COUPON_DICT                                           */
@@ -93,7 +95,7 @@ create table COUPON_DICT
    primary key (COUPON_ID)
 );
 
-drop table if exists REWARD;
+
 
 /*==============================================================*/
 /* Table: REWARD                                                */
@@ -116,14 +118,14 @@ alter table REWARD add constraint FK_REFERENCE_8 foreign key (COUPON_ID)
       references COUPON_DICT (COUPON_ID) on delete restrict on update restrict;
 
 
-drop table if exists DELIVERY_SETTING;
+
 
 /*==============================================================*/
 /* Table: DELIVERY_SETTING                                      */
 /*==============================================================*/
 create table DELIVERY_SETTING
 (
-   BRANCH_ID            int not null,
+   BRANCH_ID            smallint not null,
    PROVIDABLE           boolean not null,
    FEE                  float(4,2),
    primary key (BRANCH_ID)
@@ -131,8 +133,9 @@ create table DELIVERY_SETTING
 
 alter table DELIVERY_SETTING add constraint FK_REFERENCE_3 foreign key (BRANCH_ID)
       references BRANCH (BRANCH_ID) on delete restrict on update restrict;
+
       
-drop table if exists CATALOG_DICT;
+
 
 /*==============================================================*/
 /* Table: CATALOG_DICT                                          */
@@ -145,7 +148,7 @@ create table CATALOG_DICT
    primary key (CATALOG_ID)
 );
 
-drop table if exists BRANCH_CATALOG;
+
 
 /*==============================================================*/
 /* Table: BRANCH_CATALOG                                        */
@@ -164,7 +167,7 @@ alter table BRANCH_CATALOG add constraint FK_REFERENCE_1 foreign key (CATALOG_ID
 alter table BRANCH_CATALOG add constraint FK_REFERENCE_9 foreign key (BRANCH_ID)
       references BRANCH (BRANCH_ID) on delete restrict on update restrict;
       
-drop table if exists DISH_DICT;
+
 
 /*==============================================================*/
 /* Table: DISH_DICT                                             */
@@ -182,7 +185,7 @@ create table DISH_DICT
 alter table DISH_DICT add constraint FK_REFERENCE_2 foreign key (CATALOG_ID)
       references CATALOG_DICT (CATALOG_ID) on delete restrict on update restrict;
       
-drop table if exists DISH;
+
 
 /*==============================================================*/
 /* Table: DISH                                                  */
@@ -203,7 +206,7 @@ alter table DISH add constraint FK_REFERENCE_12 foreign key (BRANCH_ID)
 alter table DISH add constraint FK_REFERENCE_13 foreign key (DISH_ID)
       references DISH_DICT (DISH_ID) on delete restrict on update restrict;
       
-drop table if exists `ORDER`;
+
 
 /*==============================================================*/
 /* Table: "ORDER"                                               */
@@ -226,7 +229,7 @@ alter table `ORDER` add constraint FK_REFERENCE_4 foreign key (BRANCH_ID)
 alter table `ORDER` add constraint FK_REFERENCE_5 foreign key (USERNAME)
       references USER (USERNAME) on delete restrict on update restrict;
       
-drop table if exists ORDER_PAY_INFO;
+
 
 /*==============================================================*/
 /* Table: ORDER_PAY_INFO                                        */
@@ -244,7 +247,7 @@ create table ORDER_PAY_INFO
 alter table ORDER_PAY_INFO add constraint FK_REFERENCE_11 foreign key (ORDER_ID)
       references `ORDER` (ORDER_ID) on delete restrict on update restrict;
       
-drop table if exists DELIVERY_INFO;
+
 
 /*==============================================================*/
 /* Table: DELIVERY_INFO                                         */
@@ -264,7 +267,7 @@ create table DELIVERY_INFO
 alter table DELIVERY_INFO add constraint FK_REFERENCE_10 foreign key (ORDER_ID)
       references `ORDER` (ORDER_ID) on delete restrict on update restrict;
       
-drop table if exists ORDER_DISH_DETAIL;
+
 
 /*==============================================================*/
 /* Table: ORDER_DISH_DETAIL                                     */
@@ -284,7 +287,7 @@ alter table ORDER_DISH_DETAIL add constraint FK_REFERENCE_14 foreign key (ORDER_
 alter table ORDER_DISH_DETAIL add constraint FK_REFERENCE_15 foreign key (DISH_ID)
       references DISH_DICT (DISH_ID) on delete restrict on update restrict;
       
-drop table if exists RATING;
+
 
 /*==============================================================*/
 /* Table: RATING                                                */
