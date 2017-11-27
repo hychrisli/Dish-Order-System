@@ -12,7 +12,10 @@ public class UserMapper {
 	userDto.setUsername(user.getUsername());
 	userDto.setPassword(user.getPassword());
 	userDto.setPhone(user.getPhone());
-	userDto.setAddress(user.getAddress());
+	userDto.setStreet(user.getStreet());
+	userDto.setCity(user.getCity());
+	userDto.setState(user.getState());
+	userDto.setZipcode(user.getZipcode());
 	userDto.setSignupDate(user.getSignupDate());
 	
 	return userDto;
@@ -24,7 +27,10 @@ public class UserMapper {
 	user.setUsername(userDto.getUsername());
 	user.setPassword(userDto.getPassword());
 	user.setPhone(userDto.getPhone());
-	user.setAddress(userDto.getAddress());
+	user.setStreet(userDto.getStreet());
+	user.setCity(userDto.getCity());
+	user.setState(userDto.getState());
+	user.setZipcode(userDto.getZipcode());
 	user.setSignupDate(userDto.getSignupDate());
 	
 	return user;

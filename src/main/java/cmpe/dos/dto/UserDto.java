@@ -4,6 +4,8 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -18,8 +20,14 @@ public class UserDto {
     private String password;
     
     private String phone;
+
+    private String street;
     
-    private String address;
+    private String city;
+    
+    private String state;
+    
+    private String zipcode;
     
     @JsonInclude(value = NON_NULL)
     private Date signupDate;
@@ -48,20 +56,44 @@ public class UserDto {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public Date getSignupDate() {
         return signupDate;
     }
 
     public void setSignupDate(Date signupDate) {
         this.signupDate = signupDate;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
     
 }

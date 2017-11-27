@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
+@Entity(name="USER")
 public class User {
 
     @Id
@@ -21,11 +21,20 @@ public class User {
     @Column(length = 12)
     private String phone;
     
-    @Column(length = 100)
-    private String address;
+    @Column(length = 50)
+    private String street;
+    
+    @Column(length = 20)
+    private String city;
+    
+    @Column(length = 20)
+    private String state;
+    
+    @Column(length = 5)
+    private String zipcode;
     
     @Temporal(TemporalType.DATE)
-    @Column(name = "signup_date", nullable = false)
+    @Column(name = "SIGNUP_DATE", nullable = false)
     private Date signupDate;
     
     
@@ -53,12 +62,36 @@ public class User {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public Date getSignupDate() {
