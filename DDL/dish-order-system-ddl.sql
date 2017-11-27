@@ -73,10 +73,10 @@ CREATE TABLE Worker
 create table DEFAULT_PAYCARD
 (
    USERNAME             varchar(20) not null,
-   CARD_NUM             varchar(50),
-   CARD_TYPE            char(10),
-   CARDHOLDER_NAME      varchar(50),
-   EXPIRE_DATE          date,
+   CARD_NUM             varchar(50) not null,
+   CARD_TYPE            varchar(10) not null,
+   CARDHOLDER_NAME      varchar(50) not null,
+   EXPIRE_DATE          date not null,
    primary key (USERNAME)
 );
 
@@ -237,8 +237,8 @@ alter table `ORDER` add constraint FK_REFERENCE_5 foreign key (USERNAME)
 create table ORDER_PAY_INFO
 (
    ORDER_ID             int not null,
-   CRYPT_CARD_NUM       varchar(50) not null,
-   CARD_TYPE            char(10) not null,
+   CARD_NUM             varchar(50) not null,
+   CARD_TYPE            varchar(10) not null,
    CARDHOLDER_NAME      varchar(50) not null,
    EXPIRE_DATE          date not null,
    primary key (ORDER_ID)
