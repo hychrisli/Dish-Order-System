@@ -25,7 +25,7 @@ create table BRANCH
 create table USER
 (
    USERNAME             varchar(20) not null,
-   PASSWORD             varchar(50) not null,
+   PASSWORD             varchar(100) not null,
    PHONE                char(12),
    STREET               varchar(50),
    CITY                 varchar(20),
@@ -36,33 +36,33 @@ create table USER
 );
 
 
-CREATE TABLE Customer
+create table CUSTOMER
 (
-    username    VARCHAR(20),
-    CONSTRAINT customer_pk PRIMARY KEY (username),
-    CONSTRAINT customer_fk FOREIGN KEY (username)
-        REFERENCES `User`(username) ON DELETE CASCADE
+    USERNAME    varchar(20),
+    constraint customer_pk primary key (username),
+    constraint customer_fk foreign key (username)
+        references USER (USERNAME) on delete cascade
 );
 
 
-CREATE TABLE Administrator
+create table ADMINISTRATOR
 (
-    username    VARCHAR(20),
-    CONSTRAINT admin_pk PRIMARY KEY (username),
-    CONSTRAINT admin_fk FOREIGN KEY (username) 
-        REFERENCES `User`(username) ON DELETE CASCADE
+    USERNAME    varchar(20),
+    constraint ADMIN_PK primary key (USERNAME),
+    constraint ADMIN_FK foreign key (username) 
+        references USER (USERNAME) on delete cascade
 );
 
 
-CREATE TABLE Worker
+CREATE TABLE WORKER
 (
-    username    VARCHAR(20),
-    branch_id   SMALLINT    NOT NULL,
-    CONSTRAINT worker_pk PRIMARY KEY (username, branch_id),
-    CONSTRAINT worker_c_fk FOREIGN KEY (username) 
-        REFERENCES `User`(username) ON DELETE CASCADE,
-    CONSTRAINT worker_b_fk FOREIGN KEY (branch_id) 
-        REFERENCES Branch(branch_id)
+    USERNAME    varchar(20),
+    BRANCH_ID   smallint    not null,
+    constraint WORKER_PK primary key (USERNAME, BRANCH_ID),
+    constraint WORKER_C_FK foreign key (USERNAME) 
+        references USER (USERNAME) on delete cascade,
+    constraint worker_b_fk foreign key (BRANCH_ID) 
+        references BRANCH (BRANCH_ID)
 );
 
 
@@ -312,3 +312,5 @@ alter table RATING add constraint FK_REFERENCE_17 foreign key (ORDER_ID)
 
 alter table RATING add constraint FK_REFERENCE_18 foreign key (DISH_ID)
       references DISH_DICT (DISH_ID) on delete restrict on update restrict;
+         
+grant all on dos.* to 'dosuser'@'localhost';

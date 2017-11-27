@@ -1,32 +1,18 @@
 package cmpe.dos.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 
-import cmpe.dos.entity.embed.WorkerId;
-
-@Entity
+@Entity(name="WORKER")
 public class Worker {
 
     @Id
     @Column(length = 20)
     private String username;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name="username")
-    private User user;
-    
-    @OneToOne
-    @JoinColumn(name = "branch_id", nullable = false)
-    private Branch branch;
+    @Column(name = "BRANCH_ID")
+    private int branchId;
 
     public String getUsername() {
         return username;
@@ -36,22 +22,12 @@ public class Worker {
         this.username = username;
     }
 
-    public User getUser() {
-        return user;
+    public int getBranchId() {
+        return branchId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Branch getBranch() {
-        return branch;
-    }
-
-    public void setBranch(Branch branch) {
-        this.branch = branch;
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
     }
     
-    
-   
 }
