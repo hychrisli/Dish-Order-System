@@ -102,7 +102,7 @@ create table COUPON_DICT
 /*==============================================================*/
 create table REWARD
 (
-   REWARD_ID            int not null,
+   REWARD_ID            int not null auto_increment,
    COUPON_ID            int not null,
    USERNAME             varchar(20) not null,
    VALID_START          date not null,
@@ -192,7 +192,7 @@ alter table DISH_DICT add constraint FK_REFERENCE_2 foreign key (CATALOG_ID)
 /*==============================================================*/
 create table DISH
 (
-   ID                   int not null,
+   ID                   int not null auto_increment,
    BRANCH_ID            smallint not null,
    DISH_ID              int not null,
    PRICE                float(5,2) not null,
@@ -209,11 +209,11 @@ alter table DISH add constraint FK_REFERENCE_13 foreign key (DISH_ID)
 
 
 /*==============================================================*/
-/* Table: "ORDER"                                               */
+/* Table: "ORDERS"                                               */
 /*==============================================================*/
-create table `ORDER`
+create table ORDERS
 (
-   ORDER_ID             int not null,
+   ORDER_ID             int not null auto_increment,
    USERNAME             varchar(20) not null,
    BRANCH_ID            smallint not null,
    ORDER_TIME           date not null,
@@ -223,10 +223,10 @@ create table `ORDER`
    primary key (ORDER_ID)
 );
 
-alter table `ORDER` add constraint FK_REFERENCE_4 foreign key (BRANCH_ID)
+alter table ORDERS add constraint FK_REFERENCE_4 foreign key (BRANCH_ID)
       references BRANCH (BRANCH_ID) on delete restrict on update restrict;
 
-alter table `ORDER` add constraint FK_REFERENCE_5 foreign key (USERNAME)
+alter table ORDERS add constraint FK_REFERENCE_5 foreign key (USERNAME)
       references USER (USERNAME) on delete restrict on update restrict;
       
 
@@ -245,7 +245,7 @@ create table ORDER_PAY_INFO
 );
 
 alter table ORDER_PAY_INFO add constraint FK_REFERENCE_11 foreign key (ORDER_ID)
-      references `ORDER` (ORDER_ID) on delete restrict on update restrict;
+      references ORDERS (ORDER_ID) on delete restrict on update restrict;
       
 
 
@@ -265,7 +265,7 @@ create table DELIVERY_INFO
 );
 
 alter table DELIVERY_INFO add constraint FK_REFERENCE_10 foreign key (ORDER_ID)
-      references `ORDER` (ORDER_ID) on delete restrict on update restrict;
+      references ORDERS (ORDER_ID) on delete restrict on update restrict;
       
 
 
@@ -274,7 +274,7 @@ alter table DELIVERY_INFO add constraint FK_REFERENCE_10 foreign key (ORDER_ID)
 /*==============================================================*/
 create table ORDER_DISH_DETAIL
 (
-   ID                   int not null,
+   ID                   int not null auto_increment,
    ORDER_ID             int not null,
    DISH_ID              int not null,
    ORDER_QUANTITY       smallint not null,
@@ -282,7 +282,7 @@ create table ORDER_DISH_DETAIL
 );
 
 alter table ORDER_DISH_DETAIL add constraint FK_REFERENCE_14 foreign key (ORDER_ID)
-      references `ORDER` (ORDER_ID) on delete restrict on update restrict;
+      references ORDERS (ORDER_ID) on delete restrict on update restrict;
 
 alter table ORDER_DISH_DETAIL add constraint FK_REFERENCE_15 foreign key (DISH_ID)
       references DISH_DICT (DISH_ID) on delete restrict on update restrict;
@@ -308,7 +308,7 @@ alter table RATING add constraint FK_REFERENCE_16 foreign key (USERNAME)
       references USER (USERNAME) on delete restrict on update restrict;
 
 alter table RATING add constraint FK_REFERENCE_17 foreign key (ORDER_ID)
-      references `ORDER` (ORDER_ID) on delete restrict on update restrict;
+      references ORDERS (ORDER_ID) on delete restrict on update restrict;
 
 alter table RATING add constraint FK_REFERENCE_18 foreign key (DISH_ID)
       references DISH_DICT (DISH_ID) on delete restrict on update restrict;
