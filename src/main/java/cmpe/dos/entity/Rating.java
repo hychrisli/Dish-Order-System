@@ -10,23 +10,21 @@ public class Rating {
     @Id
     private Integer id;
 
-    @Column(name = "user_id")
+    @Column(length = 20)
     private String username;
 
-    @Column(name = "order_id")
     private Integer order_id;
 
-    @Column(name = "dish_id")
     private Integer dish_id;
 
-    @Column(name = "score")
+    @Column(length = 4)
     private short score;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "timestamp", nullable = false)
     private Date timeStamp;
 
-    @Column(name = "comments")
+    @Column(length = 200)
     private String comments;
 
     public Integer getId() {
