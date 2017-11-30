@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DosApp {
     public static void main(String[] args) {
-	SpringApplication.run(DosApp.class, args);
+
+        SpringApplication.run(DosApp.class, args);
     }
 }

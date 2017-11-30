@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Rating")
+@Table(name = "RATING")
 public class Rating {
 
     @Id
@@ -13,8 +13,10 @@ public class Rating {
     @Column(length = 20)
     private String username;
 
+    @Column(name = "order_id")
     private Integer order_id;
 
+    @Column(name = "dish_id")
     private Integer dish_id;
 
     @Column(length = 4)
