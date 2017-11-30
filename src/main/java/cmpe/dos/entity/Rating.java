@@ -14,10 +14,13 @@ public class Rating {
     private String username;
 
     @Column(name = "order_id")
-    private Integer order_id;
+    private Integer orderId;
 
     @Column(name = "dish_id")
-    private Integer dish_id;
+    private Integer dishId;
+
+    @Column(name = "branch_id")
+    private Short branchId;
 
     @Column(length = 4)
     private short score;
@@ -45,20 +48,20 @@ public class Rating {
         this.username = username;
     }
 
-    public Integer getOrder_id() {
-        return order_id;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setOrder_id(Integer order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
-    public Integer getDish_id() {
-        return dish_id;
+    public Integer getDishId() {
+        return dishId;
     }
 
-    public void setDish_id(Integer dish_id) {
-        this.dish_id = dish_id;
+    public void setDishId(Integer dishId) {
+        this.dishId = dishId;
     }
 
     public short getScore() {
@@ -85,4 +88,11 @@ public class Rating {
         this.comments = comments;
     }
 
+    public Short getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(Short branchId) {
+        this.branchId = branchId;
+    }
 }

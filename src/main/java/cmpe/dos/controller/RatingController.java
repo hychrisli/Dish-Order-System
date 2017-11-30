@@ -19,11 +19,12 @@ public class RatingController extends AbstractController {
     @Autowired
     RatingService ratingService;
 
-    @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
-    @GetMapping(RATING + "/{username}")
-    public ResponseEntity<JsonResponse> getRatingsByUser(String username){
 
-        List<Rating> ratingsByUser = ratingService.showRaingsByUser(username);
+    @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
+    @GetMapping(RATING + "/{username}&{branchId}&{dishId}")
+    public ResponseEntity<JsonResponse> getRatingsByUser(Short branchId, Integer dishId, String username) {
+
+        List<Rating> ratingsByUser = ratingService.showRatingsByUser(branchId, dishId,username);
 
         if(!ratingsByUser.isEmpty()) {
             return success("userRatings", ratingsByUser);
@@ -32,10 +33,10 @@ public class RatingController extends AbstractController {
     }
 
     @ApiOperation(value = "View Ratings by Dish",response = JsonResponse.class)
-    @GetMapping(DISH+"/{dish_id}")
-    public ResponseEntity<JsonResponse> getRatingsByDish(int dish_id) {
+    @GetMapping(DISH+"/{dish_id}/"+RATING)
+    public ResponseEntity<JsonResponse> getRatingsByDish(@PathVariable Short branch_id, Integer dish_id) {
 
-        List<Rating> ratingsByDish = ratingService.showRatingsByDish(dish_id);
+        List<Rating> ratingsByDish = ratingService.showRatingsByDish(branch_id, dish_id);
 
         if (!ratingsByDish.isEmpty()) {
             return success("dishRatings", ratingsByDish);
@@ -44,16 +45,20 @@ public class RatingController extends AbstractController {
     }
 
     @ApiOperation(value = "Add A Rating on A Dish")
-    @PostMapping("add/"+ DISH+"/{dish_id}"+ RATING + "/{id}")
-    public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating ){
-        int dish_id =rating.getDish_id();
-        int id = rating.getId();
-        return created("created", ratingService.createRating(rating));
+    @PostMapping(RATING)
+    public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
+
+        if(ratingService.createRating(rating)) {
+            return created("created", true);
+        }
+
+        return badRequest("Have not confirmed dilivery ");
     }
 
+
     @ApiOperation(value = "Delete A Rating")
-    @DeleteMapping("delete/"+ RATING + "/{id}")
-    public ResponseEntity<JsonResponse> deleteRating(@PathVariable int id){
+    @DeleteMapping(RATING + "/{id}")
+    public ResponseEntity<JsonResponse> deleteRating(@PathVariable Integer id){
 
         if(ratingService.deleteRating(id))
             return success("deleted", id);

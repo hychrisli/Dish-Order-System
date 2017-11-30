@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
@@ -114,12 +115,22 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
 
 	    @SuppressWarnings("unchecked")
 	    public T doInHibernate(Session session) throws HibernateException {
+
+
+	    org.hibernate.Transaction tx =session.beginTransaction();
+	  //  session.save(poClass);
+	   // Long id = poclass.;
+	  //  Object o2 = session.load(poClass.getClass(),id);
+
 		Query query = session.createQuery(hql);
 		query.setCacheable(true);
 		for (int i = 0; i < values.length; i++) {
 		    query.setParameter(i, values[i]);
 		}
 		List<T> list = query.list();
+
+	//	tx.commit();
+
 		if (list.size() > 0) {
 		    return list.get(0);
 		} else {
