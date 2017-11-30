@@ -20,7 +20,7 @@ public class RatingController extends AbstractController {
     RatingService ratingService;
 
     @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
-    @GetMapping(RATING + "/{id}")
+    @GetMapping(RATING + "/{username}")
     public ResponseEntity<JsonResponse> getRatingsByUser(String username){
 
         List<Rating> ratingsByUser = ratingService.showRaingsByUser(username);
@@ -32,7 +32,7 @@ public class RatingController extends AbstractController {
     }
 
     @ApiOperation(value = "View Ratings by Dish",response = JsonResponse.class)
-    @GetMapping(DISH+"/{dish_id}"+ RATING + "/{id}")
+    @GetMapping(DISH+"/{dish_id}")
     public ResponseEntity<JsonResponse> getRatingsByDish(int dish_id) {
 
         List<Rating> ratingsByDish = ratingService.showRatingsByDish(dish_id);
@@ -43,14 +43,16 @@ public class RatingController extends AbstractController {
         return notFound();
     }
 
-    @ApiOperation(value = "Add A Rating")
-    @PostMapping(DISH+"/{dish_id}"+ RATING + "/{id}")
+    @ApiOperation(value = "Add A Rating on A Dish")
+    @PostMapping("add/"+ DISH+"/{dish_id}"+ RATING + "/{id}")
     public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating ){
+        int dish_id =rating.getDish_id();
+        int id = rating.getId();
         return created("created", ratingService.createRating(rating));
     }
 
     @ApiOperation(value = "Delete A Rating")
-    @DeleteMapping(DISH +"/{dish_id}"+ RATING + "/{id}")
+    @DeleteMapping("delete/"+ RATING + "/{id}")
     public ResponseEntity<JsonResponse> deleteRating(@PathVariable int id){
 
         if(ratingService.deleteRating(id))

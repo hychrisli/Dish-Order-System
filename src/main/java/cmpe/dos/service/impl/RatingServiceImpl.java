@@ -24,7 +24,7 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Boolean deleteRating(int id) {
+    public Boolean deleteRating(Integer id) {
 
         if (dao.getById(id) == null)
             return false;
@@ -33,25 +33,37 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<Rating> showRatingsByDish(int dish_id) {
+    public List<Rating> showRatingsByDish(Integer dish_id) {
+        Object[] dishID = new Integer[1];
+        dishID[0]= dish_id;
 
         List<Rating> ratingsByDish = new ArrayList<>();
-
 //        if(dao.getById(dish_id)!=null) {
 //            ratingsByDish.add(dao.getById(dish_id));
 //        }
-        ratingsByDish = dao.doQueryList("select * from RATING where dish_id = ?", true, dao);
+        String hql = "select r.username, r.dish_id, r.comments from RATING AS r where r.dish_id = ?";
+        ratingsByDish = dao.doQueryList(hql, true, dishID);
         return ratingsByDish;
-
     }
 
     @Override
     public List<Rating> showRaingsByUser(String username) {
+
         List<Rating> ratingsByUser = new ArrayList<>();
 
-        if(dao.getById(username)!=null) {
-            ratingsByUser.add(dao.getById(username));
-        }
+//        Integer userID = null;
+//        for(Rating r: dao.findAll()){
+//            if(r.getUsername() == username)
+//                userID = r.getId();
+//        }
+//   if(userID != null) {
+//        ratingsByUser.add(dao.getById(userID));
+//    }
+        Object[] u = new Object[1];
+        u[0] = username;
+        String hql = "select username, dish_id, comments from RATING where username = ?";
+        ratingsByUser = dao.doQueryList(hql, true, u);
+
         return ratingsByUser;
     }
 }
