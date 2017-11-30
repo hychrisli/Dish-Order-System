@@ -17,7 +17,7 @@ public class Reward {
 	private Integer rewardId;
 	
 	@Column(name = "coupon_id")
-	private Integer couponId;
+	private String couponId;
 	
 	@Column(name = "valid_start")
 	private Date validStart;
@@ -40,11 +40,11 @@ public class Reward {
 		this.rewardId = rewardId;
 	}
 
-	public Integer getCouponId() {
+	public String getCouponId() {
 		return couponId;
 	}
 
-	public void setCouponId(Integer couponId) {
+	public void setCouponId(String couponId) {
 		this.couponId = couponId;
 	}
 

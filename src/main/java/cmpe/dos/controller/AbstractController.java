@@ -27,4 +27,12 @@ public abstract class AbstractController extends JsonResponseHandler {
     protected ResponseEntity<JsonResponse> conflict() {
 	return genericResponse(new JsonResponse(KEY_ERROR, HttpStatus.CONFLICT.name()), HttpStatus.CONFLICT);
     }
+    
+    protected ResponseEntity<JsonResponse> runOutOfDishes(String dishName, short remain) {
+    	return genericResponse(new JsonResponse(KEY_ERROR, "No enough dishes! " + dishName + "only remains " + remain), HttpStatus.CONFLICT);
+    }
+    
+    protected ResponseEntity<JsonResponse> noValidCoupon() {
+    	return genericResponse(new JsonResponse(KEY_ERROR, "No valid Coupon" + HttpStatus.NOT_FOUND.name()), HttpStatus.NOT_FOUND);
+        }
 }

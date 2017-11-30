@@ -57,7 +57,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public List<T> findByCriterion(Criterion... criterion) {
+    public List<T> findByCriterion(final Criterion... criterion) {
 
 	return (List<T>) getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
 
@@ -93,7 +93,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public T doQueryUnique(String hql, Object... values) {
+    public T doQueryUnique(final String hql, final Object... values) {
 	return this.getHibernateTemplate().execute(new HibernateCallback<T>() {
 
 	    @SuppressWarnings("unchecked")
@@ -109,7 +109,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public T doQueryFirst(String hql, Object... values) {
+    public T doQueryFirst(final String hql, final Object... values) {
 	return this.getHibernateTemplate().execute(new HibernateCallback<T>() {
 
 	    @SuppressWarnings("unchecked")
@@ -130,7 +130,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public void executeHsql(String hql, Object... values) {
+    public void executeHsql(final String hql, final Object... values) {
 	this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
 	    public Object doInHibernate(Session session) throws HibernateException {
 		Query query = session.createQuery(hql);
@@ -144,7 +144,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public List<T> doQueryList(String hql, boolean cacheable, Object... values) {
+    public List<T> doQueryList(final String hql, final boolean cacheable, final Object... values) {
 	return this.getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
 
 	    @SuppressWarnings("unchecked")
@@ -165,7 +165,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public long doQueryCount(String hql, Object... values) {
+    public long doQueryCount(final String hql, final Object... values) {
 	return this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 	    public Long doInHibernate(Session session) throws HibernateException {
 		Query query = session.createQuery(hql);
@@ -183,7 +183,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public List<T> doQueryLimitList(String hql, boolean cacheable, int dataNum, Object... values) {
+    public List<T> doQueryLimitList(final String hql, final boolean cacheable, final int dataNum, final Object... values) {
 	return this.getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
 
 	    @SuppressWarnings("unchecked")
@@ -264,7 +264,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public List<T> findByCombineProperties(Map<String, Object> pairs) {
+    public List<T> findByCombineProperties(final Map<String, Object> pairs) {
 	return (List<T>) this.getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
 
 	    @SuppressWarnings("unchecked")
@@ -290,7 +290,7 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
 
     @SuppressWarnings("rawtypes")
     @Override
-    public List doQueryListUntype(String hql, boolean cacheable, Object... values) {
+    public List doQueryListUntype(final String hql, final boolean cacheable, final Object... values) {
         return this.getHibernateTemplate().execute(new HibernateCallback<List>() {
             public List doInHibernate(Session session) throws HibernateException {
                 Query query = session.createQuery(hql);
@@ -304,14 +304,13 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
     }
 
     @Override
-    public void batchCreate(List<T> poList) {
+    public void batchCreate(final List<T> poList) {
 	this.getHibernateTemplate().execute(new HibernateCallback<Object>() {
 	    public Object doInHibernate(Session session) throws HibernateException {
-		int j = 0;
 		for (int i = 0; i < poList.size(); i++) {
 		    session.save(poList.get(i));
-		    if (i == 2)
-			break;
+/*		    if (i == 2)
+			break; */
 		}
 		return true;
 	    }

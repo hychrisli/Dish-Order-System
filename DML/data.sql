@@ -9,4 +9,60 @@ INSERT INTO USER (USERNAME, PASSWORD, STREET, CITY, STATE, ZIPCODE, PHONE, SIGNU
 
 INSERT INTO CUSTOMER (USERNAME) VALUES ('cust1');
 INSERT INTO ADMINISTRATOR (USERNAME) VALUES ('admin1');
-INSERT INTO WORKER (USERNAME, BRANCH_ID) VALUES ('worker1', 1)
+INSERT INTO WORKER (USERNAME, BRANCH_ID) VALUES ('worker1', 1);
+
+INSERT INTO default_paycard VALUES ('cust1', '3245535343243243', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
+
+insert into catalog_dict values (1, 'starter', 'Wonderful appetizers and snacks');
+insert into catalog_dict values (2, 'rice', 'All kinds or fried rice and dish with white rice.');
+insert into catalog_dict values (3, 'dumpling', 'Asian style and European style dumplings');
+
+insert into branch_catalog values (1, 1, 2);
+insert into branch_catalog values (2, 1, 3);
+insert into branch_catalog values (3, 2, 1);
+insert into branch_catalog values (4, 2, 2);
+insert into branch_catalog values (5, 2, 3);
+
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (1, 1, 'Buffalo Wings', 'Served with Celery and Blue cheese or Ranch Dressing.');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (2, 1, 'Shrimp Cocktail', 'Served with ketchup lemon and Worcestershire mixed sause');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (3, 1, 'Mini Beef Tacos', 'Served with sour cream');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (4, 1, 'Smoked Haddock', 'Served with mustard sauce');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (5, 2, 'Vegetable Fried Rice', 'Bell peppers, baby peas, and other vegetables.');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (6, 2, 'Kimchi Fried Rice', 'Kimchi, rice, egg and spinach');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (7, 2, 'Shrimp Fried Rice', 'Shrimp, rice, scrambled eggs, pepper, celery and peas');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (8, 2, 'Pineapple Fried Rice', 'Pineapple, bell peppers, rice and scallions');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (9, 3, 'Seafood Dumpling', 'Striped bass, shrimp, mashroom and chives');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (10, 3, 'Boiled Dumpling', 'Pork,chives and Chinese cabbages');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (11, 3, 'German Dumpling', 'Russet potatoes, eggs and bread');
+insert into dish_dict (DISH_ID, CATALOG_ID, `NAME`, DESCRIPTION) values (12, 3, 'Vietnamese Dumpling', 'Pork, shrimp, mashroom and green onions. It is made of rice flour');
+
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (1, 1, 5, 7.99, 300);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (2, 1, 7, 9.59, 300);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (3, 1, 8, 7.99, 200);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (4, 1, 9, 9.99, 200);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (5, 1, 10, 7.99, 5);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (6, 1, 11, 8.99, 200);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (7, 1, 12, 6.99, 200);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (8, 2, 1, 5.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (9, 2, 2, 5.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (10, 2, 3, 4.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (11, 2, 5, 8.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (12, 2, 6, 6.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (13, 2, 7, 8.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (14, 2, 9, 10.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (15, 2, 10, 7.99, 100);
+insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (16, 2, 12, 7.99, 200);
+
+insert into delivery_setting values (1, true, 7.00);
+insert into delivery_setting values (2, false, 0.00);
+
+insert into coupon_dict values ('commentReward', 3.00);
+
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
+values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('11/19/2017', '%m/%d/%Y'));
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
+values (2, 'commentReward', 'cust1', str_to_date('11/20/2017', '%m/%d/%Y'), str_to_date('12/01/2017', '%m/%d/%Y'));
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
+values (3, 'commentReward', 'cust1', str_to_date('11/25/2017', '%m/%d/%Y'), str_to_date('12/04/2017', '%m/%d/%Y'));
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
+values (4, 'commentReward', 'cust1', str_to_date('11/30/2017', '%m/%d/%Y'), str_to_date('11/30/2017', '%m/%d/%Y'));

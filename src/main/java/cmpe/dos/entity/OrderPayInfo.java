@@ -27,6 +27,11 @@ public class OrderPayInfo {
 	@Column(name = "expire_date")
 	private Date date;
 
+	
+	public OrderPayInfo() {
+		super();
+	}
+
 	public OrderPayInfo(Integer orderId, String cardNum, String cardType, String cardholderName, Date date) {
 		super();
 		this.orderId = orderId;

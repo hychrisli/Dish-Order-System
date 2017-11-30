@@ -90,7 +90,7 @@ alter table DEFAULT_PAYCARD add constraint FK_REFERENCE_6 foreign key (USERNAME)
 /*==============================================================*/
 create table COUPON_DICT
 (
-   COUPON_ID            int not null,
+   COUPON_ID            varchar(20) not null,
    VALUE                float(5,2) not null,
    primary key (COUPON_ID)
 );
@@ -103,7 +103,7 @@ create table COUPON_DICT
 create table REWARD
 (
    REWARD_ID            int not null auto_increment,
-   COUPON_ID            int not null,
+   COUPON_ID            varchar(20) not null,
    USERNAME             varchar(20) not null,
    VALID_START          date not null,
    VALID_END            date not null,
@@ -217,7 +217,7 @@ create table ORDERS
    USERNAME             varchar(20) not null,
    BRANCH_ID            smallint not null,
    ORDER_TIME           date not null,
-   TOTAL_PRICE          float(8,2) not null,
+   TOTAL_PRICE          float(7,2) not null,
    IS_DELIVER           boolean not null,
    PICKUP_DELIVER_TIME  date,
    primary key (ORDER_ID)
