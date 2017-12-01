@@ -74,7 +74,7 @@ public class RatingController extends AbstractController {
     }
 
     @ApiOperation(value = "Confirm receive user's order",response = JsonResponse.class)
-    @PostMapping("confirm" + "/user"+ "/{username}")
+    @PostMapping("confirm" + "/order"+ "/{orderId}")
     public ResponseEntity<JsonResponse> confirmReceiveOrder(@PathVariable  Integer orderId){
 
         List<Order> confirmOrder = cdos.confirmReceiveOrder(orderId);
