@@ -1,19 +1,7 @@
 package cmpe.dos.controller;
 
 import cmpe.dos.dto.BranchCatalogDto;
-import static cmpe.dos.constant.UrlConstant.BRANCH;
-
-import java.security.Principal;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-
+import cmpe.dos.dto.CatalogDetailDto;
 import cmpe.dos.entity.Branch;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.BranchService;
@@ -23,7 +11,11 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -52,8 +44,15 @@ public class BranchController extends AbstractController {
 
     @ApiOperation(value = "View Dishes By Branch")
     @GetMapping("Branch/Catalog/Dish/{branchId}")
-    public ResponseEntity<JsonResponse> getDishedByBranch(@PathVariable short branchId){
+    public ResponseEntity<JsonResponse> getDishesByBranch(@PathVariable Short branchId){
         BranchCatalogDto bcDto = new BranchCatalogDto();
         return success("Results", branchSvc.getBranchCatalogDish(branchId));
+    }
+
+    @ApiOperation(value = "View Dishes By Branch")
+    @GetMapping("Branch/Dish/{branchId}")
+    public ResponseEntity<JsonResponse> getDishesBranch(@PathVariable Short branchId){
+        CatalogDetailDto cdDto = new CatalogDetailDto();
+        return success("Results", branchSvc.getDishById(branchId));
     }
 }

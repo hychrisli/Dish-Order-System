@@ -34,36 +34,55 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public BranchCatalogDto getBranchCatalogDish(int branchId) {
+    public BranchCatalogDto getBranchCatalogDish(short branchId) {
         Branch branch = branchDao.getById(branchId);
         BranchCatalogDto bcDto = new BranchCatalogDto();
         bcDto.setBranch_id(branch.getBranchId());
         bcDto.setCatalogs(new ArrayList<CatalogDetailDto>());
-        List<BranchCatalog> branchCatalogs = brachCatDao.doQueryList("from BRANCH_CATALOG where branchId = ?", true, branchId);
+        List<BranchCatalog> branchCatalogs = brachCatDao.doQueryList("from BranchCatalog where branchId = ?", true, branchId);
 
         for (BranchCatalog bc : branchCatalogs) {
             CatalogDict catDict = catDictDao.getById(bc.getCatalogId());
             CatalogDetailDto catDetailDto = new CatalogDetailDto();
             catDetailDto.setCatalogId(catDict.getCatalogId());
-            List<Dish> dishes = dishDao.doQueryList("DISH.* from DISH, DISH_DICT where DISH.dishId = DISH_DICT.dishId" +
-                    "and DISH.branchId = ? and DISH_DICT.catalogId = ?", true, branchId, bc.getCatalogId());
+            catDetailDto.setName(catDict.getName());
+            catDetailDto.setDescription(catDict.getDescription());
+            List dishes = dishDao.doQueryList("select b.dishID, b.name, b.description, a.price from Dish as a, DishDict as b where a.dishId = b.dishID" +
+                    " and a.branchId = ? and b.catalogID = ?", true, branchId, bc.getCatalogId());
             catDetailDto.setDishes(new ArrayList<DishDto>());
             catDetailDto.setDescription(catDict.getDescription());
             catDetailDto.setName(catDict.getName());
 
-            for (Dish dish : dishes) {
+            for (int i = 0; i < dishes.size(); i++) {
                 DishDto dishDto = new DishDto();
-                List<Rating> ratings = ratingDao.doQueryList("RATING.* from RATING, DISH_DICT where RATING.dishId = DISH_DICT.dishId and DISH_DICT.dishId = ? group by RATING.dishId", true, dish.getDishId());
-                int sum = 0;
-                for (Rating rating : ratings) {
-                    sum += rating.getScore();
+                dishDto.setDishId((Integer)((Object[])dishes.get(i))[0]);
+                dishDto.setName((String)((Object[])dishes.get(i))[1]);
+                dishDto.setDescription((String)((Object[])dishes.get(i))[2]);
+                dishDto.setPrice((Float)((Object[])dishes.get(i))[3]);
+                List ratings = ratingDao.doQueryList("select a.dishId, avg(a.score) from Rating as a where a.dishId = ? group by a.dishId", true, (Integer)((Object[])dishes.get(i))[0]);
+                if (ratings.isEmpty()) {
+                    dishDto.setScore(0.0);
+                } else {
+                    dishDto.setScore((Double) ((Object[]) ratings.get(0))[1]);
                 }
-                float avg = (float)sum / (float)ratings.size();
-                dishDto.setScore(avg);
                 catDetailDto.getDishes().add(dishDto);
             }
+            bcDto.getCatalogs().add(catDetailDto);
         }
         return bcDto;
     }
-
+    @Override
+    public CatalogDetailDto getDishById(short branchId) {
+        CatalogDetailDto catDetailDto = new CatalogDetailDto();
+        catDetailDto.setDishes(new ArrayList<DishDto>());
+        List dishes = dishDao.doQueryList("select a.dishId, a.price from Dish as a as a where" +
+                " a.branchId = ?", true, branchId);
+        for (int i = 0; i < dishes.size(); i++) {
+            DishDto dishDto = new DishDto();
+            dishDto.setDishId((Integer)((Object[])dishes.get(i))[0]);
+            dishDto.setPrice((Float)((Object[])dishes.get(i))[1]);
+            catDetailDto.getDishes().add(dishDto);
+        }
+        return catDetailDto;
+    }
 }
