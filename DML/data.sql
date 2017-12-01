@@ -57,6 +57,7 @@ insert into delivery_setting values (1, true, 7.00);
 insert into delivery_setting values (2, false, 0.00);
 
 insert into coupon_dict values ('commentReward', 3.00);
+insert into coupon_dict values ('5yearReward', 5.00);
 
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
 values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('11/19/2017', '%m/%d/%Y'));
@@ -66,3 +67,40 @@ insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
 values (3, 'commentReward', 'cust1', str_to_date('11/25/2017', '%m/%d/%Y'), str_to_date('12/04/2017', '%m/%d/%Y'));
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
 values (4, 'commentReward', 'cust1', str_to_date('11/30/2017', '%m/%d/%Y'), str_to_date('11/30/2017', '%m/%d/%Y'));
+
+insert into ORDERS values (1, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (2, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (3, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (4, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (5, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (6, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (7, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (8, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (1, 'cust1', 1, 1, 4,  '2000-12-12 18:01:30', 'good!');
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (2, 'cust1', 2, 1, 5,  '2000-12-12 18:01:30', 'good!');
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (3, 'cust1', 3, 3, 1,  '2000-12-12 18:01:30', 'good!');
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (4, 'cust1', 4, 3, 3,  '2000-12-12 18:01:30', 'good!');
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (5, 'cust1', 5, 3, 2,  '2000-12-12 18:01:30', 'good!');
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (6, 'cust1', 6, 3, 5,  '2000-12-12 18:01:30', 'good!');
+insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+values (7, 'cust1', 7, 3, 5,  '2000-12-12 18:01:30', 'good!');
+-- insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
+-- values (8, 'cust1', 8, 5, 4,  '2000-12-12 18:01:30', 'good!');
+
+select bc.BRANCH_ID, bc.CATALOG_ID, cd.NAME, cd.DESCRIPTION, DISH_DICT.DISH_ID, DISH_DICT.NAME, DISH_DICT.DESCRIPTION, DISH.PRICE, avg(RATING.SCORE)
+from BRANCH_CATALOG as bc, CATALOG_DICT as cd, DISH_DICT, DISH, RATING
+where bc.BRANCH_ID = 2 and bc.CATALOG_ID = cd.CATALOG_ID and DISH_DICT.CATALOG_ID = cd.CATALOG_ID and 
+	  DISH_DICT.DISH_ID = DISH.DISH_ID and RATING.DISH_ID = DISH_DICT.DISH_ID
+group by bc.BRANCH_ID, bc.CATALOG_ID, cd.NAME, cd.DESCRIPTION, DISH_DICT.DISH_ID, DISH_DICT.NAME, DISH_DICT.DESCRIPTION, DISH.PRICE
+      
+      
+
+
+      

@@ -9,7 +9,7 @@ public class Branch {
 
     @Id
     @Column(name = "BRANCH_ID")
-    private int branchId;
+    private Short branchId;
     
     @Column(length = 12)
     private String phone;
@@ -30,11 +30,11 @@ public class Branch {
     private String name;
     
 
-    public int getBranchId() {
+    public short getBranchId() {
         return branchId;
     }
 
-    public void setBranchId(int branchId) {
+    public void setBranchId(short branchId) {
         this.branchId = branchId;
     }
     

@@ -1,16 +1,6 @@
 package cmpe.dos.controller;
 
-import static cmpe.dos.constant.UrlConstant.BRANCH;
-
-import java.security.Principal;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import cmpe.dos.dto.BranchCatalogDto;
 import cmpe.dos.entity.Branch;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.BranchService;
@@ -18,6 +8,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static cmpe.dos.constant.UrlConstant.BRANCH;
 
 @CrossOrigin
 @RestController
@@ -38,5 +35,12 @@ public class BranchController extends AbstractController {
 	    return success("branches", branchList);
 	
 	return notFound();
+    }
+
+    @ApiOperation(value = "View Dishes By Branch")
+    @GetMapping("Branch/Catalog/Dish/{branchId}")
+    public ResponseEntity<JsonResponse> getDishedByBranch(@PathVariable short branchId){
+        BranchCatalogDto bcDto = new BranchCatalogDto();
+        return success("Results", branchSvc.getBranchCatalogDish(branchId));
     }
 }
