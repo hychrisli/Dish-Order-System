@@ -97,6 +97,17 @@ public class OrderController extends AbstractController {
 			return success("default paycard info", ciDto);
 		return notFound();
 	}
+
+	@ApiOperation(value = "get user history")
+	@GetMapping ("orderHistory")
+	public ResponseEntity<JsonResponse> getHistoryOrder(String username) {
+		List<Order> historyOrder = orderService.getOrderByUsername(username);
+		if (!historyOrder.isEmpty()) {
+			return (success("orderHistory",historyOrder));
+		} else {
+			return notFound();
+		}
+	}
 	
 	@ApiOperation(value = "Check out for user's oreder")
 	@PostMapping("order/checkout")
