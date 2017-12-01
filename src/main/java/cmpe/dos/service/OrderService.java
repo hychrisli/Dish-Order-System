@@ -12,6 +12,4 @@ public interface OrderService {
     public Boolean createOrder(Order order);
     
     public DeliverInfoDto getDefaultDeliverInfo(String username);
-   
-    
 }

@@ -41,14 +41,14 @@ public class RatingServiceImpl implements RatingService {
     }
 
     //@Override
-    public List<Rating> showRatingsByDish(Short branchId, Integer dish_id) {
+    public List<Rating> showRatingsByDish(Short branchId, Integer dishId) {
 
-        return dao.getRatingByDishId(branchId,dish_id);
+        return dao.getRatingByDishId(branchId,dishId);
     }
 
     @Override
     public List<Rating> showRatingsByUser(Short branchId, Integer dishId, String username) {
 
-        return dao.getRatingByUser(branchId, dishId,  username);
+        return dao.getRatingByUser(branchId, dishId, username);
     }
 }
