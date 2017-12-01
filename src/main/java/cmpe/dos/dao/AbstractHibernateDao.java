@@ -117,9 +117,6 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
 
 
 	    org.hibernate.Transaction tx =session.beginTransaction();
-	  //  session.save(poClass);
-	   // Long id = poclass.;
-	  //  Object o2 = session.load(poClass.getClass(),id);
 
 		Query query = session.createQuery(hql);
 		query.setCacheable(true);
@@ -127,8 +124,6 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
 		    query.setParameter(i, values[i]);
 		}
 		List<T> list = query.list();
-
-	//	tx.commit();
 
 		if (list.size() > 0) {
 		    return list.get(0);

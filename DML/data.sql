@@ -68,13 +68,14 @@ insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
 values (4, 'commentReward', 'cust1', str_to_date('11/30/2017', '%m/%d/%Y'), str_to_date('11/30/2017', '%m/%d/%Y'));
 
 
-insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
-values (1, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
-insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
-values (2, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
-
 insert into orders (order_id, username, branch_id, order_time, total_price, is_deliver, pickup_deliver_time)
 value(1001, 'cust1',1,'2017-11-28 02:21:14.15',20,true, '2017-11-29 02:21:14.15');
 insert into orders (order_id, username, branch_id, order_time, total_price, is_deliver, pickup_deliver_time)
 value(2001, 'cust1',2,'2017-11-28 12:21:14.15',30,false, null);
+
+
+insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
+values (1, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
+insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
+values (2, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
 
