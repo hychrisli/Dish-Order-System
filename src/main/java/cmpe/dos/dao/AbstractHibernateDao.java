@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.transaction.Transaction;
-import javax.transaction.Transactional;
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -114,9 +110,6 @@ public abstract class AbstractHibernateDao<T> extends HibernateDaoSupport implem
 
 	    @SuppressWarnings("unchecked")
 	    public T doInHibernate(Session session) throws HibernateException {
-
-
-	    org.hibernate.Transaction tx =session.beginTransaction();
 
 		Query query = session.createQuery(hql);
 		query.setCacheable(true);

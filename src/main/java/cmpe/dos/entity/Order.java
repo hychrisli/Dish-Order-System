@@ -1,5 +1,7 @@
 package cmpe.dos.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 import javax.persistence.*;
@@ -28,6 +30,7 @@ public class Order {
     @Column(name = "is_deliver", nullable = false)
     private Boolean isDeliver;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
 	@Temporal(TemporalType.DATE)
     @Column(name = "pickup_deliver_time")
     private Date pickOrDeliveryTime;
