@@ -10,6 +10,6 @@ public interface CryptoService {
     
     public byte[] encrypt(String value) throws AppException;
     
-    public String decrypt(byte[] data);
-    
+    public String decrypt(byte[] data) throws AppException;
+       
 }

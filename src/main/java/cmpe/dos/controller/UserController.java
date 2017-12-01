@@ -3,6 +3,7 @@ package cmpe.dos.controller;
 import static cmpe.dos.constant.UrlConstant.USER;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cmpe.dos.dto.UserDto;
+import cmpe.dos.entity.User;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.UserService;
 import io.swagger.annotations.Api;
@@ -68,6 +70,16 @@ public class UserController extends AbstractController{
 	if (userService.deleteUser(username))
 	    return success("deleted", username);
 	
+	return notFound();
+    }
+    
+    @ApiOperation(value = "Get All Users", response = JsonResponse.class)
+    @GetMapping( USER + "/all")
+    @PreAuthorize(PRIV_ADMIN)
+    public ResponseEntity<JsonResponse> getUser() {
+	List<User> users = userService.getAllUsers();
+	if (users != null && !users.isEmpty())
+	    return success("users", users);
 	return notFound();
     }
     

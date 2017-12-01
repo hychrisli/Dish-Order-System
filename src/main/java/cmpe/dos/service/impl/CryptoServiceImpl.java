@@ -1,10 +1,19 @@
 package cmpe.dos.service.impl;
 
+import static cmpe.dos.constant.CrytoConstant.CRYTO_TRANS;
 import static cmpe.dos.exception.ErrorCode.ERR_ENCRYPTION;
+import static cmpe.dos.exception.ErrorCode.ERR_DECRYPTION;
 import static cmpe.dos.exception.ErrorCode.ERR_KEYGEN_BY_SECRET;
 import static cmpe.dos.exception.ErrorCode.ERR_FILE_NOT_FOUND;
 
+import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -25,24 +34,29 @@ public class CryptoServiceImpl implements CryptoService {
     @Override
     public byte[] encrypt(String value) throws AppException {
 	Key key = getKeyBySecret();
-	if (key != null) {
-	    try {
-		return Cryptor.encrypt("DES", key, value);
-	    } catch (Exception e) {
-		throw new AppException(ERR_ENCRYPTION, e);
-	    }
+	try {
+	    return Cryptor.encrypt(CRYTO_TRANS, key, value);
+	} catch (Exception e) {
+	    throw new AppException(ERR_ENCRYPTION, e);
 	}
-	return null;
     }
 
     @Override
-    public String decrypt(byte[] data) {
-	// TODO Auto-generated method stub
-	return null;
+    public String decrypt(byte[] data) throws AppException {
+	Key key = getKeyBySecret();
+	try {
+	    Cipher cipher = Cipher.getInstance(CRYTO_TRANS);
+	    cipher.init(Cipher.DECRYPT_MODE, key);
+	    byte[] result = cipher.doFinal(data);
+	    return new String(result);
+	} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
+		| BadPaddingException e) {
+	    throw new AppException(ERR_DECRYPTION, e);
+	}
     }
-    
+
     @Override
-    public Key getKeyBySecret() throws AppException{
+    public Key getKeyBySecret() throws AppException {
 	ClassPathResource resource = new ClassPathResource(encodedKeyFileName);
 	if (resource.exists()) {
 	    try {

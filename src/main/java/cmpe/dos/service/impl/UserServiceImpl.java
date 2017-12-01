@@ -1,5 +1,7 @@
 package cmpe.dos.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -38,5 +40,13 @@ public class UserServiceImpl implements UserService {
 	dao.deleteById(username);
 	return true;
     }
+
+    @Override
+    public List<User> getAllUsers() {
+	List<User> users = dao.doQueryList("from USER", false);
+	return users;
+    }
+    
+    
     
 }
