@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-	List<User> users = dao.doQueryList("from USER", false);
+	List<User> users = dao.doQueryList("from User", false);
 	return users;
     }
     
