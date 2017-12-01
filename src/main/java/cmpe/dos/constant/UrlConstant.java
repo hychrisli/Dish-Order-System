@@ -6,4 +6,5 @@ public interface UrlConstant {
     public String BRANCH = "branch";
     public String RATING = "rating";
     public String DISH = "dish";
+    public String CRYPTO = "crypto";
 }
