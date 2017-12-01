@@ -2,6 +2,7 @@ package cmpe.dos.service.impl;
 
 import java.util.List;
 
+import cmpe.dos.dao.OrderDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,9 @@ public class OrderServiceImpl implements OrderService {
 	 
 	 @Autowired
 	 HibernateDao<DefaultPaycard> dpdao;
+
+	 @Autowired
+    OrderDao orderDao;
 	 
 
 	@Override
@@ -49,6 +53,13 @@ public class OrderServiceImpl implements OrderService {
 		diDto.setPhone(userInfo.getPhone());
 		return diDto;
 	}
+
+	@Override
+	public List<Order> getOrderByUsername(String username) {
+       return  orderDao.getOrdersByUser(username);
+    }
+
+
 	
 
 }

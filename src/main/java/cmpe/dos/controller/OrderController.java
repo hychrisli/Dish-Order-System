@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,10 +39,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 
-@CrossOrigin
 @RestController
 @Api(tags = {"Order"})
 @SwaggerDefinition(tags = { @Tag(name="Order Controller", description="Create an order")})
+@Transactional(rollbackFor = Exception.class)
 public class OrderController extends AbstractController {
 
 	@Autowired
@@ -96,6 +97,17 @@ public class OrderController extends AbstractController {
 		if(ciDto != null)
 			return success("default paycard info", ciDto);
 		return notFound();
+	}
+
+	@ApiOperation(value = "get user history")
+	@GetMapping ("orderHistory")
+	public ResponseEntity<JsonResponse> getHistoryOrder(String username) {
+		List<Order> historyOrder = orderService.getOrderByUsername(username);
+		if (!historyOrder.isEmpty()) {
+			return (success("orderHistory",historyOrder));
+		} else {
+			return notFound();
+		}
 	}
 	
 	@ApiOperation(value = "Check out for user's oreder")
