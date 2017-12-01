@@ -1,8 +1,5 @@
 package cmpe.dos.dao;
 
-/**
- * Created by Vencci on 30/11/2017.
- */
 import cmpe.dos.entity.Rating;
 
 import java.util.List;

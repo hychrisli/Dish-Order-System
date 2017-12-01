@@ -1,15 +1,11 @@
 package cmpe.dos.dao.impl;
 
-/**
- * Created by Vencci on 30/11/2017.
- */
+import cmpe.dos.dao.AbstractHibernateDao;
+import cmpe.dos.dao.RatingDao;
+import cmpe.dos.entity.Rating;
+import org.springframework.stereotype.Repository;
 
-        import cmpe.dos.dao.AbstractHibernateDao;
-        import cmpe.dos.dao.RatingDao;
-        import cmpe.dos.entity.Rating;
-        import org.springframework.stereotype.Repository;
-
-        import java.util.List;
+import java.util.List;
 
 @Repository
 public class RatingDaoImpl extends AbstractHibernateDao<Rating> implements RatingDao{
@@ -26,7 +22,7 @@ public class RatingDaoImpl extends AbstractHibernateDao<Rating> implements Ratin
 
     @Override
     public List<Rating> getRatingByDishId(Short branchId, Integer dishId) {
-        String hql = "from Rating where branch_id = ? and dishId = ? ";
+        String hql = "from Rating where branchId = ? and dishId = ? ";
         return doQueryList(hql, true,branchId, dishId);
     }
 }

@@ -3,10 +3,6 @@ package cmpe.dos.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by Vencci on 30/11/2017.
- */
-
 @Entity
 @Table(name = "RATING")
 public class Rating {
@@ -29,7 +25,7 @@ public class Rating {
     @Column(length = 4)
     private Short score;
 
-   @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @Column(name = "timestamp", nullable = false)
     private Date timeStamp;
 

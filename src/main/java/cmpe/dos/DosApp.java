@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class DosApp {
     public static void main(String[] args) {
-	SpringApplication.run(DosApp.class, args);
+
+        SpringApplication.run(DosApp.class, args);
     }
 }
