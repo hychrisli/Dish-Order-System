@@ -3,7 +3,8 @@ package cmpe.dos.entity;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "Rating")
+@Entity
+@Table(name = "RATING")
 public class Rating {
 
     @Id

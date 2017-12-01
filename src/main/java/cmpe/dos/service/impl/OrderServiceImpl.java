@@ -25,6 +25,9 @@ public class OrderServiceImpl implements OrderService {
 	 @Autowired
 	 HibernateDao<DefaultPaycard> dpdao;
 
+	 @Autowired
+    OrderDao orderDao;
+
 
 	@Override
 	public List<Order> retrieveUserOrder(String username) {
@@ -50,5 +53,10 @@ public class OrderServiceImpl implements OrderService {
 		diDto.setPhone(userInfo.getPhone());
 		return diDto;
 	}
+	@Override
+	public List<Order> getOrderByUsername(String username) {
+       return  orderDao.getOrdersByUser(username);
+    }
+
 
 }
