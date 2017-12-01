@@ -63,7 +63,6 @@ public class RatingController extends AbstractController {
     @PostMapping(RATING)
     public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
 
-        String ts = new SimpleDateFormat("yyyy-mm-dd").format(rating.getTimeStamp());
         if(ratingService.createRating(rating)) {
             return created("created", true);
         }

@@ -28,7 +28,7 @@ public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDa
 	@Override
 	public List<Order> getNonPickupOrderByUser(String username) {
 
-		String sql = "from Orders where username = ? and pickOrDeliveryTime is null";
+		String sql = "from Order where username = ? and pickOrDeliveryTime is null";
 
 		return doQueryList(sql,true, username);
 	}
@@ -36,7 +36,7 @@ public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDa
 	@Override
 	public List<Order> getOrdersByUser(String username) {
 		///String hql = " from Order where username = ? ";
-        String hql = " from Orders where username = ?";
+        String hql = " from Order where username = ?";
         List<Order> order = doQueryList(hql, true, username);
 		return doQueryList(hql, true, username);
 	}
