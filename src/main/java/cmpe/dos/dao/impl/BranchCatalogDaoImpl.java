@@ -6,9 +6,10 @@ package cmpe.dos.dao.impl;
 import cmpe.dos.dao.AbstractHibernateDao;
 import cmpe.dos.dao.BranchCatalogDao;
 import cmpe.dos.entity.BranchCatalog;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class BranchCatalogDaoImpl extends AbstractHibernateDao<BranchCatalog> implements BranchCatalogDao{
 
     public BranchCatalogDaoImpl() {

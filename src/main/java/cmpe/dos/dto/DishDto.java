@@ -8,7 +8,7 @@ public class DishDto {
     String name;
     String description;
     Float price;
-    float score;
+    Double score;
 
     public Integer getDishId() {
         return dishId;
@@ -42,11 +42,11 @@ public class DishDto {
         this.price = price;
     }
 
-    public Float getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Float score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 }

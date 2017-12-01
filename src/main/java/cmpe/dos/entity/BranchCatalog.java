@@ -6,9 +6,11 @@ package cmpe.dos.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
-@Entity(name = "BRANCH_CATALOG")
+@Entity
+@Table(name = "BRANCH_CATALOG")
 public class BranchCatalog {
 
 
