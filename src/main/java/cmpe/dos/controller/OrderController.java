@@ -47,31 +47,31 @@ public class OrderController extends AbstractController {
 
 	@Autowired
     OrderService orderService;
-	
+
 	@Autowired
 	DeliverySettingService deliverySettingService;
-	
+
 	@Autowired
 	RewardService rewardService;
-	
+
 	@Autowired
 	DeliveryInfoService deliveryInfoService;
-	
+
 	@Autowired
 	OrderDishDetailService orderDishDetailService;
-	
+
 	@Autowired
 	DefaultPaycardService defaultPaycardService;
-	
+
 	@Autowired
 	OrderPayInfoService orderPayInfoService;
-	
+
 	@Autowired
 	DishService dishService;
-	
+
 	@Autowired
 	CouponDictService couponDictService;
-	
+
 	@ApiOperation(value = "Add An Order Record")
 	@PostMapping("order")
 	public ResponseEntity<JsonResponse> addOrder(){
@@ -80,7 +80,7 @@ public class OrderController extends AbstractController {
 			return created("created", o1);
 		return conflict();
 	}
-	
+
 	@ApiOperation(value = "get user default delivery info")
 	@GetMapping("default/delivery")
 	public ResponseEntity<JsonResponse> getDefaultDeliveryInfo(Principal principal){
@@ -89,7 +89,7 @@ public class OrderController extends AbstractController {
 			return success("default deliver info", diDto);
 		return notFound();
 	}
-	
+
 	@ApiOperation(value = "get user default paycard info")
 	@GetMapping("default/paycard")
 	public ResponseEntity<JsonResponse> getDefaultPaycardInfo(Principal principal){
@@ -229,18 +229,18 @@ public class OrderController extends AbstractController {
 			}
 			dish.setInventoryQuantity(inventory);
 			dishService.updateDish(dish);
-			
+
 			totalPrice += odDto.getPrice() * odDto.getOrderQuantity();
 			OrderDishDetail odd = new OrderDishDetail();
 			odd.setDishId(odDto.getDishId());
 			odd.setOrderQuantity(odDto.getOrderQuantity());
 			detailList.add(odd);
 		}
-			
+
 		if(param.isDelivery){
 			totalPrice += deliverySettingService.retrieveDeliverSetting(branchId).getFee();
 		}
-		
+
 		if(param.usingCoupon){
 			Reward reward = rewardService.getValidCoupon(param.couponId);
 			if(reward != null){
@@ -250,17 +250,17 @@ public class OrderController extends AbstractController {
 			else{
 				return noValidCoupon();
 			}
-		} 
-		
+		}
+
 		Order order = new Order(username, branchId, new Date(), totalPrice, param.isDelivery);
 		orderService.createOrder(order);
-		
+
 		Integer orderId = order.getOrderId();
 		for(OrderDishDetail odd : detailList){
 			odd.setOrderId(orderId);
 			orderDishDetailService.create(odd);
 		}
-		
+
 		if(param.isDelivery){
 			DeliveryInfo di = new DeliveryInfo();
 			di.setOrderId(orderId);
@@ -283,7 +283,7 @@ public class OrderController extends AbstractController {
 			}
 			deliveryInfoService.creat(di);
 		}
-		
+
 		OrderPayInfo opi = new OrderPayInfo();
 		opi.setOrderId(orderId);
 		if(param.isDefaultPaycard){
