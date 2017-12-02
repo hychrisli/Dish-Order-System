@@ -3,8 +3,10 @@ package cmpe.dos.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Entity(name="ADMINISTRATOR")
+@Entity
+@Table(name="ADMINISTRATOR")
 public class Administrator {
 
     @Id

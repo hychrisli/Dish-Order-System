@@ -1,17 +1,22 @@
 package cmpe.dos.dao.impl;
 
+import cmpe.dos.entity.Order;
+
+import java.util.List;
+import cmpe.dos.dao.HibernateDao;
+import cmpe.dos.dao.OrderDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import java.security.Principal;
 import cmpe.dos.dao.OrderDao;
+
 import org.springframework.stereotype.Repository;
 
 import cmpe.dos.dao.AbstractHibernateDao;
-import cmpe.dos.dao.RewardDao;
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.DishDict;
 
-import java.util.Date;
-import java.util.List;
 import java.util.logging.Logger;
+
 
 @Repository
 public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDao {
@@ -23,10 +28,14 @@ public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDa
 
 	@Override
 	public List<Order> getNonPickupOrderByUser(String username) {
-		return null;
+
+		String sql = "from Order where username = ? and pickOrDeliveryTime is null";
+
+		return doQueryList(sql,true, username);
 	}
 
 	@Override
+
 	public List getOrdersByUser(String username) {
 		String hql = " from Order where username = ? ";
         List order = doQueryListUntype(hql, true, username);
@@ -47,6 +56,7 @@ public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDa
 		//String hql2 = "select odd.dishId, dd.name, odd.orderQuantity  from OrderDishDetail as odd, DishDict as dd where odd.dishId = dd.dishID and odd.orderId = ?";
         ///list1.add(doQueryListUntype(hql2,true,order_id));
 		return doQueryListUntype(hql, true,order_id);
+
 	}
 
 	@Override
@@ -66,4 +76,3 @@ public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDa
 //	from order_dish_detail as odd, dish_dict as dd
 //	where odd.dish_id = dd.dish_id and odd.order_id = 1;
 }
-

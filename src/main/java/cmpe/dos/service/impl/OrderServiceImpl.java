@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
 
 	 @Autowired
     OrderDao orderDao;
-	 
+
 
 	@Override
 	public List<Order> retrieveUserOrder(String username) {
@@ -56,7 +56,6 @@ public class OrderServiceImpl implements OrderService {
 		diDto.setPhone(userInfo.getPhone());
 		return diDto;
 	}
-
 	@Override
 	public List getOrderByUsername(String username) {
        return  orderDao.getOrdersByUser(username);
@@ -77,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
  		OrderHistoryDto ODto = new OrderHistoryDto();
  		Object[] list1 =(Object[])(info1.get(0));
 		////List list2 =(List)(info2.get(0));
+
 
  		ODto.setOrderId((Integer) list1[0]);
  		ODto.setUsername((String) list1[1]);
@@ -109,6 +109,4 @@ public class OrderServiceImpl implements OrderService {
  		return ODto;
 
 	}
-	
-
 }
