@@ -98,13 +98,6 @@ insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
 values (7, 'cust1', 7, 3, 5,  '2000-12-12 18:01:30', 'good!');
 
 insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
-values (1, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
+values (8, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
 insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
-values (2, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
-
-select bc.BRANCH_ID, bc.CATALOG_ID, cd.NAME, cd.DESCRIPTION, DISH_DICT.DISH_ID, DISH_DICT.NAME, DISH_DICT.DESCRIPTION, DISH.PRICE, avg(RATING.SCORE)
-from BRANCH_CATALOG as bc, CATALOG_DICT as cd, DISH_DICT, DISH, RATING
-where bc.BRANCH_ID = 2 and bc.CATALOG_ID = cd.CATALOG_ID and DISH_DICT.CATALOG_ID = cd.CATALOG_ID and
-	  DISH_DICT.DISH_ID = DISH.DISH_ID and RATING.DISH_ID = DISH_DICT.DISH_ID
-group by bc.BRANCH_ID, bc.CATALOG_ID, cd.NAME, cd.DESCRIPTION, DISH_DICT.DISH_ID, DISH_DICT.NAME, DISH_DICT.DESCRIPTION, DISH.PRICE
-
+values (9, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
