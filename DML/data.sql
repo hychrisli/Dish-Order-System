@@ -11,7 +11,7 @@ INSERT INTO CUSTOMER (USERNAME) VALUES ('cust1');
 INSERT INTO ADMINISTRATOR (USERNAME) VALUES ('admin1');
 INSERT INTO WORKER (USERNAME, BRANCH_ID) VALUES ('worker1', 1);
 
-INSERT INTO default_paycard VALUES ('cust1', '3245535343243243', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
+INSERT INTO default_paycard VALUES ('cust1', '5v9JFotRGp5nMBr9eizgMm0OK5su6xcY', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
 
 insert into catalog_dict values (1, 'starter', 'Wonderful appetizers and snacks');
 insert into catalog_dict values (2, 'rice', 'All kinds or fried rice and dish with white rice.');
@@ -60,11 +60,11 @@ insert into coupon_dict values ('commentReward', 3.00);
 insert into coupon_dict values ('5yearReward', 5.00);
 
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
-values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('11/19/2017', '%m/%d/%Y'));
+values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('12/19/2017', '%m/%d/%Y'));
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
-values (2, 'commentReward', 'cust1', str_to_date('11/20/2017', '%m/%d/%Y'), str_to_date('12/01/2017', '%m/%d/%Y'));
+values (2, 'commentReward', 'cust1', str_to_date('11/20/2017', '%m/%d/%Y'), str_to_date('12/20/2017', '%m/%d/%Y'));
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
-values (3, 'commentReward', 'cust1', str_to_date('11/25/2017', '%m/%d/%Y'), str_to_date('12/04/2017', '%m/%d/%Y'));
+values (3, 'commentReward', 'cust1', str_to_date('11/25/2017', '%m/%d/%Y'), str_to_date('12/24/2017', '%m/%d/%Y'));
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
 values (4, 'commentReward', 'cust1', str_to_date('11/30/2017', '%m/%d/%Y'), str_to_date('11/30/2017', '%m/%d/%Y'));
 
@@ -98,14 +98,6 @@ insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
 values (7, 'cust1', 7, 3, 5,  '2000-12-12 18:01:30', 'good!');
 
 insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
-values (1, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
+values (8, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
 insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
-values (2, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
-
-select bc.BRANCH_ID, bc.CATALOG_ID, cd.NAME, cd.DESCRIPTION, DISH_DICT.DISH_ID, DISH_DICT.NAME, DISH_DICT.DESCRIPTION, DISH.PRICE, avg(RATING.SCORE)
-from BRANCH_CATALOG as bc, CATALOG_DICT as cd, DISH_DICT, DISH, RATING
-where bc.BRANCH_ID = 2 and bc.CATALOG_ID = cd.CATALOG_ID and DISH_DICT.CATALOG_ID = cd.CATALOG_ID and
-	  DISH_DICT.DISH_ID = DISH.DISH_ID and RATING.DISH_ID = DISH_DICT.DISH_ID
-group by bc.BRANCH_ID, bc.CATALOG_ID, cd.NAME, cd.DESCRIPTION, DISH_DICT.DISH_ID, DISH_DICT.NAME, DISH_DICT.DESCRIPTION, DISH.PRICE
-
 

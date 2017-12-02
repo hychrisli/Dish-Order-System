@@ -5,10 +5,20 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 import cmpe.dos.dto.OrderHistoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import cmpe.dos.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.transaction.annotation.Transactional;
+
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +33,7 @@ import cmpe.dos.entity.Order;
 import cmpe.dos.entity.OrderDishDetail;
 import cmpe.dos.entity.OrderPayInfo;
 import cmpe.dos.entity.Reward;
+import cmpe.dos.exception.AppException;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.CouponDictService;
 import cmpe.dos.service.DefaultPaycardService;
@@ -43,6 +54,7 @@ import io.swagger.annotations.Tag;
 @RestController
 @Api(tags = {"Order"})
 @SwaggerDefinition(tags = { @Tag(name="Order Controller", description="Create an order")})
+@Transactional(rollbackFor = Exception.class)
 public class OrderController extends AbstractController {
 
 	@Autowired
@@ -92,15 +104,22 @@ public class OrderController extends AbstractController {
 	
 	@ApiOperation(value = "get user default paycard info")
 	@GetMapping("default/paycard")
-	public ResponseEntity<JsonResponse> getDefaultPaycardInfo(Principal principal){
+	public ResponseEntity<JsonResponse> getDefaultPaycardInfo(Principal principal) throws AppException{
 		CreditInfoDto ciDto = defaultPaycardService.getDefaultPaycardInfo(principal.getName());
 		if(ciDto != null)
 			return success("default paycard info", ciDto);
 		return notFound();
 	}
+	
+	@ApiOperation(value = "create user default paycared info")
+	@PostMapping("default/paycard")
+	public  ResponseEntity<JsonResponse> setDefaultPaycardInfo(@RequestBody CreditInfoDto creditInfoDto, Principal principal) throws AppException{
+	    return success("Added", defaultPaycardService.saveDefaultPaycard(principal.getName(), creditInfoDto));
+	   
+	}
 
 	@ApiOperation(value = "get user history")
-	@GetMapping ("orderHistory")
+	@GetMapping ("orderHistory by username")
 	public ResponseEntity<JsonResponse> getHistoryOrder(String username) {
 		List historyOrder = orderService.getOrderByUsername(username);
 		if (!historyOrder.isEmpty()) {
@@ -202,7 +221,7 @@ public class OrderController extends AbstractController {
     }
 
     @ApiOperation(value = "Test hql")
-    @GetMapping ("order/test")
+    @GetMapping ("order/get orderhistory by order id")
     public ResponseEntity<JsonResponse> testHql(int s){
 	    List list1 = orderService.getInfoByID1(s);
 	    List list2 = orderService.getInfoByID2(s);
@@ -215,7 +234,7 @@ public class OrderController extends AbstractController {
 
 	@ApiOperation(value = "Check out for user's oreder")
 	@PostMapping("order/checkout")
-	public ResponseEntity<JsonResponse> checkout(@RequestBody Param param, Principal principal ){
+	public ResponseEntity<JsonResponse> checkout(@RequestBody Param param, Principal principal ) throws AppException{
 		String username = principal.getName();
 		Short branchId = param.branchId;
 		Float totalPrice = 0.00f;
