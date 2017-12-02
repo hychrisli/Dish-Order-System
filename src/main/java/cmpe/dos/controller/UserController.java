@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cmpe.dos.dto.UserDto;
+import cmpe.dos.dto.WorkerDto;
 import cmpe.dos.entity.User;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.UserService;
@@ -82,5 +83,13 @@ public class UserController extends AbstractController{
 	    return success("users", users);
 	return notFound();
     }
+    
+    
+    @ApiOperation(value = "create a worker", response = JsonResponse.class)
+    @PostMapping( USER + "/worker")
+    @PreAuthorize(PRIV_ADMIN)
+    public ResponseEntity<JsonResponse> createWorker(@RequestBody WorkerDto workerDto){
+	return created("created", userService.createWorker(workerDto));
+    }   
     
 }
