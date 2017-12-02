@@ -4,7 +4,6 @@ import cmpe.dos.entity.Order;
 
 import java.util.List;
 import cmpe.dos.dao.HibernateDao;
-import cmpe.dos.dao.OrderDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.security.Principal;
 import cmpe.dos.dao.OrderDao;

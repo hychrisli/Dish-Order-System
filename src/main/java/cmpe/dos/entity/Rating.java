@@ -23,7 +23,7 @@ public class Rating {
     private Short branchId;
 
     @Column(length = 4)
-    private short score;
+    private Short score;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "timestamp", nullable = false)

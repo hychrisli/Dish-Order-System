@@ -1,8 +1,9 @@
 package cmp226.dos.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import cmpe.dos.dao.HibernateDao;
+import cmpe.dos.entity.*;
+import cmpe.dos.service.BranchService;
+import cmpe.dos.service.impl.BranchServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,16 +13,24 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import cmpe.dos.dao.HibernateDao;
-import cmpe.dos.entity.Branch;
-import cmpe.dos.service.BranchService;
-import cmpe.dos.service.impl.BranchServiceImpl;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BranchServiceTest {
 
     @Mock
-    HibernateDao<Branch> dao;
+    HibernateDao<Branch> branchDao;
+    @Mock
+    HibernateDao<BranchCatalog> brachCatDao;
+    @Mock
+    HibernateDao<CatalogDict> catDictDao;
+    @Mock
+    HibernateDao<Dish> dishDao;
+    @Mock
+    HibernateDao<DishDict> dishDictDao;
+    @Mock
+    HibernateDao<Rating> ratingDao;
     
     @InjectMocks
     BranchService branchSvc = new BranchServiceImpl();
@@ -46,7 +55,7 @@ public class BranchServiceTest {
 	branchList.add(branch1);
 	branchList.add(branch2);
 	
-	Mockito.when(dao.findAll()).thenReturn(branchList);
+	Mockito.when(branchDao.findAll()).thenReturn(branchList);
     }
     
     
