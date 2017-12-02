@@ -2,8 +2,8 @@ package cmpe.dos.controller;
 
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.Rating;
+import cmpe.dos.entity.Reward;
 import cmpe.dos.response.JsonResponse;
-import cmpe.dos.service.CouponDictService;
 import cmpe.dos.service.RatingService;
 import cmpe.dos.service.ReceiveOrderService;
 import io.swagger.annotations.Api;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -32,8 +33,6 @@ public class RatingController extends AbstractController {
     @Autowired
     ReceiveOrderService cdos;
 
-    @Autowired
-    CouponDictService cdService;
 
     @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
     @GetMapping(RATING + "/{username}")
@@ -65,11 +64,18 @@ public class RatingController extends AbstractController {
     public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
 
         if(ratingService.createRating(rating)) {
-
+            //ratingService.sendReward(rating.getUsername());
             return created("created", true);
         }
-
         return badRequest("Have not confirmed delivery ");
+    }
+
+    @ApiOperation(value = "View reward")
+    @PostMapping("Coupon"+"/user"+"/{username}")
+    public ResponseEntity<JsonResponse> viewReward(@PathVariable String username){
+
+            List<Reward> userRewards = ratingService.getRewards(username);
+            return success("rewards", userRewards);
     }
 
     @ApiOperation(value = "Delete A Rating")

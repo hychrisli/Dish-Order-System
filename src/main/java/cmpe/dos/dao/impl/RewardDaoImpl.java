@@ -1,6 +1,7 @@
 package cmpe.dos.dao.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,5 @@ public class RewardDaoImpl extends AbstractHibernateDao<Reward> implements Rewar
 				+ "where couponId = ? and validStart <= ? and validEnd >= ? order by validEnd";
 		return doQueryFirst(hql, couponId, today, today);
 	}
+
 }

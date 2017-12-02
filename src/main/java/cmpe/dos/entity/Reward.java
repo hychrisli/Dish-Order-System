@@ -1,12 +1,10 @@
 package cmpe.dos.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Reward {
@@ -18,13 +16,23 @@ public class Reward {
 	
 	@Column(name = "coupon_id")
 	private String couponId;
-	
+
+	@Column(length = 20)
+	private String username;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	@Temporal(TemporalType.DATE)
 	@Column(name = "valid_start")
 	private Date validStart;
-	
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	@Temporal(TemporalType.DATE)
 	@Column(name = "valid_end")
 	private Date validEnd;
-	
+
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	@Temporal(TemporalType.DATE)
 	@Column(name = "used_date")
 	private Date used_date;
 
@@ -75,8 +83,14 @@ public class Reward {
 	@Override
 	public String toString() {
 		return "Reward [rewardId=" + rewardId + ", couponId=" + couponId + ", validStart=" + validStart + ", validEnd="
-				+ validEnd + ", used_date=" + used_date + "]";
+				+ validEnd + ", used_date=" + used_date + "]" + "username=" + username;
 	}
-	
-	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }
