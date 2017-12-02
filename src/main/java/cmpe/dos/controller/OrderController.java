@@ -29,6 +29,7 @@ import cmpe.dos.entity.Order;
 import cmpe.dos.entity.OrderDishDetail;
 import cmpe.dos.entity.OrderPayInfo;
 import cmpe.dos.entity.Reward;
+import cmpe.dos.exception.AppException;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.utility.Param;
 import io.swagger.annotations.Api;
@@ -90,11 +91,18 @@ public class OrderController extends AbstractController {
 	
 	@ApiOperation(value = "get user default paycard info")
 	@GetMapping("default/paycard")
-	public ResponseEntity<JsonResponse> getDefaultPaycardInfo(Principal principal){
+	public ResponseEntity<JsonResponse> getDefaultPaycardInfo(Principal principal) throws AppException{
 		CreditInfoDto ciDto = defaultPaycardService.getDefaultPaycardInfo(principal.getName());
 		if(ciDto != null)
 			return success("default paycard info", ciDto);
 		return notFound();
+	}
+	
+	@ApiOperation(value = "create user default paycared info")
+	@PostMapping("default/paycard")
+	public  ResponseEntity<JsonResponse> setDefaultPaycardInfo(@RequestBody CreditInfoDto creditInfoDto, Principal principal) throws AppException{
+	    return success("Added", defaultPaycardService.saveDefaultPaycard(principal.getName(), creditInfoDto));
+	   
 	}
 
 	@ApiOperation(value = "get user history")
@@ -110,7 +118,7 @@ public class OrderController extends AbstractController {
 	
 	@ApiOperation(value = "Check out for user's oreder")
 	@PostMapping("order/checkout")
-	public ResponseEntity<JsonResponse> checkout(@RequestBody Param param, Principal principal ){
+	public ResponseEntity<JsonResponse> checkout(@RequestBody Param param, Principal principal ) throws AppException{
 		String username = principal.getName();
 		Short branchId = param.branchId;
 		Float totalPrice = 0.00f;

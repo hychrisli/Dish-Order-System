@@ -11,7 +11,7 @@ INSERT INTO CUSTOMER (USERNAME) VALUES ('cust1');
 INSERT INTO ADMINISTRATOR (USERNAME) VALUES ('admin1');
 INSERT INTO WORKER (USERNAME, BRANCH_ID) VALUES ('worker1', 1);
 
-INSERT INTO default_paycard VALUES ('cust1', '3245535343243243', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
+INSERT INTO default_paycard VALUES ('cust1', '5v9JFotRGp5nMBr9eizgMm0OK5su6xcY', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
 
 insert into catalog_dict values (1, 'starter', 'Wonderful appetizers and snacks');
 insert into catalog_dict values (2, 'rice', 'All kinds or fried rice and dish with white rice.');
