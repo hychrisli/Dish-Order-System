@@ -71,18 +71,4 @@ public class BranchServiceImpl implements BranchService {
         }
         return bcDto;
     }
-    @Override
-    public CatalogDetailDto getDishById(short branchId) {
-        CatalogDetailDto catDetailDto = new CatalogDetailDto();
-        catDetailDto.setDishes(new ArrayList<DishDto>());
-        List dishes = dishDao.doQueryList("select a.dishId, a.price from Dish as a as a where" +
-                " a.branchId = ?", true, branchId);
-        for (int i = 0; i < dishes.size(); i++) {
-            DishDto dishDto = new DishDto();
-            dishDto.setDishId((Integer)((Object[])dishes.get(i))[0]);
-            dishDto.setPrice((Float)((Object[])dishes.get(i))[1]);
-            catDetailDto.getDishes().add(dishDto);
-        }
-        return catDetailDto;
-    }
 }
