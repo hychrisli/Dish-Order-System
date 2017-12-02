@@ -184,7 +184,7 @@ create table DISH_DICT
 
 alter table DISH_DICT add constraint FK_REFERENCE_2 foreign key (CATALOG_ID)
       references CATALOG_DICT (CATALOG_ID) on delete restrict on update restrict;
-      
+       
 
 
 /*==============================================================*/
