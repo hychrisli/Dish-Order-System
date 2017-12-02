@@ -1,14 +1,13 @@
 package cmpe.dos.entity;
 
+
+
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity(name = "ORDERS")
+@Entity
+@Table(name = "ORDERS")
 public class Order {
 	@Id
 	@Column(name = "order_id")
