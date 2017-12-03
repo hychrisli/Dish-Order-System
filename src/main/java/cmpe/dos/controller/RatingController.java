@@ -64,7 +64,7 @@ public class RatingController extends AbstractController {
     public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
 
         if(ratingService.createRating(rating)) {
-            //ratingService.sendReward(rating.getUsername());
+            ratingService.sendReward(rating.getUsername());
             return created("created", true);
         }
         return badRequest("Have not confirmed delivery ");

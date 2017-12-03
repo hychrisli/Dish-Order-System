@@ -61,21 +61,18 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public Reward sendReward(String username) {
+    public List<Reward> sendReward(String username) {
         Reward newReward = new Reward();
 
         newReward.setCouponId("commentReward");
-        newReward.setUsed_date(null);
-
         Date now = new Date();
         newReward.setValidStart(now);
-
         Date dueDate = addDays(now, 20);
         newReward.setValidEnd(dueDate);
 
         rewardDao.create(newReward);
 
-        return newReward;
+        return rewardDao.findAll();
     }
 
     public static Date addDays(Date d, int days)

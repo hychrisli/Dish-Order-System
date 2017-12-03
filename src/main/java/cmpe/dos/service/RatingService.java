@@ -11,6 +11,6 @@ public interface RatingService {
     public Boolean deleteRating(Integer id);
     public List<Rating> showRatingsByUser(Short branchId, Integer dishId, String username);
     public List<Rating> showRatingsByDish(Short branchId, Integer dishId);
-    public Reward sendReward(String username);
+    public List<Reward> sendReward(String username);
     public List<Reward> getRewards(String username);
 }
