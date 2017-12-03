@@ -1,6 +1,7 @@
 package cmpe.dos.mapper;
 
 import cmpe.dos.dto.UserDto;
+import cmpe.dos.dto.WorkerDto;
 import cmpe.dos.entity.User;
 
 public class UserMapper {
@@ -32,6 +33,22 @@ public class UserMapper {
 	user.setState(userDto.getState());
 	user.setZipcode(userDto.getZipcode());
 	user.setSignupDate(userDto.getSignupDate());
+	
+	return user;
+    }
+    
+    
+    public static User toPojo(WorkerDto workerDto){
+	User user = new User();
+	
+	user.setUsername(workerDto.getUsername());
+	user.setPassword(workerDto.getPassword());
+	user.setPhone(workerDto.getPhone());
+	user.setStreet(workerDto.getStreet());
+	user.setCity(workerDto.getCity());
+	user.setState(workerDto.getState());
+	user.setZipcode(workerDto.getZipcode());
+	user.setSignupDate(workerDto.getSignupDate());
 	
 	return user;
     }

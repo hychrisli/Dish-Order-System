@@ -24,7 +24,7 @@ public class Rating {
     private Short branchId;
 
     @Column(length = 4)
-    private short score;
+    private Short score;
 
     @Temporal(TemporalType.DATE)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
