@@ -15,7 +15,7 @@ INSERT INTO CUSTOMER (USERNAME) VALUES ('cust1');
 INSERT INTO ADMINISTRATOR (USERNAME) VALUES ('admin1');
 INSERT INTO WORKER (USERNAME, BRANCH_ID) VALUES ('worker1', 1);
 
-INSERT INTO default_paycard VALUES ('cust1', '3245535343243243', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
+INSERT INTO default_paycard VALUES ('cust1', '5v9JFotRGp5nMBr9eizgMm0OK5su6xcY', 'visa', 'John Gates', str_to_date('08/09/2019', '%m/%d/%Y'));
 
 insert into catalog_dict values (1, 'starter', 'Wonderful appetizers and snacks');
 insert into catalog_dict values (2, 'rice', 'All kinds or fried rice and dish with white rice.');
@@ -61,7 +61,8 @@ insert into delivery_setting values (1, true, 7.00);
 insert into delivery_setting values (2, false, 0.00);
 
 insert into coupon_dict values ('commentReward', 3.00);
--- insert into coupon_dict values ('loyaltyReward', 5.00);
+insert into coupon_dict values ('5yearReward', 5.00);
+insert into coupon_dict values ('loyaltyReward', 5.00);
 
 insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
 values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('11/19/2017', '%m/%d/%Y'));
@@ -85,10 +86,6 @@ insert into ORDERS values (10, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09'
 insert into ORDERS values (11, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
 insert into ORDERS values (12, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
 insert into ORDERS values (13, 'cust3', 2, '2017-11-09', 2.0, true, '2017/11/09');
-
-
-
-
 
 insert into orders (order_id, username, branch_id, order_time, total_price, is_deliver, pickup_deliver_time)
 value(1001, 'cust1',1,'2017-11-28 02:21:14.15',20,true, '2017-11-29 02:21:14.15');
@@ -115,8 +112,3 @@ values (8, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
 insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id)
 values (9, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
 
-select b.USERNAME
-from USER as a, ORDERS as b
-where a.USERNAME = b.USERNAME and floor(datediff(curdate(), a.SIGNUP_DATE)/365) > 1
-group by b.USERNAME
-having count(*) > 2;
