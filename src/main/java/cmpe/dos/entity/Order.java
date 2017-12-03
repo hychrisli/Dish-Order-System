@@ -2,9 +2,8 @@ package cmpe.dos.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
-
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "ORDERS")
@@ -13,7 +12,15 @@ public class Order {
 	@Column(name = "order_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer orderId;
-	
+
+	public Boolean getDeliver() {
+		return isDeliver;
+	}
+
+	public void setDeliver(Boolean deliver) {
+		isDeliver = deliver;
+	}
+
 	@Column(nullable = false)
 	private String username;
 	

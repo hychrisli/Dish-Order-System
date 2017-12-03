@@ -1,23 +1,29 @@
 package cmpe.dos.entity;
 
+import javax.persistence.*;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
 public class Reward {
-	
+
 	@Id
 	@Column(name = "reward_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer rewardId;
-	
+
 	@Column(name = "coupon_id")
 	private String couponId;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@Column(name = "username")
+	private String username;
 	
 	@Column(name = "valid_start")
 	private Date validStart;
