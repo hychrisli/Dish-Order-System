@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -36,9 +35,9 @@ public class RatingController extends AbstractController {
 
     @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
     @GetMapping(RATING + "/{username}")
-    public ResponseEntity<JsonResponse> getRatingsByUser(Short branchId, Integer dishId, String username) {
+    public ResponseEntity<JsonResponse> getRatingsByUser(String username) {
 
-        List<Rating> ratingsByUser = ratingService.showRatingsByUser(branchId, dishId, username);
+        List<Rating> ratingsByUser = ratingService.showRatingsByUser(username);
 
         if(!ratingsByUser.isEmpty()) {
             return success("userRatings", ratingsByUser);
@@ -64,7 +63,6 @@ public class RatingController extends AbstractController {
     public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
 
         if(ratingService.createRating(rating)) {
-            ratingService.sendReward(rating.getUsername());
             return created("created", true);
         }
         return badRequest("Have not confirmed delivery ");
@@ -75,7 +73,7 @@ public class RatingController extends AbstractController {
     public ResponseEntity<JsonResponse> viewReward(@PathVariable String username){
 
             List<Reward> userRewards = ratingService.getRewards(username);
-            return success("rewards", userRewards);
+            return success("rewards", userRewards.toArray());
     }
 
     @ApiOperation(value = "Delete A Rating")

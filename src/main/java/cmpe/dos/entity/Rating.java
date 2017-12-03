@@ -1,5 +1,6 @@
 package cmpe.dos.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -26,6 +27,7 @@ public class Rating {
     private short score;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "timestamp", nullable = false)
     private Date timeStamp;
 

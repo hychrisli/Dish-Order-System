@@ -1,6 +1,4 @@
 package cmpe.dos.service.impl;
-
-import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dao.OrderDao;
 import cmpe.dos.dao.RatingDao;
 import cmpe.dos.dao.RewardDao;
@@ -11,7 +9,7 @@ import cmpe.dos.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +33,7 @@ public class RatingServiceImpl implements RatingService {
             return false;
         }
         dao.create(rating);
+        sendReward(rating.getUsername());
         return true;
 
     }
@@ -48,31 +47,32 @@ public class RatingServiceImpl implements RatingService {
         return true;
     }
 
-    //@Override
+    @Override
     public List<Rating> showRatingsByDish(Short branchId, Integer dishId) {
 
         return dao.getRatingByDishId(branchId,dishId);
     }
 
     @Override
-    public List<Rating> showRatingsByUser(Short branchId, Integer dishId, String username) {
+    public List<Rating> showRatingsByUser(String username) {
 
-        return dao.getRatingByUser(branchId, dishId, username);
+        return dao.getRatingByUser(username);
     }
 
     @Override
-    public List<Reward> sendReward(String username) {
+    public Boolean sendReward(String username) {
         Reward newReward = new Reward();
 
         newReward.setCouponId("commentReward");
-        Date now = new Date();
+        Date now = new Date(new Date().getTime());
         newReward.setValidStart(now);
-        Date dueDate = addDays(now, 20);
+        Date dueDate = new Date(new Date().getTime());
+        addDays(dueDate, 20);
         newReward.setValidEnd(dueDate);
+        newReward.setUsername(username);
 
         rewardDao.create(newReward);
-
-        return rewardDao.findAll();
+        return true;
     }
 
     public static Date addDays(Date d, int days)
@@ -81,7 +81,6 @@ public class RatingServiceImpl implements RatingService {
         return d;
     }
 
-    @Override
     public List<Reward> getRewards(String username) {
         return rewardDao.doQueryList("from Reward where username =?", true,username);
     }
