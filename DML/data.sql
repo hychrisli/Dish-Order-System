@@ -58,24 +58,30 @@ insert into delivery_setting values (2, false, 0.00);
 
 insert into coupon_dict values ('commentReward', 3.00);
 insert into coupon_dict values ('5yearReward', 5.00);
+insert into coupon_dict values ('loyaltyReward', 5.00);
 
-insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
-values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('12/19/2017', '%m/%d/%Y'));
-insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
-values (2, 'commentReward', 'cust1', str_to_date('11/20/2017', '%m/%d/%Y'), str_to_date('12/20/2017', '%m/%d/%Y'));
-insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
-values (3, 'commentReward', 'cust1', str_to_date('11/25/2017', '%m/%d/%Y'), str_to_date('12/24/2017', '%m/%d/%Y'));
-insert into reward (reward_id, coupon_id, username, valid_start, valid_end) 
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
+values (1, 'commentReward', 'cust1', str_to_date('11/09/2017', '%m/%d/%Y'), str_to_date('11/19/2017', '%m/%d/%Y'));
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
+values (2, 'commentReward', 'cust1', str_to_date('11/20/2017', '%m/%d/%Y'), str_to_date('12/01/2017', '%m/%d/%Y'));
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
+values (3, 'commentReward', 'cust1', str_to_date('11/25/2017', '%m/%d/%Y'), str_to_date('12/04/2017', '%m/%d/%Y'));
+insert into reward (reward_id, coupon_id, username, valid_start, valid_end)
 values (4, 'commentReward', 'cust1', str_to_date('11/30/2017', '%m/%d/%Y'), str_to_date('11/30/2017', '%m/%d/%Y'));
 
-insert into ORDERS values (1, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (2, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (3, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (4, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (5, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (6, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (7, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
-insert into ORDERS values (8, 'cust1', 2, '2017/11/09', 2.0, true, '2017/11/09');
+insert into ORDERS values (1, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (2, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (3, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (4, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (5, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (6, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (7, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (8, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (9, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (10, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (11, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (12, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (13, 'cust3', 2, '2017-11-09', 2.0, true, '2017/11/09');
 
 insert into orders (order_id, username, branch_id, order_time, total_price, is_deliver, pickup_deliver_time)
 value(1001, 'cust1',1,'2017-11-28 02:21:14.15',20,true, '2017-11-29 02:21:14.15');
@@ -97,7 +103,7 @@ values (6, 'cust1', 6, 3, 5,  '2000-12-12 18:01:30', 'good!');
 insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
 values (7, 'cust1', 7, 3, 5,  '2000-12-12 18:01:30', 'good!');
 
-insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
+insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id)
 values (8, 'cust1', 1001, 1, 5, '2017-11-29 02:21:14.15','Yummy yummy! ',1);
-insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id) 
+insert into rating(id, username, order_id, dish_id, score,timestamp, comments,branch_id)
 values (9, 'cust1', 1001, 2, 4, '2017-11-29 02:21:14.15','Too spicy! ',1);
