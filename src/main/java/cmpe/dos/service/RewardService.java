@@ -6,8 +6,8 @@ import cmpe.dos.dto.CouponDto;
 import cmpe.dos.entity.Reward;
 
 public interface RewardService {
-
-    	public List<Reward> getMyRewards(String username);
+    	
+    	public List<Reward> getRewardsByUser(String username);
     
 	public Reward getValidCoupon(String couponId);
 	

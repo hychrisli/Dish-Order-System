@@ -79,8 +79,7 @@ public class RewardServiceImpl implements RewardService {
     }
 
     @Override
-    public List<Reward> getMyRewards(String username) {
+    public List<Reward> getRewardsByUser(String username) {
 	return rewardDao.doQueryList("from Reward where username = ?", true, username);
     }
-    
 }

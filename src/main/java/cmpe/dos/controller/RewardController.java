@@ -45,7 +45,7 @@ public class RewardController extends AbstractController{
     @Autowired
     CouponDictService couponSvc;
 
-    @ApiOperation(value = "Distribute Coupon tp Loyal Customer", response = JsonResponse.class)
+    @ApiOperation(value = "Distribute Coupon to Loyal Customer", response = JsonResponse.class)
     @PostMapping(REWARD)
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> giveCoupon(@RequestBody CouponDto couponDto) {
@@ -56,7 +56,19 @@ public class RewardController extends AbstractController{
     @ApiOperation(value = "List My Rewards", response = JsonResponse.class)
     @GetMapping(REWARD + "/self")
     public ResponseEntity<JsonResponse> getMyRewards(Principal principal){
-	List<Reward> rewards = rewardSvc.getMyRewards(principal.getName());
+	List<Reward> rewards = rewardSvc.getRewardsByUser(principal.getName());
+	if (rewards != null && !rewards.isEmpty())
+	    return success("rewards", rewards);
+	
+	return notFound();
+    }
+    
+    
+    @ApiOperation(value = "Get Rewards By User", response = JsonResponse.class)
+    @GetMapping(REWARD + "/{username}")
+    @PreAuthorize(PRIV_ADMIN)
+    public ResponseEntity<JsonResponse> getRewardByUser(@PathVariable String username){
+	List<Reward> rewards = rewardSvc.getRewardsByUser(username);
 	if (rewards != null && !rewards.isEmpty())
 	    return success("rewards", rewards);
 	
