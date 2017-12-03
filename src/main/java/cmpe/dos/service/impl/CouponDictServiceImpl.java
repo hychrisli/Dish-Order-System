@@ -1,5 +1,7 @@
 package cmpe.dos.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class CouponDictServiceImpl implements CouponDictService {
 	@Override
 	public CouponDict getCouponInfo(String couponId) {
 		return dao.getById(couponId);
+	}
+
+	@Override
+	public List<CouponDict> getCoupons() {
+	    return dao.findAll();
 	}
 
 }

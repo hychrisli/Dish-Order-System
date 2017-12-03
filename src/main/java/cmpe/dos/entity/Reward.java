@@ -8,12 +8,12 @@ import javax.persistence.*;
 
 @Entity
 public class Reward {
-	
+
 	@Id
 	@Column(name = "reward_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer rewardId;
-	
+
 	@Column(name = "coupon_id")
 	private String couponId;
 
@@ -22,6 +22,7 @@ public class Reward {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	@Temporal(TemporalType.DATE)
+
 	@Column(name = "valid_start")
 	private Date validStart;
 
