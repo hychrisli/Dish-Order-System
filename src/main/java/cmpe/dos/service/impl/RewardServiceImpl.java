@@ -20,7 +20,7 @@ public class RewardServiceImpl implements RewardService {
 
     @Autowired
     RewardDao rewardDao;
-    
+
     @Autowired
     HibernateDao<CouponDict> couponDictDao;
 
@@ -39,9 +39,9 @@ public class RewardServiceImpl implements RewardService {
 
     @Override
     public Boolean addNewCoupon(CouponDto couponDto) {
-	
+
 	CouponDict coupon = couponDictDao.getById(couponDto.getCouponName());
-	
+
 	if (coupon == null) {
 	    CouponDict couponDict = new CouponDict();
 	    couponDict.setCouponId(couponDto.getCouponName());
@@ -55,11 +55,11 @@ public class RewardServiceImpl implements RewardService {
 	cal.setTime(new Date());
 	cal.add(Calendar.DATE, couponDto.getDuration());
 	Date endDate = cal.getTime();
-	
+
 	Calendar calYears = Calendar.getInstance();
 	calYears.setTime(new Date());
 	calYears.add(Calendar.YEAR, -couponDto.getMemberYears());
-	
+
 	Date ago = calYears.getTime();
 	List users = userDao.doQueryList(
 		"select b.username from User as a, Order as b where a.username = b.username "
@@ -74,12 +74,33 @@ public class RewardServiceImpl implements RewardService {
 	    reward.setValidEnd(endDate);
 	    rewardDao.create(reward);
 	}
-	
+
 	return true;
     }
 
     @Override
     public List<Reward> getRewardsByUser(String username) {
 	return rewardDao.doQueryList("from Reward where username = ?", true, username);
+    }
+
+    @Override
+    public Boolean sendCommentReward(String username) {
+	Reward newReward = new Reward();
+
+	newReward.setCouponId("commentReward");
+	Date now = new Date(new Date().getTime());
+	newReward.setValidStart(now);
+	Date dueDate = new Date(new Date().getTime());
+	addDays(dueDate, 20);
+	newReward.setValidEnd(dueDate);
+	newReward.setUsername(username);
+
+	rewardDao.create(newReward);
+	return true;
+    }
+
+    private static Date addDays(Date d, int days) {
+	d.setTime(d.getTime() + days * 1000 * 60 * 60 * 24);
+	return d;
     }
 }

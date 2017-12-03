@@ -2,7 +2,6 @@ package cmpe.dos.controller;
 
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.Rating;
-import cmpe.dos.entity.Reward;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.RatingService;
 import cmpe.dos.service.ReceiveOrderService;
@@ -66,14 +65,6 @@ public class RatingController extends AbstractController {
             return created("created", true);
         }
         return badRequest("Have not confirmed delivery ");
-    }
-
-    @ApiOperation(value = "View reward")
-    @PostMapping("Coupon"+"/user"+"/{username}")
-    public ResponseEntity<JsonResponse> viewReward(@PathVariable String username){
-
-            List<Reward> userRewards = ratingService.getRewards(username);
-            return success("rewards", userRewards.toArray());
     }
 
     @ApiOperation(value = "Delete A Rating")
