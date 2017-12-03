@@ -3,6 +3,7 @@ package cmpe.dos.dao.impl;
 import cmpe.dos.dao.AbstractHibernateDao;
 import cmpe.dos.dao.RatingDao;
 import cmpe.dos.entity.Rating;
+import cmpe.dos.entity.Reward;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class RatingDaoImpl extends AbstractHibernateDao<Rating> implements Ratin
     }
 
     @Override
-    public List<Rating> getRatingByUser(Short branchId, Integer dishId, String username) {
+    public List<Rating> getRatingByUser(String username) {
         String hql = "from Rating where username = ? ";
         return doQueryList(hql, true, username);
     }
@@ -25,4 +26,5 @@ public class RatingDaoImpl extends AbstractHibernateDao<Rating> implements Ratin
         String hql = "from Rating where branchId = ? and dishId = ? ";
         return doQueryList(hql, true,branchId, dishId);
     }
+
 }

@@ -1,6 +1,5 @@
 package cmpe.dos.controller;
 
-import cmpe.dos.dto.BranchCatalogDto;
 import cmpe.dos.entity.Branch;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.BranchService;
@@ -44,7 +43,6 @@ public class BranchController extends AbstractController {
     @ApiOperation(value = "View Dishes By Branch")
     @GetMapping("Branch/Catalog/Dish/{branchId}")
     public ResponseEntity<JsonResponse> getDishesByBranch(@PathVariable Short branchId){
-        BranchCatalogDto bcDto = new BranchCatalogDto();
         return success("Results", branchSvc.getBranchCatalogDish(branchId));
     }
 }

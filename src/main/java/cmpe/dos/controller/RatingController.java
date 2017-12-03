@@ -3,7 +3,6 @@ package cmpe.dos.controller;
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.Rating;
 import cmpe.dos.response.JsonResponse;
-import cmpe.dos.service.CouponDictService;
 import cmpe.dos.service.RatingService;
 import cmpe.dos.service.ReceiveOrderService;
 import io.swagger.annotations.Api;
@@ -32,14 +31,12 @@ public class RatingController extends AbstractController {
     @Autowired
     ReceiveOrderService cdos;
 
-    @Autowired
-    CouponDictService cdService;
 
     @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
     @GetMapping(RATING + "/{username}")
-    public ResponseEntity<JsonResponse> getRatingsByUser(Short branchId, Integer dishId, String username) {
+    public ResponseEntity<JsonResponse> getRatingsByUser(String username) {
 
-        List<Rating> ratingsByUser = ratingService.showRatingsByUser(branchId, dishId, username);
+        List<Rating> ratingsByUser = ratingService.showRatingsByUser(username);
 
         if(!ratingsByUser.isEmpty()) {
             return success("userRatings", ratingsByUser);
@@ -65,10 +62,8 @@ public class RatingController extends AbstractController {
     public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
 
         if(ratingService.createRating(rating)) {
-
             return created("created", true);
         }
-
         return badRequest("Have not confirmed delivery ");
     }
 
