@@ -84,15 +84,6 @@ public class OrderController extends AbstractController {
 	@Autowired
 	CouponDictService couponDictService;
 
-	@ApiOperation(value = "Add An Order Record")
-	@PostMapping("order")
-	public ResponseEntity<JsonResponse> addOrder(){
-		Order o1 = new Order("cust1", (short)1, new Date(), 15.89f, false );
-		if(orderService.createOrder(o1))
-			return created("created", o1);
-		return conflict();
-	}
-
 	@ApiOperation(value = "get user default delivery info")
 	@GetMapping("default/delivery")
 	public ResponseEntity<JsonResponse> getDefaultDeliveryInfo(Principal principal){
@@ -321,11 +312,6 @@ public class OrderController extends AbstractController {
 		orderPayInfoService.create(opi);
 		
 		
-		
-/*		System.out.println(param.toString());
-		System.out.println("total price is: " + totalPrice);
-		System.out.println(reward.getRewardId()); */
 		return success("checkout the order", true);
-		//return conflict();
 	}
 }
