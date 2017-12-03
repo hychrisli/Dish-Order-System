@@ -1,8 +1,11 @@
 package cmpe.dos.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cmpe.dos.dao.OrderDao;
+import cmpe.dos.dto.OrderHistoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +57,56 @@ public class OrderServiceImpl implements OrderService {
 		return diDto;
 	}
 	@Override
-	public List<Order> getOrderByUsername(String username) {
+	public List getOrderByUsername(String username) {
        return  orderDao.getOrdersByUser(username);
     }
 
+    @Override
+	public List getInfoByID1(int orderId) {
+		return orderDao.getjointinformation1(orderId);
+	}
 
+	@Override
+	public List getInfoByID2(int orderId) {
+		return orderDao.getjointinformation2(orderId);
+	}
+
+	@Override
+	public OrderHistoryDto getHistoryOrderDto(List info1,List info2) {
+ 		OrderHistoryDto ODto = new OrderHistoryDto();
+ 		Object[] list1 =(Object[])(info1.get(0));
+		////List list2 =(List)(info2.get(0));
+
+
+ 		ODto.setOrderId((Integer) list1[0]);
+ 		ODto.setUsername((String) list1[1]);
+ 		ODto.setReceiverName((String) list1[5]);
+ 		ODto.setPhone((String)list1[6]);
+ 		ODto.setStreet((String) list1[7]);
+ 		ODto.setCity((String) list1[8]);
+ 		ODto.setState((String) list1[9]);
+ 		ODto.setZipcode((String) list1[10]);
+		ODto.setCardNum((String) list1[11]);
+ 		ODto.setCardType((String) list1[12]);
+ 		ODto.setCardholderName((String) list1[13]);
+ 		ODto.setDate((Date) list1[14]);
+
+//		List<Integer> dishid = new ArrayList<>();
+// 		List<String> dishname = new ArrayList<>();
+//// 		for (int i = 0; i < list2.length; i++) {
+//// 			dishid.add((Integer)((Object[])list2[i])[0]);
+////			dishname.add((String)((Object[])list2[i])[1]);
+////		}
+// 		for (int i = 0; i < list2.size(); i++) {
+//			dishid.add((Integer)((Object[])list2.get(i))[0]);
+//			dishname.add((String)((Object[])list2.get(i))[1]);
+//		}
+
+		///ODto.setDishId(dishid);
+ 		///ODto.setDishName(dishname);
+
+
+ 		return ODto;
+
+	}
 }

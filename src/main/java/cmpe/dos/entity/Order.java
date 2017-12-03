@@ -55,8 +55,6 @@ public class Order {
 		this.isDeliver = isDeliver;
 	}
 
-
-
 	public Integer getOrderId() {
 		return orderId;
 	}
