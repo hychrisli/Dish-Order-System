@@ -1,6 +1,6 @@
 package cmpe.dos.service.impl;
 
-import static cmpe.dos.constant.CrytoConstant.CRYTO_TRANS;
+import static cmpe.dos.constant.SysConstant.CRYTO_TRANS;
 import static cmpe.dos.exception.ErrorCode.ERR_ENCRYPTION;
 import static cmpe.dos.exception.ErrorCode.ERR_DECRYPTION;
 import static cmpe.dos.exception.ErrorCode.ERR_KEYGEN_BY_SECRET;
