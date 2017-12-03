@@ -1,6 +1,8 @@
 package cmpe.dos.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 import java.util.Date;
 
@@ -19,8 +21,9 @@ public class Order {
 	
 	@Column(name = "branch_id")
     private Short branchId;
-    
-    @Column(name = "order_time", nullable = false)
+
+	@Temporal(TemporalType.DATE)
+	@Column(name = "order_time", nullable = false)
     private Date orderTime;
 	
     @Column(name = "total_price", nullable = false)
@@ -28,7 +31,9 @@ public class Order {
 
     @Column(name = "is_deliver", nullable = false)
     private Boolean isDeliver;
-    
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
+	@Temporal(TemporalType.DATE)
     @Column(name = "pickup_deliver_time")
     private Date pickOrDeliveryTime;
 

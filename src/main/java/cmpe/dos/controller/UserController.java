@@ -3,6 +3,7 @@ package cmpe.dos.controller;
 import static cmpe.dos.constant.UrlConstant.USER;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cmpe.dos.dto.UserDto;
+import cmpe.dos.dto.WorkerDto;
+import cmpe.dos.entity.User;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.UserService;
 import io.swagger.annotations.Api;
@@ -27,10 +31,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 
-@CrossOrigin
 @RestController
 @Api(tags = {"User"})
 @SwaggerDefinition(tags = { @Tag(name="User Controller", description="User Controller Endpoints")})
+@Transactional(rollbackFor = Exception.class)
 public class UserController extends AbstractController{
     
     @Autowired
@@ -69,5 +73,23 @@ public class UserController extends AbstractController{
 	
 	return notFound();
     }
+    
+    @ApiOperation(value = "Get All Users", response = JsonResponse.class)
+    @GetMapping( USER + "/all")
+    @PreAuthorize(PRIV_ADMIN)
+    public ResponseEntity<JsonResponse> getUser() {
+	List<User> users = userService.getAllUsers();
+	if (users != null && !users.isEmpty())
+	    return success("users", users);
+	return notFound();
+    }
+    
+    
+    @ApiOperation(value = "create a worker", response = JsonResponse.class)
+    @PostMapping( USER + "/worker")
+    @PreAuthorize(PRIV_ADMIN)
+    public ResponseEntity<JsonResponse> createWorker(@RequestBody WorkerDto workerDto){
+	return created("created", userService.createWorker(workerDto));
+    }   
     
 }

@@ -1,12 +1,17 @@
 package cmpe.dos.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dto.UserDto;
+import cmpe.dos.dto.WorkerDto;
 import cmpe.dos.entity.User;
+import cmpe.dos.entity.Worker;
 import cmpe.dos.mapper.UserMapper;
 import cmpe.dos.service.UserService;
 
@@ -15,6 +20,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     HibernateDao<User> dao;
+    
+    @Autowired
+    HibernateDao<Worker> wdao;
     
     @Override
     public UserDto retrieveUserDto(String username) {
@@ -38,5 +46,24 @@ public class UserServiceImpl implements UserService {
 	dao.deleteById(username);
 	return true;
     }
+
+    @Override
+    public List<User> getAllUsers() {
+	List<User> users = dao.doQueryList("from User", false);
+	return users;
+    }
+
+    @Override
+    public Worker createWorker(WorkerDto workerDto) {
+	User user = UserMapper.toPojo(workerDto);
+	dao.create(user);
+	Worker worker = new Worker();
+	worker.setUsername(user.getUsername());
+	worker.setBranchId(workerDto.getBranchId());
+	wdao.create(worker);
+	return worker;
+    }
+    
+    
     
 }

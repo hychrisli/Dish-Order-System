@@ -184,7 +184,7 @@ create table DISH_DICT
 
 alter table DISH_DICT add constraint FK_REFERENCE_2 foreign key (CATALOG_ID)
       references CATALOG_DICT (CATALOG_ID) on delete restrict on update restrict;
-      
+       
 
 
 /*==============================================================*/
@@ -301,6 +301,7 @@ create table RATING
    SCORE                tinyint not null,
    TIMESTAMP            datetime not null,
    COMMENTS             varchar(200),
+   BRANCH_ID            smallint,
    primary key (ID)
 );
 
@@ -312,5 +313,8 @@ alter table RATING add constraint FK_REFERENCE_17 foreign key (ORDER_ID)
 
 alter table RATING add constraint FK_REFERENCE_18 foreign key (DISH_ID)
       references DISH_DICT (DISH_ID) on delete restrict on update restrict;
-         
+
+alter table RATING add constraint FK_REFERENCE_19 foreign key (BRANCH_ID)
+      references BRANCH (BRANCH_ID) on delete restrict on update restrict;
+
 grant all on dos.* to 'dosuser'@'localhost';

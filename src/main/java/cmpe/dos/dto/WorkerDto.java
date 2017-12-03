@@ -1,67 +1,48 @@
-package cmpe.dos.entity;
+package cmpe.dos.dto;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-@Entity
-@Table(name="USER")
-public class User {
+import io.swagger.annotations.ApiModelProperty;
 
-    @Id
-    @Column(length = 20)
+public class WorkerDto {
+
+    @JsonInclude(value = NON_NULL)
+    @ApiModelProperty(required = true)
     private String username;
     
-    @Column(length = 100, nullable = false)
+    @JsonInclude(value = NON_NULL)
     private String password;
     
-    @Column(length = 12)
     private String phone;
-    
-    @Column(length = 50)
+
     private String street;
     
-    @Column(length = 20)
     private String city;
     
-    @Column(length = 20)
     private String state;
     
-    @Column(length = 5)
     private String zipcode;
     
-    @Temporal(TemporalType.DATE)
-    @Column(name = "SIGNUP_DATE", nullable = false)
+    @JsonInclude(value = NON_NULL)
+    private Short branchId;
+
+    @JsonInclude(value = NON_NULL)
     private Date signupDate;
-    
     
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getPhone() {
         return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getStreet() {
@@ -80,6 +61,22 @@ public class User {
         return zipcode;
     }
 
+    public Short getBranchId() {
+        return branchId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public void setStreet(String street) {
         this.street = street;
     }
@@ -96,6 +93,10 @@ public class User {
         this.zipcode = zipcode;
     }
 
+    public void setBranchId(Short branchId) {
+        this.branchId = branchId;
+    }
+
     public Date getSignupDate() {
         return signupDate;
     }
@@ -103,5 +104,4 @@ public class User {
     public void setSignupDate(Date signupDate) {
         this.signupDate = signupDate;
     }
-    
 }

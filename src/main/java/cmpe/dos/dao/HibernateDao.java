@@ -1,11 +1,11 @@
 package cmpe.dos.dao;
 
+import org.hibernate.criterion.Criterion;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.hibernate.criterion.Criterion;
 
 public interface HibernateDao<T> {
 

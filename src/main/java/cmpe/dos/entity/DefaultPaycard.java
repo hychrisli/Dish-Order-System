@@ -6,6 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "DEFAULT_PAYCARD")
@@ -23,6 +27,7 @@ public class DefaultPaycard {
 	@Column(name = "cardholder_name")
 	private String cardholderName;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "expire_date")
 	private Date date;	
 		
