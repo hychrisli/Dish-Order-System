@@ -1,6 +1,5 @@
 package cmpe.dos.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -111,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order getUserOrderById(Integer orderId) {
-	    return odao.getById(orderId);
+	public Order getOrderById(Integer orderId) {
+	    return orderDao.getById(orderId);
 	}
 }

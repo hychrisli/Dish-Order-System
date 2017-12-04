@@ -1,5 +1,7 @@
 package cmpe.dos.controller;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +9,8 @@ import java.util.List;
 
 
 import cmpe.dos.dto.OrderHistoryDto;
+
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,21 +24,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import cmpe.dos.config.security.AuthConfig;
 import cmpe.dos.dto.CreditInfoDto;
 import cmpe.dos.dto.DeliverInfoDto;
 import cmpe.dos.dto.OrderDetailDto;
 import cmpe.dos.entity.DeliveryInfo;
 import cmpe.dos.entity.Dish;
+import cmpe.dos.entity.DishDict;
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.OrderDishDetail;
 import cmpe.dos.entity.OrderPayInfo;
 import cmpe.dos.entity.Reward;
 import cmpe.dos.exception.AppException;
+import cmpe.dos.mapper.CreditInfoMapper;
+import cmpe.dos.mapper.DeliverInfoMapper;
+import cmpe.dos.mapper.DishMapper;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.CouponDictService;
 import cmpe.dos.service.DefaultPaycardService;
@@ -58,6 +68,8 @@ import io.swagger.annotations.Tag;
 @Transactional(rollbackFor = Exception.class)
 public class OrderController extends AbstractController {
 
+    private final static Logger LOGGER = getLogger(OrderController.class);
+    
 	@Autowired
     OrderService orderService;
 
@@ -81,6 +93,9 @@ public class OrderController extends AbstractController {
 
 	@Autowired
 	DishService dishService;
+	
+	@Autowired
+	DishDictService dishDictService;
 	
 	@Autowired
 	CouponDictService couponDictService;
@@ -123,49 +138,76 @@ public class OrderController extends AbstractController {
 
     @ApiOperation(value = "Quick Checkout for User's Order")
     @PutMapping("order/quick-checkout/{preOrderId}")
-    public ResponseEntity<JsonResponse> quickReCheckout(Principal principal, Integer preOrderId) {
+    public ResponseEntity<JsonResponse> quickReCheckout(Principal principal, @PathVariable Integer preOrderId) {
 	String username = principal.getName();
-	Order preOrder = orderService.getUserOrderById(preOrderId);
+	Order preOrder = orderService.getOrderById(preOrderId);
 
-	if (preOrder == null || preOrder.getUsername() != username)
+	LOGGER.info(preOrder.getUsername());
+	LOGGER.info(username);
+
+	if (preOrder == null || !username.equals(preOrder.getUsername()))
 	    return notFound();
-	
-	List<OrderDishDetail> preList = orderDishDetailService.getDishDetail(preOrderId);
-	List<OrderDishDetail> detailList = new ArrayList<OrderDishDetail>();
-	for (OrderDishDetail odd: preList) {
-/*		Dish dish = dishService.getDish(preOrder.getBranchId(), odd.getDishId());
-		
-		short inventory = (short) (dish.getInventoryQuantity() - odd.getOrderQuantity());
-		if(inventory < 0){
-			return runOutOfDishes(, dish.getInventoryQuantity());
-		}
-		dish.setInventoryQuantity(inventory);
-		dishService.updateDish(dish);
 
-		totalPrice += odDto.getPrice() * odDto.getOrderQuantity();
-		OrderDishDetail odd = new OrderDishDetail();
-		odd.setDishId(odDto.getDishId());
-		odd.setOrderQuantity(odDto.getOrderQuantity());
-		detailList.add(odd);*/
+	List<OrderDishDetail> detailList = new ArrayList<OrderDishDetail>();
+	Param param = new Param();
+	param.orderDetailList = new ArrayList<OrderDetailDto>();
+
+	List<OrderDishDetail> preList = orderDishDetailService.getDishDetail(preOrderId);
+	for (OrderDishDetail odd : preList) {
+	    Dish dish = dishService.getDish(preOrder.getBranchId(), odd.getDishId());
+	    DishDict dishDict = dishDictService.findDishDict(odd.getDishId());
+	    short inventory = (short) (dish.getInventoryQuantity() - odd.getOrderQuantity());
+	    if (inventory < 0) {
+		return runOutOfDishes(dishDict.getName(), dish.getInventoryQuantity());
+	    }
+	    dish.setInventoryQuantity(inventory);
+	    dishService.updateDish(dish);
+	    detailList.add(odd);
+	    param.orderDetailList.add(DishMapper.toOrderDetailDto(odd, dish, dishDict));
 	}
-	
+
 	Order order = new Order(username, preOrder.getBranchId(), new Date(), preOrder.getTotalPrice(),
 		preOrder.getIsDeliver());
 	orderService.createOrder(order);
 
 	Integer orderId = order.getOrderId();
-	
-	
 	for (OrderDishDetail odd : detailList) {
 	    odd.setOrderId(orderId);
 	    orderDishDetailService.create(odd);
 	}
-	
-	return success("checkout the order", true);
 
+	param.branchId = preOrder.getBranchId();
+	DeliveryInfo preDi = deliveryInfoService.getDeliveryInfo(preOrderId);
+	if (preDi != null) {
+	    DeliveryInfo di = new DeliveryInfo();
+	    di.setOrderId(orderId);
+	    di.setCity(preDi.getCity());
+	    di.setStreet(preDi.getStreet());
+	    di.setState(preDi.getState());
+	    di.setZipcode(preDi.getZipcode());
+	    di.setReceiverName(preDi.getReceiverName());
+	    di.setPhone(preDi.getPhone());
+	    deliveryInfoService.create(di);
+	    param.isDelivery = true;
+	    param.diDto = DeliverInfoMapper.toDto(di);
+	}
+
+	OrderPayInfo preOpi = orderPayInfoService.getOrderPayInfo(preOrderId);
+	if (preOpi != null) {
+	    OrderPayInfo opi = new OrderPayInfo();
+	    opi.setOrderId(orderId);
+	    opi.setCardholderName(preOpi.getCardholderName());
+	    opi.setCardNum(preOpi.getCardNum());
+	    opi.setCardType(preOpi.getCardType());
+	    opi.setDate(new Date());
+	    orderPayInfoService.create(opi);
+	    param.ciDto = CreditInfoMapper.toDto(opi);
+	}
+
+	return success("Quick Checkout", param);
     }
 	
-    
+ 
     ///reCheckOut Order
     @ApiOperation(value = "Check out for user's oreder")
     @PostMapping("order/ReCheckout")
@@ -236,7 +278,7 @@ public class OrderController extends AbstractController {
                 di.setZipcode(param.diDto.getZipcode());
                 di.setPhone(param.diDto.getPhone());
             }
-            deliveryInfoService.creat(di);
+            deliveryInfoService.create(di);
         }
 
         OrderPayInfo opi = new OrderPayInfo();
@@ -337,7 +379,7 @@ public class OrderController extends AbstractController {
 				di.setZipcode(param.diDto.getZipcode());
 				di.setPhone(param.diDto.getPhone());
 			}
-			deliveryInfoService.creat(di);
+			deliveryInfoService.create(di);
 		}
 
 		OrderPayInfo opi = new OrderPayInfo();
