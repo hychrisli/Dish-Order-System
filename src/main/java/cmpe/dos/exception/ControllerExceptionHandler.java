@@ -42,7 +42,7 @@ public class ControllerExceptionHandler extends JsonResponseHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<JsonResponse> handleIntegrityViolationException(DataIntegrityViolationException e) {
 	LOGGER.error(ERR_INTEGRITY_VIOLATION.name(), e);
-	return failure(ERR_INTEGRITY_VIOLATION, "CANNOT Be Deleted. Data Integrity Violation");
+	return failure(ERR_INTEGRITY_VIOLATION, e.getRootCause().getMessage());
     }
 
     
