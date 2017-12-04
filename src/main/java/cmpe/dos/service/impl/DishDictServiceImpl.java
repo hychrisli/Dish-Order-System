@@ -1,13 +1,14 @@
 package cmpe.dos.service.impl;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import cmpe.dos.dao.DishDao;
 import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.entity.DishDict;
 import cmpe.dos.service.DishDictService;
 
+@Service
 public class DishDictServiceImpl implements DishDictService {
 
     @Autowired

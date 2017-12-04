@@ -24,5 +24,11 @@ public class DishDaoImpl extends AbstractHibernateDao<Dish> implements DishDao{
 	public boolean deleteDishByDishId(Integer dishId) {
 	    executeHsql("delete from Dish where dishId = ? ", dishId);
 	    return true;
+	}
+
+	@Override
+	public boolean deleteDishFromBranch(Short branchId, Integer dishId) {
+	    executeHsql("delete from Dish where branchId = ? and dishId = ?", branchId, dishId);
+	    return false;
 	}	
 }

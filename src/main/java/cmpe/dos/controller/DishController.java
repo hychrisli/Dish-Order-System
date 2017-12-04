@@ -42,7 +42,7 @@ public class DishController extends AbstractController {
     
     
     @ApiOperation(value = "Find a Dish in a Branch")
-    @GetMapping(DISH)
+    @GetMapping(DISH + "/{branchId}/{dishId}")
     public ResponseEntity<JsonResponse> getDish(@PathVariable Short branchId, @PathVariable Integer dishId){
 	Dish dish = dishService.getDish(branchId, dishId);
 	if (dish != null)
@@ -61,13 +61,14 @@ public class DishController extends AbstractController {
 	return conflict();
     }
     
-    @ApiOperation(value = "Delete A Dish")
-    @DeleteMapping(DISH)
+    
+    @ApiOperation(value = "Delete a Dish From a Branch")
+    @DeleteMapping(DISH + "/{branchId}/{dishId}")
     @PreAuthorize(PRIV_ADMIN)
-    public ResponseEntity<JsonResponse> deleteDish(@PathVariable Integer dishId) {
-	if (dishService.deleteDish(dishId))
+    public ResponseEntity<JsonResponse> deleteDish(@PathVariable Short branchId, @PathVariable Integer dishId) {
+	if (dishService.deleteDishFromBranch(branchId, dishId))
 	    return success("deleted", dishId);
-
+	
 	return notFound();
     }
 

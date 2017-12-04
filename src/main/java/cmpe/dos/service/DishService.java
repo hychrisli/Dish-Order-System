@@ -11,5 +11,5 @@ public interface DishService {
 
 	public boolean createDish(DishDto dishdto);
 
-	public boolean deleteDish(int dishId);
+	public boolean deleteDishFromBranch(Short branchId, Integer dishId);
 }

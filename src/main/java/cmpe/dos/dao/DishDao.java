@@ -7,4 +7,6 @@ public interface DishDao extends HibernateDao<Dish>{
 	public Dish getDish(Short branchId, Integer dishId);
 	
 	public boolean deleteDishByDishId(Integer dishId);
+	
+	public boolean deleteDishFromBranch(Short branchId, Integer dishId);
 }
