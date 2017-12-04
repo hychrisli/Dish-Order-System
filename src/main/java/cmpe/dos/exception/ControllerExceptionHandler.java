@@ -3,9 +3,11 @@ package cmpe.dos.exception;
 import static cmpe.dos.exception.ErrorCode.ERR_BAD_REQUEST;
 import static cmpe.dos.exception.ErrorCode.ERR_INTERNAL_SERVER_ERROR;
 import static cmpe.dos.exception.ErrorCode.ERR_ACCESS_DENIED;
+import static cmpe.dos.exception.ErrorCode.ERR_INTEGRITY_VIOLATION;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -37,6 +39,13 @@ public class ControllerExceptionHandler extends JsonResponseHandler {
 	return badRequest(e.getMessage());
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<JsonResponse> handleIntegrityViolationException(DataIntegrityViolationException e) {
+	LOGGER.error(ERR_INTEGRITY_VIOLATION.name(), e);
+	return failure(ERR_INTEGRITY_VIOLATION, "CANNOT Be Deleted. Data Integrity Violation");
+    }
+
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity<JsonResponse> handleException(Exception e) {
 	LOGGER.error(ERR_INTERNAL_SERVER_ERROR.name(), e);
