@@ -109,4 +109,9 @@ public class OrderServiceImpl implements OrderService {
  		return ODto;
 
 	}
+
+	@Override
+	public Order getUserOrderById(Integer orderId) {
+	    return odao.getById(orderId);
+	}
 }

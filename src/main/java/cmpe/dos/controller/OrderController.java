@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -80,7 +81,7 @@ public class OrderController extends AbstractController {
 
 	@Autowired
 	DishService dishService;
-
+	
 	@Autowired
 	CouponDictService couponDictService;
 
@@ -120,6 +121,51 @@ public class OrderController extends AbstractController {
 		}
 	}
 
+    @ApiOperation(value = "Quick Checkout for User's Order")
+    @PutMapping("order/quick-checkout/{preOrderId}")
+    public ResponseEntity<JsonResponse> quickReCheckout(Principal principal, Integer preOrderId) {
+	String username = principal.getName();
+	Order preOrder = orderService.getUserOrderById(preOrderId);
+
+	if (preOrder == null || preOrder.getUsername() != username)
+	    return notFound();
+	
+	List<OrderDishDetail> preList = orderDishDetailService.getDishDetail(preOrderId);
+	List<OrderDishDetail> detailList = new ArrayList<OrderDishDetail>();
+	for (OrderDishDetail odd: preList) {
+/*		Dish dish = dishService.getDish(preOrder.getBranchId(), odd.getDishId());
+		
+		short inventory = (short) (dish.getInventoryQuantity() - odd.getOrderQuantity());
+		if(inventory < 0){
+			return runOutOfDishes(, dish.getInventoryQuantity());
+		}
+		dish.setInventoryQuantity(inventory);
+		dishService.updateDish(dish);
+
+		totalPrice += odDto.getPrice() * odDto.getOrderQuantity();
+		OrderDishDetail odd = new OrderDishDetail();
+		odd.setDishId(odDto.getDishId());
+		odd.setOrderQuantity(odDto.getOrderQuantity());
+		detailList.add(odd);*/
+	}
+	
+	Order order = new Order(username, preOrder.getBranchId(), new Date(), preOrder.getTotalPrice(),
+		preOrder.getIsDeliver());
+	orderService.createOrder(order);
+
+	Integer orderId = order.getOrderId();
+	
+	
+	for (OrderDishDetail odd : detailList) {
+	    odd.setOrderId(orderId);
+	    orderDishDetailService.create(odd);
+	}
+	
+	return success("checkout the order", true);
+
+    }
+	
+    
     ///reCheckOut Order
     @ApiOperation(value = "Check out for user's oreder")
     @PostMapping("order/ReCheckout")
