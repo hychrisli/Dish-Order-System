@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cmpe.dos.entity.Dish;
 import cmpe.dos.entity.DishDict;
-import cmpe.dos.dto.DishDto;
+import cmpe.dos.exception.AppException;
 import cmpe.dos.service.DishDictService;
 import cmpe.dos.service.DishService;
 import cmpe.dos.response.JsonResponse;
@@ -39,41 +39,50 @@ public class DishController extends AbstractController {
 
     @Autowired
     DishDictService dishDictService;
-    
-    
+
     @ApiOperation(value = "Find a Dish in a Branch")
     @GetMapping(DISH + "/{branchId}/{dishId}")
-    public ResponseEntity<JsonResponse> getDish(@PathVariable Short branchId, @PathVariable Integer dishId){
+    public ResponseEntity<JsonResponse> getDish(@PathVariable Short branchId, @PathVariable Integer dishId) {
 	Dish dish = dishService.getDish(branchId, dishId);
 	if (dish != null)
 	    return success("dish", dish);
-	
+
 	return notFound();
     }
-    
-    @ApiOperation(value = "Create a Dish")
+
+    @ApiOperation(value = "Create a Dish at a Branch")
     @PostMapping(DISH)
     @PreAuthorize(PRIV_ADMIN)
-    public ResponseEntity<JsonResponse> addDish(@RequestBody DishDto dishDto) {
-	if (dishService.createDish(dishDto))
-	    return created("created", dishDto.getDishId());
+    public ResponseEntity<JsonResponse> addDish(@RequestBody Dish dish) throws AppException {
+	if (dishService.createDish(dish))
+	    return created("created", dish);
 
 	return conflict();
     }
-    
-    
+
+    @ApiOperation(value = "Update a Dish at a Branch")
+    @PutMapping(DISH)
+    @PreAuthorize(PRIV_ADMIN)
+    public ResponseEntity<JsonResponse> updateDish(@RequestBody Dish dish) {
+	if (dishService.updateDish(dish))
+	    return success("updated", dish);
+
+	return notFound();
+    }
+
     @ApiOperation(value = "Delete a Dish From a Branch")
     @DeleteMapping(DISH + "/{branchId}/{dishId}")
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> deleteDish(@PathVariable Short branchId, @PathVariable Integer dishId) {
-	if (dishService.deleteDishFromBranch(branchId, dishId))
-	    return success("deleted", dishId);
-	
+	Dish dish = dishService.deleteDishFromBranch(branchId, dishId);
+	if (dish != null)
+	    return success("deleted", dish);
+
 	return notFound();
     }
 
     @ApiOperation(value = "Get a Dish from Dish Dict")
-    @GetMapping(DISH_DICT)
+    @GetMapping(DISH_DICT + "/{dishId}")
     public ResponseEntity<JsonResponse> getDishDict(@PathVariable Integer dishId) {
 	DishDict dishDict = dishDictService.findDishDict(dishId);
 	if (dishDict != null)
@@ -85,26 +94,31 @@ public class DishController extends AbstractController {
     @PostMapping(DISH_DICT)
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> createDishDict(@RequestBody DishDict dishDict) {
-	dishDictService.createDishDict(dishDict);
-	return created("dishDict", dishDict);
+	if (dishDictService.createDishDict(dishDict))
+	    return created("dishDict", dishDict);
+
+	return conflict();
     }
-    
+
     @ApiOperation(value = "Update a Dish at Dish Dict")
     @PutMapping(DISH_DICT)
     @PreAuthorize(PRIV_ADMIN)
-    public ResponseEntity<JsonResponse> updateDishDict(@RequestBody DishDict dishDict){
-	dishDictService.updateDishDict(dishDict);
-	return success("dishDict", dishDict);
+    public ResponseEntity<JsonResponse> updateDishDict(@RequestBody DishDict dishDict) {
+	if (dishDictService.updateDishDict(dishDict))
+	    return success("dishDict", dishDict);
+
+	return notFound();
     }
-   
+
     @ApiOperation(value = "Delete a Dish from Dish Dict")
-    @DeleteMapping(DISH_DICT)
+    @DeleteMapping(DISH_DICT + "/{dishId}")
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> deleteDishDict(@PathVariable Integer dishId) {
-	DishDict dishDict = dishDictService.deleteDishDict(dishId);
+	DishDict dishDict;
+	dishDict = dishDictService.deleteDishDict(dishId);
 	if (dishDict != null)
 	    return success("deleted", dishDict);
-	
+
 	return notFound();
     }
 }

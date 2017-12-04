@@ -1,15 +1,17 @@
 package cmpe.dos.service;
 
-import cmpe.dos.dto.DishDto;
 import cmpe.dos.entity.Dish;
+import cmpe.dos.exception.AppException;
 
 public interface DishService {
 	
 	public Dish getDish(Short branchId, Integer dishId);
 	
-	public void updateDish(Dish dish);
+	public boolean updateDish(Dish dish);
 
-	public boolean createDish(DishDto dishdto);
+	public boolean createDish(Dish dish) throws AppException;
 
-	public boolean deleteDishFromBranch(Short branchId, Integer dishId);
+	public Dish deleteDishFromBranch(Short branchId, Integer dishId);
+	
+	public boolean deleteDishFromAllBranches(Integer dishId);
 }
