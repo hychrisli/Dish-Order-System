@@ -1,21 +1,29 @@
 package cmpe.dos.controller;
 
+import cmpe.dos.dto.RoleDto;
+import cmpe.dos.dto.UserDto;
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.Rating;
+import cmpe.dos.exception.ControllerExceptionHandler;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.RatingService;
 import cmpe.dos.service.ReceiveOrderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import cmpe.dos.service.RoleService;
+import cmpe.dos.service.UserService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
 
 
+import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
 import static cmpe.dos.constant.UrlConstant.DISH;
 import static cmpe.dos.constant.UrlConstant.RATING;
 
@@ -29,26 +37,35 @@ public class RatingController extends AbstractController {
     RatingService ratingService;
 
     @Autowired
-    ReceiveOrderService cdos;
+    ReceiveOrderService roService;
 
+    @Autowired
+    RoleService roleService;
 
-    @ApiOperation(value = "View Ratings by User",response = JsonResponse.class)
-    @GetMapping(RATING + "/{username}")
-    public ResponseEntity<JsonResponse> getRatingsByUser(String username) {
+    @ApiOperation(value = "View Ratings by self",response = JsonResponse.class)
+    @GetMapping(RATING + "/self")
+    public ResponseEntity<JsonResponse> getRatingsByUser(Principal principal) {
 
-        List<Rating> ratingsByUser = ratingService.showRatingsByUser(username);
+        RoleDto roleDto = roleService.getRoleDto(principal.getName());
+        if(roleDto.isAdmin()) {
+            List<Rating> ratingsByAdmin= ratingService.showRatings();
+            if(!ratingsByAdmin.isEmpty() && ratingsByAdmin != null)
+                return success("userRatings", ratingsByAdmin);
+            else return notFound();
+        }
 
-        if(!ratingsByUser.isEmpty()) {
+        List<Rating> ratingsByUser = ratingService.showRatingsByUser(principal.getName());
+        if(!ratingsByUser.isEmpty() && ratingsByUser != null ) {
             return success("userRatings", ratingsByUser);
         }
         return notFound();
     }
 
     @ApiOperation(value = "View Ratings by Dish",response = JsonResponse.class)
-    @GetMapping(DISH + "/{dishId}"+ "branch" +"/{branchId}/"+ RATING )
-    public ResponseEntity<JsonResponse> getRatingsByDish(@PathVariable Short branchId, @PathVariable Integer dishId) {
+    @GetMapping(DISH + "/{dishId}"+ RATING )
+    public ResponseEntity<JsonResponse> getRatingsByDish( @PathVariable Integer dishId) {
 
-        List<Rating> ratingsByDish = ratingService.showRatingsByDish(branchId, dishId);
+        List<Rating> ratingsByDish = ratingService.showRatingsByDish(dishId);
 
         if (!ratingsByDish.isEmpty()) {
 
@@ -67,33 +84,66 @@ public class RatingController extends AbstractController {
         return badRequest("Have not confirmed delivery ");
     }
 
+    //administrator can delete any user's rating
+    //users only can delete their own rating
     @ApiOperation(value = "Delete A Rating")
-    @DeleteMapping(RATING + "/{id}")
-    public ResponseEntity<JsonResponse> deleteRating(@PathVariable Integer id){
+    @DeleteMapping("user/"+ RATING + "/{id}")
+    public ResponseEntity<JsonResponse> deleteRating(@PathVariable Integer id, Principal principal) {
+        RoleDto roleDto = roleService.getRoleDto(principal.getName());
+        if(roleDto.isAdmin()) {
+            if(ratingService.deleteRatingById(id)){
+                return success("deleted", id);
+            }
+            return notFound();
+        }
 
-        if(ratingService.deleteRating(id))
+        if(!ratingService.checkRatingUser(principal.getName(),id))
+            return badRequest("You have no access to others rating");
+
+        if(ratingService.showRatingsByUser(principal.getName())!= null
+                && ratingService.deleteRating(id, principal.getName()))
             return success("deleted", id);
-
         return notFound();
     }
 
+
+    //User can confirm his own unreceived order
     @ApiOperation(value = "Confirm receive user's order",response = JsonResponse.class)
-    @PostMapping("confirm" + "/order"+ "/{orderId}")
-    public ResponseEntity<JsonResponse> confirmReceiveOrder(@PathVariable  Integer orderId){
+    @PostMapping("confirm/order"+ "/{orderId}")
+    public ResponseEntity<JsonResponse> confirmReceiveOrder(Principal principal, @PathVariable Integer orderId){
 
-        List<Order> confirmOrder = cdos.confirmReceiveOrder(orderId);
-        if(confirmOrder!= null)
-            return success("confirmed", confirmOrder);
+        if(roService.showNonReceivedOrder(principal.getName()).isEmpty()
+                || roService.showNonReceivedOrder(principal.getName()) == null)
+            return badRequest("No unreceived order");
+
+        if(roService.confirmReceiveOrder(orderId, principal.getName())!= null ) {
+            return success("confirmed",roService.confirmReceiveAnOrder(orderId));
+        }
+
         return notFound();
     }
 
-    @ApiOperation(value = "show unreceived orders",response =  JsonResponse.class)
-    @GetMapping("customer"+"/{username}" + "/unreceived")
-    public ResponseEntity<JsonResponse> unreceivedOrder(@PathVariable String username) {
-        List<Order> unreceived = cdos.showNonReceivedOrder(username);
-        if(unreceived != null)
-            return success("unreceived", unreceived);
-        return badRequest("order all received by user "+ username);
+
+    //administrator can view all unreceived orders
+    //users only can view their own unreceived orders
+    @ApiOperation(value = "show all unreceived orders",response =  JsonResponse.class)
+    @GetMapping("/unreceived/all")
+    public ResponseEntity<JsonResponse> allUnreceivedOrder(Principal principal) {
+
+        RoleDto roleDto = roleService.getRoleDto(principal.getName());
+        if (roleDto.isAdmin()) {
+            List<Order> allUnreceived = roService.showallUnreceivedOrders();
+            if (allUnreceived != null && !allUnreceived.isEmpty())
+                return success("allUnreceived", allUnreceived);
+
+        } else {
+            List<Order> unreceived = roService.showNonReceivedOrder(principal.getName());
+            if(unreceived != null && !unreceived.isEmpty())
+                return success("myUnreceived",unreceived);
+            return badRequest("order all received by user "+ principal.getName());
+        }
+
+        return notFound();
     }
 
 }

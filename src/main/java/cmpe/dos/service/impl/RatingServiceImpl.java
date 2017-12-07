@@ -32,13 +32,13 @@ public class RatingServiceImpl implements RatingService {
 	    return false;
 	}
 	dao.create(rating);
-	rewardSvc.sendCommentReward(rating.getUsername());
+	//rewardSvc.sendCommentReward(rating.getUsername());
 	return true;
 
     }
 
     @Override
-    public Boolean deleteRating(Integer id) {
+    public Boolean deleteRating(Integer id, String username) {
 
 	if (dao.getById(id) == null)
 	    return false;
@@ -47,9 +47,9 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<Rating> showRatingsByDish(Short branchId, Integer dishId) {
+    public List<Rating> showRatingsByDish(Integer dishId) {
 
-	return dao.getRatingByDishId(branchId, dishId);
+	return dao.getRatingByDishId(dishId);
     }
 
     @Override
@@ -58,4 +58,22 @@ public class RatingServiceImpl implements RatingService {
 	return dao.getRatingByUser(username);
     }
 
+    @Override
+    public List<Rating> showRatings() {
+        return dao.findAll();
+    }
+
+    @Override
+    public Boolean checkRatingUser(String username, Integer ratingId) {
+        return (username.equals(dao.getRatingUser(ratingId))) ? true : false;
+    }
+
+    @Override
+    public Boolean deleteRatingById(Integer id) {
+        if (dao.getById(id) == null) {
+            return false;
+        }
+        dao.deleteById(id);
+        return true;
+    }
 }

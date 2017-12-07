@@ -22,9 +22,13 @@ public class RatingDaoImpl extends AbstractHibernateDao<Rating> implements Ratin
     }
 
     @Override
-    public List<Rating> getRatingByDishId(Short branchId, Integer dishId) {
-        String hql = "from Rating where branchId = ? and dishId = ? ";
-        return doQueryList(hql, true,branchId, dishId);
+    public List<Rating> getRatingByDishId(Integer dishId) {
+        String hql = "from Rating where dishId = ? ";
+        return doQueryList(hql, true, dishId);
     }
 
+    @Override
+    public String getRatingUser(Integer id) {
+        return getById(id).getUsername();
+    }
 }

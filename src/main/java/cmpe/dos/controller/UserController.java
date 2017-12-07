@@ -4,6 +4,7 @@ import static cmpe.dos.constant.UrlConstant.USER;
 
 import java.security.Principal;
 import java.util.List;
+
 import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,63 +29,63 @@ import io.swagger.annotations.Tag;
 
 @RestController
 @Api(tags = {"User"})
-@SwaggerDefinition(tags = { @Tag(name="User Controller", description="User Controller Endpoints")})
+@SwaggerDefinition(tags = {@Tag(name = "User Controller", description = "User Controller Endpoints")})
 @Transactional(rollbackFor = Exception.class)
-public class UserController extends AbstractController{
-    
+public class UserController extends AbstractController {
+
     @Autowired
     UserService userService;
-    
+
     @ApiOperation(value = "Get User", response = JsonResponse.class)
-    @GetMapping( USER + "/{username}")
+    @GetMapping(USER + "/{username}")
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> getUser(@PathVariable String username) {
-	UserDto userDto = userService.retrieveUserDto(username);
-	if (userDto != null)
-	    return success("user", userDto);
-	return notFound();
+        UserDto userDto = userService.retrieveUserDto(username);
+        if (userDto != null)
+            return success("user", userDto);
+        return notFound();
     }
-    
+
     @ApiOperation(value = "Get My Username")
     @GetMapping(USER + "/self")
-    public ResponseEntity<JsonResponse> getMyUserName(Principal principal){
-	return success("self", principal.getName());
+    public ResponseEntity<JsonResponse> getMyUserName(Principal principal) {
+        return success("self", principal.getName());
     }
-    
+
     @ApiOperation(value = "Add A User")
     @PostMapping(USER)
-    public ResponseEntity<JsonResponse> addUser(@RequestBody UserDto userDto){
-	if (userService.createUser(userDto))
-		return created("created", userDto.getUsername());
-	
-	return conflict();
-    }   
-    
+    public ResponseEntity<JsonResponse> addUser(@RequestBody UserDto userDto) {
+        if (userService.createUser(userDto))
+            return created("created", userDto.getUsername());
+
+        return conflict();
+    }
+
     @ApiOperation(value = "Delete A User")
     @PreAuthorize(PRIV_ADMIN)
-    public ResponseEntity<JsonResponse> deleteUser(@PathVariable String username){
-	if (userService.deleteUser(username))
-	    return success("deleted", username);
-	
-	return notFound();
+    public ResponseEntity<JsonResponse> deleteUser(@PathVariable String username) {
+        if (userService.deleteUser(username))
+            return success("deleted", username);
+
+        return notFound();
     }
-    
+
     @ApiOperation(value = "Get All Users", response = JsonResponse.class)
-    @GetMapping( USER + "/all")
+    @GetMapping(USER + "/all")
     @PreAuthorize(PRIV_ADMIN)
     public ResponseEntity<JsonResponse> getUser() {
-	List<User> users = userService.getAllUsers();
-	if (users != null && !users.isEmpty())
-	    return success("users", users);
-	return notFound();
+        List<User> users = userService.getAllUsers();
+        if (users != null && !users.isEmpty())
+            return success("users", users);
+        return notFound();
     }
-    
-    
+
+
     @ApiOperation(value = "create a worker", response = JsonResponse.class)
-    @PostMapping( USER + "/worker")
+    @PostMapping(USER + "/worker")
     @PreAuthorize(PRIV_ADMIN)
-    public ResponseEntity<JsonResponse> createWorker(@RequestBody WorkerDto workerDto){
-	return created("created", userService.createWorker(workerDto));
-    }   
-    
+    public ResponseEntity<JsonResponse> createWorker(@RequestBody WorkerDto workerDto) {
+        return created("created", userService.createWorker(workerDto));
+    }
+
 }

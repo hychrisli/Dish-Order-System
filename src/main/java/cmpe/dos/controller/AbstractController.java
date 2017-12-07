@@ -12,20 +12,19 @@ import cmpe.dos.response.JsonResponseHandler;
 public abstract class AbstractController extends JsonResponseHandler {
 
     protected <T> ResponseEntity<JsonResponse> success(String key, T data) {
-	return genericResponse(new JsonResponse(key, data), HttpStatus.OK);
+	    return genericResponse(new JsonResponse(key, data), HttpStatus.OK);
     }
 
     protected ResponseEntity<JsonResponse> notFound() {
-	return genericResponse(new JsonResponse(KEY_ERROR, HttpStatus.NOT_FOUND.name()), HttpStatus.NOT_FOUND);
+	    return genericResponse(new JsonResponse(KEY_ERROR, HttpStatus.NOT_FOUND.name()), HttpStatus.NOT_FOUND);
     }
 
     protected <T> ResponseEntity<JsonResponse> created(String key, T data) {
-
-	return genericResponse(new JsonResponse(key, data), HttpStatus.CREATED);
+	    return genericResponse(new JsonResponse(key, data), HttpStatus.CREATED);
     }
 
     protected ResponseEntity<JsonResponse> conflict() {
-	return genericResponse(new JsonResponse(KEY_ERROR, HttpStatus.CONFLICT.name()), HttpStatus.CONFLICT);
+	    return genericResponse(new JsonResponse(KEY_ERROR, HttpStatus.CONFLICT.name()), HttpStatus.CONFLICT);
     }
     
     protected ResponseEntity<JsonResponse> runOutOfDishes(String dishName, short remain) {
@@ -34,5 +33,5 @@ public abstract class AbstractController extends JsonResponseHandler {
     
     protected ResponseEntity<JsonResponse> noValidCoupon() {
     	return genericResponse(new JsonResponse(KEY_ERROR, "No valid Coupon" + HttpStatus.NOT_FOUND.name()), HttpStatus.NOT_FOUND);
-        }
+    }
 }

@@ -4,8 +4,6 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.annotations.ApiModelProperty;
