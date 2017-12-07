@@ -18,8 +18,8 @@ public class JsonResponse extends HashMap<String, Object> {
     }
 
     public JsonResponse addPair(String key, Object value) {
-	this.put(key, value);
-	return this;
+	    this.put(key, value);
+	    return this;
     }
 
     public Map<String, Object> getResponseData() {

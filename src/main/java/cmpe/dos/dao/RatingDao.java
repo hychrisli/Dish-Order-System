@@ -9,4 +9,5 @@ public interface RatingDao extends HibernateDao<Rating>{
 
     public List<Rating> getRatingByUser(String username);
     public List<Rating> getRatingByDishId(Short branchId, Integer dishId);
+    public String getRatingUser(Integer id);
 }

@@ -18,17 +18,15 @@ public class ReceiveOrderServiceImpl implements ReceiveOrderService {
     Date d;
 
     @Override
-    public List<Order> confirmReceiveOrder(Integer orderId) {
+    public Order confirmReceiveOrder(Integer orderId, String username) {
 
         Date now = new Date();
         Timestamp ts = new Timestamp(now.getTime());
 
-
-        List<Order> updatedOrder = new ArrayList<>();
-        for(Order o: odao.doQueryList("from Order where orderId = ? ",true, orderId)){
-            o.setPickOrDeliveryTime(ts);
-            odao.update(o);
-            updatedOrder.add(o);
+        Order updatedOrder = odao.doQueryUnique("from Order where orderId = ? and username = ? ",orderId, username);
+        if(updatedOrder != null) {
+            updatedOrder.setPickOrDeliveryTime(ts);
+            odao.update(updatedOrder);
         }
         return updatedOrder;
     }
@@ -37,5 +35,25 @@ public class ReceiveOrderServiceImpl implements ReceiveOrderService {
     public List<Order> showNonReceivedOrder(String username) {
         String sql = "from Order where username = ? and pickOrDeliveryTime is null";
         return odao.doQueryList(sql,true, username);
+    }
+
+    @Override
+    public List<Order> showallUnreceivedOrders() {
+        return odao.doQueryList("from Order where pickOrDeliveryTime is null",false);
+    }
+
+    @Override
+    public Boolean confirmReceiveAnOrder(Integer orderId) {
+        Date now = new Date();
+        Timestamp ts = new Timestamp(now.getTime());
+
+        Order confirmedOrder = odao.doQueryUnique("from Order where orderId = ? ",  orderId);
+        if(confirmedOrder != null) {
+            confirmedOrder.setPickOrDeliveryTime(ts);
+            odao.update(confirmedOrder);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -318,3 +318,21 @@ alter table RATING add constraint FK_REFERENCE_19 foreign key (BRANCH_ID)
       references BRANCH (BRANCH_ID) on delete restrict on update restrict;
 
 grant all on dos.* to 'dosuser'@'localhost';
+
+
+-- trigger for send reward after user comment any dish from an order, and only send out reward for each order 
+use dos;
+
+DROP TRIGGER IF EXISTS dos.send_commitReword
+				  
+DELIMITER  $$
+
+CREATE TRIGGER send_commitReword AFTER INSERT ON Rating
+FOR EACH ROW
+
+	BEGIN
+			IF NEW.ORDER_ID NOT IN (SELECT ORDER_ID FROM RATING ) THEN
+					INSERT INTO REWARD VALUES(REWARD_ID, 'commentReward',NEW.username, now(), (now() + INTERVAL 20 DAY), NULL);
+			END IF;
+END $$
+ DELIMITER ;

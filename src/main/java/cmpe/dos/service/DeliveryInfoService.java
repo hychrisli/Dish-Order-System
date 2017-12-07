@@ -4,5 +4,7 @@ import cmpe.dos.entity.DeliveryInfo;
 
 public interface DeliveryInfoService {
 
-	public void creat(DeliveryInfo deliveryInfo);
+	public void create(DeliveryInfo deliveryInfo);
+	
+	public DeliveryInfo getDeliveryInfo(Integer orderId);
 }

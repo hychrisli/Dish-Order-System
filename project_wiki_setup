@@ -1,0 +1,45 @@
+set run configueration: 
+DOSUSER_PASS=cmpe226
+
+
+
+System Requirement
+
+Java 8
+MySQL
+Maven
+Download Code
+
+If only need the master, pull from the master
+
+If need to test pull request. Please refer to this link https://help.github.com/articles/checking-out-pull-requests-locally/
+
+Collaboration guide: https://docs.google.com/document/d/1-6R5QmdRZ_pDc0fGhaW3BoGBWQgVSohxw0YC8tROiFg/edit#
+
+git clone git@github.com:yourname/Dish-Order-System.git
+git fetch upstream
+Database Setup
+
+Run the following statements as root
+CREATE database dos;
+CREATE USER 'dosuser'@'localhost' identified by -- < specify your password>;
+Go to the project root <dir>/Dish-Order-System and run the following bash commands:
+mysql -u root -p < DDL/dish-order-system-ddl.sql
+mysql -u root -p < DML/data.sql
+After this setup, please configure environment variable DOSUSER_PASS with your password
+Run with Maven
+
+Configure environment variables locally
+export DOSUSER_PASS=<your password>
+Go the the root directory of the project (there's pom.xml file)
+mvn install to compile
+mvn spring-boot:run to execute
+Interact with RESTful API
+
+Swagger UI is the best way http://localhost:8080/dos/api/swagger-ui.html
+Authentication
+
+For simplicity, this project uses http basic authentication, which means that there's no logout option. In order to login as a different user, you will need to open a incognito window in Chrome (or private mode in Firefox). When opening webpage http://localhost:8080/dos/api/*, the alert window will appear to ask for username & password. Close this browser window after manual testing is completed.
+
+
+

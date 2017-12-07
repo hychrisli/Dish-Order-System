@@ -9,6 +9,7 @@ public class DishDto {
     String description;
     Float price;
     Double score;
+    Short branch_id;
 
     public Integer getDishId() {
         return dishId;
@@ -48,5 +49,13 @@ public class DishDto {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public Short getBranch_id() {
+        return branch_id;
+    }
+
+    public void setBranch_id(Short branch_id) {
+        this.branch_id = branch_id;
     }
 }

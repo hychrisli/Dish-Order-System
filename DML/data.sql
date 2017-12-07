@@ -83,14 +83,16 @@ insert into ORDERS values (7, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09')
 insert into ORDERS values (8, 'cust1', 2, '2017-11-09', 2.0, true, '2017/11/09');
 insert into ORDERS values (9, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
 insert into ORDERS values (10, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
-insert into ORDERS values (11, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
-insert into ORDERS values (12, 'cust2', 2, '2017-11-09', 2.0, true, '2017/11/09');
-insert into ORDERS values (13, 'cust3', 2, '2017-11-09', 2.0, true, '2017/11/09');
+insert into ORDERS values (11, 'cust2', 2, '2017-11-09', 2.0, true, null);
+insert into ORDERS values (12, 'cust2', 2, '2017-11-09', 2.0, true, null);
+insert into ORDERS values (13, 'cust3', 2, '2017-11-09', 2.0, true, null);
+
 
 insert into orders (order_id, username, branch_id, order_time, total_price, is_deliver, pickup_deliver_time)
 value(1001, 'cust1',1,'2017-11-28 02:21:14.15',20,true, '2017-11-29 02:21:14.15');
 insert into orders (order_id, username, branch_id, order_time, total_price, is_deliver, pickup_deliver_time)
 value(2001, 'cust1',2,'2017-11-28 12:21:14.15',30,false, null);
+
 
 insert into RATING (ID, USERNAME, ORDER_ID, DISH_ID, SCORE, TIMESTAMP, COMMENTS)
 values (1, 'cust1', 1, 1, 4,  '2000-12-12 18:01:30', 'good!');

@@ -27,4 +27,8 @@ public class RatingDaoImpl extends AbstractHibernateDao<Rating> implements Ratin
         return doQueryList(hql, true,branchId, dishId);
     }
 
+    @Override
+    public String getRatingUser(Integer id) {
+        return getById(id).getUsername();
+    }
 }

@@ -19,4 +19,9 @@ public class OrderPayInfoServiceImpl implements OrderPayInfoService {
 
 	}
 
+	@Override
+	public OrderPayInfo getOrderPayInfo(Integer orderId) {
+	    return dao.getById(orderId);
+	}
+
 }
