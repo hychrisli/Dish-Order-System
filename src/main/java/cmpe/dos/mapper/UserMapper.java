@@ -38,19 +38,19 @@ public class UserMapper {
     }
     
     
-    public static User toPojo(WorkerDto workerDto){
-	User user = new User();
+    public static UserDto toDto(WorkerDto workerDto){
+	UserDto userDto = new UserDto();
 	
-	user.setUsername(workerDto.getUsername());
-	user.setPassword(workerDto.getPassword());
-	user.setPhone(workerDto.getPhone());
-	user.setStreet(workerDto.getStreet());
-	user.setCity(workerDto.getCity());
-	user.setState(workerDto.getState());
-	user.setZipcode(workerDto.getZipcode());
-	user.setSignupDate(workerDto.getSignupDate());
+	userDto.setUsername(workerDto.getUsername());
+	userDto.setPassword(workerDto.getPassword());
+	userDto.setPhone(workerDto.getPhone());
+	userDto.setStreet(workerDto.getStreet());
+	userDto.setCity(workerDto.getCity());
+	userDto.setState(workerDto.getState());
+	userDto.setZipcode(workerDto.getZipcode());
+	userDto.setSignupDate(workerDto.getSignupDate());
 	
-	return user;
+	return userDto;
     }
     
 }

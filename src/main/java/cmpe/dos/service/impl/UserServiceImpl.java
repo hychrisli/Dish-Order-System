@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import cmpe.dos.dao.HibernateDao;
 import cmpe.dos.dto.UserDto;
@@ -55,15 +54,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Worker createWorker(WorkerDto workerDto) {
-	User user = UserMapper.toPojo(workerDto);
-	dao.create(user);
+	createUser(UserMapper.toDto(workerDto));
 	Worker worker = new Worker();
-	worker.setUsername(user.getUsername());
+	worker.setUsername(workerDto.getUsername());
 	worker.setBranchId(workerDto.getBranchId());
 	wdao.create(worker);
 	return worker;
     }
-    
-    
     
 }

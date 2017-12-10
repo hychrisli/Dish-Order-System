@@ -13,8 +13,13 @@ public class DeliveryInfoServiceImpl implements DeliveryInfoService {
 	 HibernateDao<DeliveryInfo> dao;
 	
 	@Override
-	public void creat(DeliveryInfo deliveryInfo) {
+	public void create(DeliveryInfo deliveryInfo) {
 		dao.create(deliveryInfo);		
+	}
+
+	@Override
+	public DeliveryInfo getDeliveryInfo(Integer orderId) {
+	    return dao.getById(orderId);
 	}
 
 }
