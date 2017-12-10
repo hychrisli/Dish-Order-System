@@ -50,7 +50,7 @@ insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (15,
 insert into dish (ID, BRANCH_ID, DISH_ID, PRICE, INVENTORY_QUANTITY) values (16, 2, 12, 7.99, 200);
 
 insert into delivery_setting values (1, true, 7.00);
-insert into delivery_setting values (2, false, 0.00);
+insert into delivery_setting values (2, true, 5.00);
 
 insert into coupon_dict values ('commentReward', 3.00);
 
