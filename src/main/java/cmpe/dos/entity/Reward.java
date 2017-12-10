@@ -1,5 +1,8 @@
 package cmpe.dos.entity;
 
+import javax.persistence.*;
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;

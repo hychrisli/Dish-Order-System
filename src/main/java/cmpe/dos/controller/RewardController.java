@@ -1,13 +1,5 @@
 package cmpe.dos.controller;
 
-import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
-import static cmpe.dos.constant.UrlConstant.REWARD;
-
-import java.security.Principal;
-import java.util.List;
-
-import static cmpe.dos.constant.UrlConstant.COUPON;
-
 import cmpe.dos.dto.CouponDto;
 import cmpe.dos.entity.CouponDict;
 import cmpe.dos.entity.Reward;
@@ -22,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
+
+import static cmpe.dos.config.security.UserRole.PRIV_ADMIN;
+import static cmpe.dos.constant.UrlConstant.COUPON;
+import static cmpe.dos.constant.UrlConstant.REWARD;
 
 
 /**
