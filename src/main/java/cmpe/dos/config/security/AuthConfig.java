@@ -35,12 +35,12 @@ public class AuthConfig extends GlobalAuthenticationConfigurerAdapter {
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
-	auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     UserDetailsService userDetailsService() {
-	return new UserDetailsService() {
+		return new UserDetailsService() {
 
 	    @Override
 	    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
