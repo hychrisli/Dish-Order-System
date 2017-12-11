@@ -323,32 +323,31 @@ grant all on dos.* to 'dosuser'@'localhost';
 
 
 
-
+-- -- -- -- 
 SET GLOBAL event_scheduler = ON;
 -- trigger for send reward after user comment any dish from an order, and only send out reward for each order 
 use dos;
 DROP TRIGGER IF EXISTS dos.send_commitReword;
 				  
-DELIMITER  $$
-
+                  
+                  
+DELIMITER $$
 CREATE TRIGGER send_commitReword AFTER INSERT ON Rating
 FOR EACH ROW
 
 	BEGIN
-			SET @LAST_ID =  (SELECT MAX(REWARD_ID) FROM REWARD);
-            IF  @LAST_ID = ''  OR @LAST_ID IS NULL   THEN    
-					SET @LAST_ID = 0;
-			END IF;
             
-            IF  ((SELECT COUNT(NEW.ORDER_ID) FROM RATING )=1) THEN
+             IF  (exists (SELECT ORDER_ID FROM RATING)) THEN
 					
-                    INSERT INTO REWARD VALUES(@LAST_ID+1, 'commentReward',NEW.username, now(),
-                    (now() + INTERVAL 20 DAY), NULL);
+                    INSERT INTO REWARD (coupon_id, username, valid_start,valid_end) VALUES
+                    ( 'commentReward',NEW.username, now(), (now() + INTERVAL 20 DAY));
                     
-			END IF;
+			 END IF;
             
 END $$
 DELIMITER ;
+
+
 
 
 
@@ -376,5 +375,7 @@ $$
  DELIMITER  ;
 
 
-select * from orders;
+
+
+
 

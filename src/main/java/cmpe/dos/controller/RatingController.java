@@ -112,8 +112,7 @@ public class RatingController extends AbstractController {
     @PostMapping("confirm/order"+ "/{orderId}")
     public ResponseEntity<JsonResponse> confirmReceiveOrder(Principal principal, @PathVariable Integer orderId){
 
-        if(roService.showNonReceivedOrder(principal.getName()).isEmpty()
-                || roService.showNonReceivedOrder(principal.getName()) == null)
+        if(roService.showNonReceivedOrder(principal.getName()).isEmpty())
             return badRequest("No unreceived order");
 
         if(roService.confirmReceiveOrder(orderId, principal.getName())!= null ) {
