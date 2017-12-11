@@ -11,21 +11,18 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class OrderHistoryDto {
 
     @JsonInclude(value = NON_NULL)
-    private List<Integer> dishId;
-
-    @JsonInclude(value = NON_NULL)
-    private List<String> dishName;
-
-    @JsonInclude(value = NON_NULL)
-    private Float price;
-
-    @JsonInclude(value = NON_NULL)
-    private Short orderQuantity;
+    private List<DishHistDetailDto> dishHistDetail ;
 
     @JsonInclude(value = NON_NULL)
     @ApiModelProperty(required = true)
     private String receiverName;
 
+    private Short branchId;
+    
+    private Float totalPrice;
+    
+    private Boolean isDeliver;
+    
     @JsonInclude(value = NON_NULL)
     private String phone;
 
@@ -77,38 +74,6 @@ public class OrderHistoryDto {
     }
 
     public Integer getOrderID() { return orderID; }
-
-    public List<Integer> getDishId() {
-        return dishId;
-    }
-
-    public void setDishId(List<Integer> dishId) {
-        this.dishId = dishId;
-    }
-
-    public List<String> getDishName() {
-        return dishName;
-    }
-
-    public void setDishName(List<String> dishName) {
-        this.dishName = dishName;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public Short getOrderQuantity() {
-        return orderQuantity;
-    }
-
-    public void setOrderQuantity(Short orderQuantity) {
-        this.orderQuantity = orderQuantity;
-    }
 
     public String getReceiverName() {
         return receiverName;
@@ -191,6 +156,39 @@ public class OrderHistoryDto {
         this.date = date;
     }
 
+    public List<DishHistDetailDto> getDishHistDetail() {
+        return dishHistDetail;
+    }
 
+    public void setDishHistDetail(List<DishHistDetailDto> dishHistDetail) {
+        this.dishHistDetail = dishHistDetail;
+    }
 
+    public void setOrderID(Integer orderID) {
+        this.orderID = orderID;
+    }
+
+    public Short getBranchId() {
+        return branchId;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public Boolean getIsDeliver() {
+        return isDeliver;
+    }
+
+    public void setBranchId(Short branchId) {
+        this.branchId = branchId;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setIsDeliver(Boolean isDeliver) {
+        this.isDeliver = isDeliver;
+    }
 }

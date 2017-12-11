@@ -294,7 +294,7 @@ alter table ORDER_DISH_DETAIL add constraint FK_REFERENCE_15 foreign key (DISH_I
 /*==============================================================*/
 create table RATING
 (
-   ID                   int not null,
+   ID                   int not null auto_increment,
    USERNAME             varchar(20) not null,
    ORDER_ID             int not null,
    DISH_ID              int not null,

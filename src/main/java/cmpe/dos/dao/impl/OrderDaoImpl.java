@@ -50,7 +50,7 @@ public class OrderDaoImpl extends AbstractHibernateDao<Order> implements OrderDa
 				" di.receiverName, di.phone, di.street, di.city, di.state, di.zipcode, " +
 				" opi.cardNum, opi.cardType, opi.cardholderName, opi.date " +
 				" from Order as o, DeliveryInfo as di, OrderPayInfo as opi" +
-				" where o.orderId = di.orderId and opi.orderId = ?";
+				" where o.orderId = di.orderId and o.orderId = opi.orderId and opi.orderId = ?";
 		///List list1 =  doQueryListUntype(hql, true,order_id);
 		//String hql2 = "select odd.dishId, dd.name, odd.orderQuantity  from OrderDishDetail as odd, DishDict as dd where odd.dishId = dd.dishID and odd.orderId = ?";
         ///list1.add(doQueryListUntype(hql2,true,order_id));

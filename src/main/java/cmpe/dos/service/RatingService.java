@@ -1,11 +1,14 @@
 package cmpe.dos.service;
 
+import cmpe.dos.dto.RatingDto;
 import cmpe.dos.entity.Rating;
+import cmpe.dos.exception.AppException;
+
 import java.util.List;
 
 public interface RatingService {
 
-    public Boolean createRating(Rating rating);
+    public Rating createRating(RatingDto ratingDto, String username) throws AppException;
     public Boolean deleteRating(Integer id);
     public List<Rating> showRatingsByUser(String username);
     public List<Rating> showRatingsByDish(Short branchId, Integer dishId);

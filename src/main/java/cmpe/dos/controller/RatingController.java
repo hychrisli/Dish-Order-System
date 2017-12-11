@@ -1,7 +1,9 @@
 package cmpe.dos.controller;
 
+import cmpe.dos.dto.RatingDto;
 import cmpe.dos.entity.Order;
 import cmpe.dos.entity.Rating;
+import cmpe.dos.exception.AppException;
 import cmpe.dos.response.JsonResponse;
 import cmpe.dos.service.RatingService;
 import cmpe.dos.service.ReceiveOrderService;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.List;
 
 
@@ -59,11 +63,14 @@ public class RatingController extends AbstractController {
 
     @ApiOperation(value = "Add A Rating on A Dish")
     @PostMapping(RATING)
-    public ResponseEntity<JsonResponse> addRating(@RequestBody Rating rating){
+    public ResponseEntity<JsonResponse> addRating(@RequestBody RatingDto ratingDto, Principal principal) throws AppException{
 
-        if(ratingService.createRating(rating)) {
-            return created("created", true);
+	Rating rating = ratingService.createRating(ratingDto, principal.getName());
+	
+        if(rating != null) {
+            return created("created", rating);
         }
+        
         return badRequest("Have not confirmed delivery ");
     }
 
@@ -76,24 +83,4 @@ public class RatingController extends AbstractController {
 
         return notFound();
     }
-
-    @ApiOperation(value = "Confirm receive user's order",response = JsonResponse.class)
-    @PostMapping("confirm" + "/order"+ "/{orderId}")
-    public ResponseEntity<JsonResponse> confirmReceiveOrder(@PathVariable  Integer orderId){
-
-        List<Order> confirmOrder = cdos.confirmReceiveOrder(orderId);
-        if(confirmOrder!= null)
-            return success("confirmed", confirmOrder);
-        return notFound();
-    }
-
-    @ApiOperation(value = "show unreceived orders",response =  JsonResponse.class)
-    @GetMapping("customer"+"/{username}" + "/unreceived")
-    public ResponseEntity<JsonResponse> unreceivedOrder(@PathVariable String username) {
-        List<Order> unreceived = cdos.showNonReceivedOrder(username);
-        if(unreceived != null)
-            return success("unreceived", unreceived);
-        return badRequest("order all received by user "+ username);
-    }
-
 }

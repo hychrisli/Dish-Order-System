@@ -21,7 +21,7 @@ public interface OrderService {
 
     public List getInfoByID2(int orderId);
 
-    public OrderHistoryDto getHistoryOrderDto(List info1, List info2);
+    public OrderHistoryDto getHistoryOrderDto(Integer orderId);
     
     public Order getOrderById(Integer orderId);
 }
