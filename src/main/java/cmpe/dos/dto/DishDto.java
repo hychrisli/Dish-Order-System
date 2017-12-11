@@ -1,5 +1,7 @@
 package cmpe.dos.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by Vencci on 29/11/2017.
  */
@@ -9,6 +11,8 @@ public class DishDto {
     String description;
     Float price;
     Double score;
+    
+    @JsonIgnore
     Short branch_id;
 
     public Integer getDishId() {
