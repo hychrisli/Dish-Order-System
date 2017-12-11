@@ -213,8 +213,8 @@ public class OrderController extends AbstractController {
     }
 
     /// reCheckOut Order
-    @ApiOperation(value = "Check out for user's oreder")
-    @PostMapping("order/ReCheckout")
+    // @ApiOperation(value = "Check out for user's oreder")
+    //@PostMapping("order/ReCheckout")
     public ResponseEntity<JsonResponse> reCheckout(@RequestBody Param param, Principal principal, int orderid) {
 	String username = principal.getName();
 	Short branchId = param.branchId;
