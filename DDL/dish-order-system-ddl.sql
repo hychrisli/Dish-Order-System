@@ -336,8 +336,11 @@ CREATE TRIGGER send_commitReword AFTER INSERT ON Rating
 FOR EACH ROW
 
 	BEGIN
+			DECLARE rewards Integer;
+
+			SELECT count(*) INTO rewards FROM RATING WHERE order_id = NEW.order_id;
             
-             IF  (exists (SELECT ORDER_ID FROM RATING)) THEN
+             IF  ( rewards = 1) THEN
 					
                     INSERT INTO REWARD (coupon_id, username, valid_start,valid_end) VALUES
                     ( 'commentReward',NEW.username, now(), (now() + INTERVAL 20 DAY));

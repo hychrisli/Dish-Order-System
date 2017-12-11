@@ -145,6 +145,7 @@ public class OrderController extends AbstractController {
 	Param param = new Param();
 	param.orderDetailList = new ArrayList<OrderDetailDto>();
 
+	Float totalPrice = 0.00f;
 	List<OrderDishDetail> preList = orderDishDetailService.getDishDetail(preOrderId);
 	for (OrderDishDetail odd : preList) {
 	    Dish dish = dishService.getDish(preOrder.getBranchId(), odd.getDishId());
@@ -154,23 +155,32 @@ public class OrderController extends AbstractController {
 		return runOutOfDishes(dishDict.getName(), dish.getInventoryQuantity());
 	    }
 	    dish.setInventoryQuantity(inventory);
+	    totalPrice += dish.getPrice() * odd.getOrderQuantity();
+	     
 	    dishService.createDish(dish);
 	    detailList.add(odd);
 	    param.orderDetailList.add(DishMapper.toOrderDetailDto(odd, dish, dishDict));
 	}
 
-	Order order = new Order(username, preOrder.getBranchId(), new Date(), preOrder.getTotalPrice(),
+	DeliveryInfo preDi = deliveryInfoService.getDeliveryInfo(preOrderId);
+	param.branchId = preOrder.getBranchId();
+	if (preDi != null)
+	    totalPrice += deliverySettingService.retrieveDeliverSetting(param.branchId).getFee();
+	
+	Order order = new Order(username, preOrder.getBranchId(), new Date(), totalPrice,
 		preOrder.getIsDeliver());
 	orderService.createOrder(order);
 
 	Integer orderId = order.getOrderId();
-	for (OrderDishDetail odd : detailList) {
+	for (OrderDishDetail preOdd : detailList) {
+	    OrderDishDetail odd = new OrderDishDetail();
+	    odd.setDishId(preOdd.getDishId());
 	    odd.setOrderId(orderId);
+	    odd.setOrderQuantity(preOdd.getOrderQuantity());
 	    orderDishDetailService.create(odd);
 	}
 
-	param.branchId = preOrder.getBranchId();
-	DeliveryInfo preDi = deliveryInfoService.getDeliveryInfo(preOrderId);
+	// Include delivery details
 	if (preDi != null) {
 	    DeliveryInfo di = new DeliveryInfo();
 	    di.setOrderId(orderId);
