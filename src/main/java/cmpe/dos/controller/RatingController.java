@@ -112,22 +112,6 @@ public class RatingController extends AbstractController {
     }
 
 
-    //User can confirm his own unreceived order
-    @ApiOperation(value = "Confirm receive user's order",response = JsonResponse.class)
-    @PostMapping("confirm/order"+ "/{orderId}")
-    public ResponseEntity<JsonResponse> confirmReceiveOrder(Principal principal, @PathVariable Integer orderId){
-
-        if(roService.showNonReceivedOrder(principal.getName()).isEmpty())
-            return badRequest("No unreceived order");
-
-        if(roService.confirmReceiveOrder(orderId, principal.getName())!= null ) {
-            return success("confirmed",roService.confirmReceiveAnOrder(orderId));
-        }
-
-        return notFound();
-    }
-
-
     //administrator can view all unreceived orders
     //users only can view their own unreceived orders
     @ApiOperation(value = "show all unreceived orders",response =  JsonResponse.class)
