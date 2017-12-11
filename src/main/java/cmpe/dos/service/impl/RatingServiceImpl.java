@@ -60,10 +60,7 @@ public class RatingServiceImpl implements RatingService {
 	rating.setScore(ratingDto.getScore());
 	
 	dao.create(rating);
-	rewardSvc.sendCommentReward(rating.getUsername());
-	
 	return rating;
-
     }
 
     @Override
@@ -76,9 +73,9 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public List<Rating> showRatingsByDish(Short branchId, Integer dishId) {
+    public List<Rating> showRatingsByDish(Integer dishId) {
 
-	return dao.getRatingByDishId(branchId, dishId);
+	return dao.getRatingByDishId(dishId);
     }
 
     @Override
@@ -86,5 +83,25 @@ public class RatingServiceImpl implements RatingService {
 
 	return dao.getRatingByUser(username);
     }
+
+    @Override
+    public List<Rating> showRatings() {
+        return dao.findAll();
+    }
+
+    @Override
+    public Boolean checkRatingUser(String username, Integer ratingId) {
+        return (username.equals(dao.getRatingUser(ratingId))) ? true : false;
+    }
+
+    @Override
+    public Boolean deleteRatingById(Integer id) {
+        if (dao.getById(id) == null) {
+            return false;
+        }
+        dao.deleteById(id);
+        return true;
+    }
+
 
 }

@@ -318,3 +318,64 @@ alter table RATING add constraint FK_REFERENCE_19 foreign key (BRANCH_ID)
       references BRANCH (BRANCH_ID) on delete restrict on update restrict;
 
 grant all on dos.* to 'dosuser'@'localhost';
+
+
+
+
+
+-- -- -- -- 
+SET GLOBAL event_scheduler = ON;
+-- trigger for send reward after user comment any dish from an order, and only send out reward for each order 
+use dos;
+DROP TRIGGER IF EXISTS dos.send_commitReword;
+				  
+                  
+                  
+DELIMITER $$
+CREATE TRIGGER send_commitReword AFTER INSERT ON Rating
+FOR EACH ROW
+
+	BEGIN
+            
+             IF  (exists (SELECT ORDER_ID FROM RATING)) THEN
+					
+                    INSERT INTO REWARD (coupon_id, username, valid_start,valid_end) VALUES
+                    ( 'commentReward',NEW.username, now(), (now() + INTERVAL 20 DAY));
+                    
+			 END IF;
+            
+END $$
+DELIMITER ;
+
+
+
+
+
+DELIMITER  $$
+CREATE  PROCEDURE dos.autoConfirm()
+BEGIN
+
+		update orders 
+		set pickup_deliver_time =  now()
+        where DATE_SUB(NOW(), INTERVAL 20 DAY) > order_time and PICKUP_DELIVER_TIME is null;
+
+END $$
+DELIMITER  ;
+
+
+
+DELIMITER  $$
+CREATE EVENT myevent
+    ON SCHEDULE EVERY  5 SECOND
+    STARTS '2017-12-01 00:00:00'
+    
+    DO
+	call dos.autoConfirm();
+$$
+ DELIMITER  ;
+
+
+
+
+
+

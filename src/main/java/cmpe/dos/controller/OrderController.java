@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import cmpe.dos.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +51,7 @@ import io.swagger.annotations.Tag;
 @RestController
 @Api(tags = { "Order" })
 @SwaggerDefinition(tags = { @Tag(name = "Order Controller", description = "Create an order") })
+
 @Transactional(rollbackFor = Exception.class)
 public class OrderController extends AbstractController {
 
@@ -127,6 +126,7 @@ public class OrderController extends AbstractController {
 	    return notFound();
 	}
     }
+
 
     @ApiOperation(value = "Quick Checkout for User's Order")
     @PutMapping("order/quick-checkout/{preOrderId}")
@@ -216,93 +216,93 @@ public class OrderController extends AbstractController {
     // @ApiOperation(value = "Check out for user's oreder")
     //@PostMapping("order/ReCheckout")
     public ResponseEntity<JsonResponse> reCheckout(@RequestBody Param param, Principal principal, int orderid) {
-	String username = principal.getName();
-	Short branchId = param.branchId;
-	Float totalPrice = 0.00f;
-	List<OrderDishDetail> detailList = new ArrayList<OrderDishDetail>();
-	for (OrderDetailDto odDto : param.orderDetailList) {
-	    // Check whether we have enough inventory.
-	    Dish dish = dishService.getDish(branchId, odDto.getDishId());
-	    short inventory = (short) (dish.getInventoryQuantity() - odDto.getOrderQuantity());
-	    if (inventory < 0) {
-		return runOutOfDishes(odDto.getDishName(), dish.getInventoryQuantity());
-	    }
-	    dish.setInventoryQuantity(inventory);
-	    dishService.updateDish(dish);
+		String username = principal.getName();
+		Short branchId = param.branchId;
+		Float totalPrice = 0.00f;
+		List<OrderDishDetail> detailList = new ArrayList<OrderDishDetail>();
+		for (OrderDetailDto odDto : param.orderDetailList) {
+			// Check whether we have enough inventory.
+			Dish dish = dishService.getDish(branchId, odDto.getDishId());
+			short inventory = (short) (dish.getInventoryQuantity() - odDto.getOrderQuantity());
+			if (inventory < 0) {
+				return runOutOfDishes(odDto.getDishName(), dish.getInventoryQuantity());
+			}
+			dish.setInventoryQuantity(inventory);
+			dishService.updateDish(dish);
 
-	    totalPrice += odDto.getPrice() * odDto.getOrderQuantity();
-	    OrderDishDetail odd = new OrderDishDetail();
-	    odd.setDishId(odDto.getDishId());
-	    odd.setOrderQuantity(odDto.getOrderQuantity());
-	    detailList.add(odd);
+			totalPrice += odDto.getPrice() * odDto.getOrderQuantity();
+			OrderDishDetail odd = new OrderDishDetail();
+			odd.setDishId(odDto.getDishId());
+			odd.setOrderQuantity(odDto.getOrderQuantity());
+			detailList.add(odd);
+		}
+
+		if (param.isDelivery) {
+			totalPrice += deliverySettingService.retrieveDeliverSetting(branchId).getFee();
+		}
+
+		if (param.usingCoupon) {
+			Reward reward = rewardService.getValidCoupon(param.couponId);
+			if (reward != null) {
+				totalPrice -= couponDictService.getCouponInfo(param.couponId).getValue();
+				rewardService.DeleteUsedCoupon(reward);
+			} else {
+				return noValidCoupon();
+			}
+		}
+		List list11 = orderService.getInfoByID1(orderid);
+		List list12 = orderService.getInfoByID2(orderid);
+		OrderHistoryDto dto = orderService.getHistoryOrderDto(orderid);
+
+		Order order = new Order(username, branchId, new Date(), totalPrice, param.isDelivery);
+		orderService.createOrder(order);
+
+		Integer orderId = order.getOrderId();
+		for (OrderDishDetail odd : detailList) {
+			odd.setOrderId(orderId);
+			orderDishDetailService.create(odd);
+		}
+
+		if (param.isDelivery) {
+			DeliveryInfo di = new DeliveryInfo();
+			di.setOrderId(orderId);
+			if (param.isDefaultAddress) {
+				// DeliverInfoDto diDto =
+				// orderService.getDefaultDeliverInfo(username);
+				di.setReceiverName(dto.getReceiverName());
+				di.setStreet(dto.getStreet());
+				di.setCity(dto.getCity());
+				di.setState(dto.getState());
+				di.setZipcode(dto.getZipcode());
+				di.setPhone(dto.getPhone());
+			} else {
+				di.setReceiverName(param.diDto.getReceiverName());
+				di.setStreet(param.diDto.getStreet());
+				di.setCity(param.diDto.getCity());
+				di.setState(param.diDto.getState());
+				di.setZipcode(param.diDto.getZipcode());
+				di.setPhone(param.diDto.getPhone());
+			}
+			deliveryInfoService.create(di);
+		}
+
+		OrderPayInfo opi = new OrderPayInfo();
+		opi.setOrderId(orderId);
+		if (param.isDefaultPaycard) {
+
+			opi.setCardholderName(dto.getCardholderName());
+			opi.setCardNum(dto.getCardNum());
+			opi.setCardType(dto.getCardType());
+			opi.setDate(dto.getDate());
+		} else {
+			opi.setCardholderName(param.ciDto.getCardholderName());
+			opi.setCardNum(param.ciDto.getCardNum());
+			opi.setCardType(param.ciDto.getCardType());
+			opi.setDate(param.ciDto.getDate());
+		}
+		orderPayInfoService.create(opi);
+		return success("checkout the order", true);
 	}
-
-	if (param.isDelivery) {
-	    totalPrice += deliverySettingService.retrieveDeliverSetting(branchId).getFee();
-	}
-
-	if (param.usingCoupon) {
-	    Reward reward = rewardService.getValidCoupon(param.couponId);
-	    if (reward != null) {
-		totalPrice -= couponDictService.getCouponInfo(param.couponId).getValue();
-		rewardService.DeleteUsedCoupon(reward);
-	    } else {
-		return noValidCoupon();
-	    }
-	}
-	List list11 = orderService.getInfoByID1(orderid);
-	List list12 = orderService.getInfoByID2(orderid);
-	OrderHistoryDto dto = orderService.getHistoryOrderDto(orderid);
-
-	Order order = new Order(username, branchId, new Date(), totalPrice, param.isDelivery);
-	orderService.createOrder(order);
-
-	Integer orderId = order.getOrderId();
-	for (OrderDishDetail odd : detailList) {
-	    odd.setOrderId(orderId);
-	    orderDishDetailService.create(odd);
-	}
-
-	if (param.isDelivery) {
-	    DeliveryInfo di = new DeliveryInfo();
-	    di.setOrderId(orderId);
-	    if (param.isDefaultAddress) {
-		// DeliverInfoDto diDto =
-		// orderService.getDefaultDeliverInfo(username);
-		di.setReceiverName(dto.getReceiverName());
-		di.setStreet(dto.getStreet());
-		di.setCity(dto.getCity());
-		di.setState(dto.getState());
-		di.setZipcode(dto.getZipcode());
-		di.setPhone(dto.getPhone());
-	    } else {
-		di.setReceiverName(param.diDto.getReceiverName());
-		di.setStreet(param.diDto.getStreet());
-		di.setCity(param.diDto.getCity());
-		di.setState(param.diDto.getState());
-		di.setZipcode(param.diDto.getZipcode());
-		di.setPhone(param.diDto.getPhone());
-	    }
-	    deliveryInfoService.create(di);
-	}
-
-	OrderPayInfo opi = new OrderPayInfo();
-	opi.setOrderId(orderId);
-	if (param.isDefaultPaycard) {
-
-	    opi.setCardholderName(dto.getCardholderName());
-	    opi.setCardNum(dto.getCardNum());
-	    opi.setCardType(dto.getCardType());
-	    opi.setDate(dto.getDate());
-	} else {
-	    opi.setCardholderName(param.ciDto.getCardholderName());
-	    opi.setCardNum(param.ciDto.getCardNum());
-	    opi.setCardType(param.ciDto.getCardType());
-	    opi.setDate(param.ciDto.getDate());
-	}
-	orderPayInfoService.create(opi);
-	return success("checkout the order", true);
-    }
 
     @ApiOperation(value = "Check out for user's oreder")
     @PostMapping("order/checkout")
@@ -394,9 +394,9 @@ public class OrderController extends AbstractController {
 
     @ApiOperation(value = "Confirm receive user's order", response = JsonResponse.class)
     @PostMapping("confirm" + "/order" + "/{orderId}")
-    public ResponseEntity<JsonResponse> confirmReceiveOrder(@PathVariable Integer orderId) {
+    public ResponseEntity<JsonResponse> confirmReceiveOrder(@PathVariable Integer orderId, Principal principal) {
 
-	List<Order> confirmOrder = cdos.confirmReceiveOrder(orderId);
+	Order confirmOrder = cdos.confirmReceiveOrder(orderId,principal.getName());
 	if (confirmOrder != null)
 	    return success("confirmed", confirmOrder);
 	return notFound();
@@ -410,5 +410,4 @@ public class OrderController extends AbstractController {
 	    return success("unreceived", unreceived);
 	return badRequest("order all received by user " + username);
     }
-
 }

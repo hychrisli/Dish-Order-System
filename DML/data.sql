@@ -59,4 +59,7 @@ insert into delivery_setting values (2, true, 5.00);
 
 insert into coupon_dict values ('commentReward', 3.00);
 
+insert into coupon_dict values ('5yearReward', 5.00);
+insert into coupon_dict values ('loyaltyReward', 5.00);
+
 
