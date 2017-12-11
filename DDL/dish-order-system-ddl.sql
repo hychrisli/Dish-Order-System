@@ -320,10 +320,14 @@ alter table RATING add constraint FK_REFERENCE_19 foreign key (BRANCH_ID)
 grant all on dos.* to 'dosuser'@'localhost';
 
 
+
+
+
+
+SET GLOBAL event_scheduler = ON;
 -- trigger for send reward after user comment any dish from an order, and only send out reward for each order 
 use dos;
-
-DROP TRIGGER IF EXISTS dos.send_commitReword
+DROP TRIGGER IF EXISTS dos.send_commitReword;
 				  
 DELIMITER  $$
 
@@ -331,17 +335,46 @@ CREATE TRIGGER send_commitReword AFTER INSERT ON Rating
 FOR EACH ROW
 
 	BEGIN
-			-- DECLARE fk_parent_user_id INT DEFAULT (SELECT max(REWARD_ID) FROM REWARD);
 			SET @LAST_ID =  (SELECT MAX(REWARD_ID) FROM REWARD);
             IF  @LAST_ID = ''  OR @LAST_ID IS NULL   THEN    
 					SET @LAST_ID = 0;
 			END IF;
             
             IF  ((SELECT COUNT(NEW.ORDER_ID) FROM RATING )=1) THEN
-					INSERT INTO REWARD VALUES(@LAST_ID+1, 'commentReward',NEW.username, now(), (now() + INTERVAL 20 DAY), NULL);
+					
+                    INSERT INTO REWARD VALUES(@LAST_ID+1, 'commentReward',NEW.username, now(),
+                    (now() + INTERVAL 20 DAY), NULL);
+                    
 			END IF;
             
 END $$
- DELIMITER ;
+DELIMITER ;
 
+
+
+DELIMITER  $$
+CREATE  PROCEDURE dos.autoConfirm()
+BEGIN
+
+		update orders 
+		set pickup_deliver_time =  now()
+        where DATE_SUB(NOW(), INTERVAL 20 DAY) > order_time and PICKUP_DELIVER_TIME is null;
+
+END $$
+DELIMITER  ;
+
+
+
+DELIMITER  $$
+CREATE EVENT myevent
+    ON SCHEDULE EVERY  5 SECOND
+    STARTS '2017-12-01 00:00:00'
+    
+    DO
+	call dos.autoConfirm();
+$$
+ DELIMITER  ;
+
+
+select * from orders;
 

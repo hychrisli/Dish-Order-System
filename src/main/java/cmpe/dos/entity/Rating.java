@@ -27,7 +27,7 @@ public class Rating {
     private Short score;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "timestamp", nullable = false)
     private Date timeStamp;
 
