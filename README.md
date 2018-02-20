@@ -1,6 +1,8 @@
 # Dish-Order-System
 CMPE 226 Database Design Final Project
 
+[Presentation Slides](slides.pdf)
+
 # Contributors
 
 * [vencci](https://github.com/vencci)
